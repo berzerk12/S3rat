@@ -313,6 +313,29 @@ section[id]{scroll-margin-top:12px}
 .dots i.y{background:var(--green)}.dots i.no{background:rgba(162,59,59,.45)}
 .pkb{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;border:0;background:var(--card);border-radius:14px;padding:13px 14px;box-shadow:inset 0 0 0 1px var(--line);font-size:15px;font-weight:600;text-align:start}
 .pkb small{color:var(--muted);font-weight:500;font-size:12px}
+/* ---- tints ---- */
+.ring{border-radius:50%;background:rgba(255,149,0,.16)}.mini{gap:7px}.mrow{border-radius:12px;padding:7px 10px}
+.mrow:nth-child(1){background:rgba(255,59,48,.14)}.mrow:nth-child(2){background:rgba(10,132,255,.14)}.mrow:nth-child(3){background:rgba(52,199,89,.16)}.mrow:nth-child(4){background:rgba(175,82,222,.14)}
+#secMorning{background-image:linear-gradient(rgba(88,86,214,0.12),rgba(88,86,214,0.12))}
+#secCaf{background-image:linear-gradient(rgba(162,132,94,0.12),rgba(162,132,94,0.12))}
+#secFood{background-image:linear-gradient(rgba(255,149,0,0.12),rgba(255,149,0,0.12))}
+#myMeals{background-image:linear-gradient(rgba(52,199,89,0.12),rgba(52,199,89,0.12))}
+section[aria-label="نشاط نص اليوم"]{background-image:linear-gradient(rgba(255,204,0,0.12),rgba(255,204,0,0.12))}
+#secTrain{background-image:linear-gradient(rgba(10,132,255,0.12),rgba(10,132,255,0.12))}
+#secWater{background-image:linear-gradient(rgba(50,173,230,0.12),rgba(50,173,230,0.12))}
+#secVit{background-image:linear-gradient(rgba(175,82,222,0.12),rgba(175,82,222,0.12))}
+#secEnd{background-image:linear-gradient(rgba(255,45,85,0.12),rgba(255,45,85,0.12))}
+@media (prefers-color-scheme: dark){
+#secMorning{background-image:linear-gradient(rgba(88,86,214,0.09),rgba(88,86,214,0.09))}
+#secCaf{background-image:linear-gradient(rgba(162,132,94,0.09),rgba(162,132,94,0.09))}
+#secFood{background-image:linear-gradient(rgba(255,149,0,0.09),rgba(255,149,0,0.09))}
+#myMeals{background-image:linear-gradient(rgba(52,199,89,0.09),rgba(52,199,89,0.09))}
+section[aria-label="نشاط نص اليوم"]{background-image:linear-gradient(rgba(255,204,0,0.09),rgba(255,204,0,0.09))}
+#secTrain{background-image:linear-gradient(rgba(10,132,255,0.09),rgba(10,132,255,0.09))}
+#secWater{background-image:linear-gradient(rgba(50,173,230,0.09),rgba(50,173,230,0.09))}
+#secVit{background-image:linear-gradient(rgba(175,82,222,0.09),rgba(175,82,222,0.09))}
+#secEnd{background-image:linear-gradient(rgba(255,45,85,0.09),rgba(255,45,85,0.09))}
+.ring{background:rgba(255,159,10,.11)}.mrow:nth-child(1){background:rgba(255,69,58,.11)}.mrow:nth-child(2){background:rgba(10,132,255,.12)}.mrow:nth-child(3){background:rgba(48,209,88,.10)}.mrow:nth-child(4){background:rgba(191,90,242,.10)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -593,7 +616,7 @@ $('toastU').addEventListener('click',doUndo);
 
 /* ---------- vitamin brain ---------- */
 const KW={ca:/(حليب|لبن|جبن|جبنة|زبادي|لبنة|قشطة|كريمة|ميلك|بودينق|بودنج|بودن|pudding|كاسترد|ايس كريم|آيس كريم|ice cream|واي|whey|كازين|casein|شيك|milk|cheese|yogurt|yoghurt|labneh|كالسيوم)/i,fe:/(كبدة|كبده|سبانخ|عدس|حديد|liver|spinach|lentil|iron)/i};
-const isCaf=x=>(x.cf>0)||/(شاي|قهوة|قهوه|coffee|latte|لاتيه|اسبريسو|espresso|كابتشينو)/i.test(x.n||'');
+const isCaf=x=>(x.cf>=10)||/(شاي|قهوة|قهوه|coffee|latte|لاتيه|اسبريسو|espresso|كابتشينو)/i.test(x.n||'');
 function vType(n){
   n=String(n).toLowerCase().replace(/[أإآ]/g,'ا');
   if(/(زنك|زينك|zinc)/.test(n))return'zn';
@@ -763,10 +786,10 @@ function renderCaf(){
   const ev=[];
   (d.cupT||[]).forEach(t=>ev.push([t==null?-1:t,'☕ '+tStr(t)]));
   const extra=d.cups-(d.cupT||[]).length;if(extra>0)ev.push([-1,'☕ +'+extra]);
-  d.items.filter(x=>x.cf>0).forEach(x=>ev.push([x.t==null?-1:x.t,'🥤 '+esc(x.n)+(x.t!=null?' '+tStr(x.t):'')]));
+  d.items.filter(x=>x.cf>=10).forEach(x=>ev.push([x.t==null?-1:x.t,'🥤 '+esc(x.n)+(x.t!=null?' '+tStr(x.t):'')]));
   ev.sort((a,b)=>a[0]-b[0]);
   $('cLog').textContent='';$('cLog').innerHTML=ev.length?ev.map(e=>e[1]).join(' · '):'ما سجلت كافيين';
-  const qs=S.snacks.filter(s=>s.cf>0);
+  const qs=S.snacks.filter(s=>s.cf>=10);
   $('cQuick').innerHTML=qs.length?'<div class="recent">'+qs.map(s=>'<button type="button" data-cq="'+s.id+'">🥤 '+esc(s.n)+' · '+s.cf+'</button>').join('')+'</div>':'';
   $('cUndo').disabled=d.cups<=0;
 }
@@ -1136,7 +1159,7 @@ const totalsOf=rows=>sum(rows.filter(r=>r.g>0).map(scaleRow));
 let mmOpen=false,mmF='all',mmQ='',flash={};
 const lam=k=>{const n=slotName(k);return n.startsWith('ال')?'لل'+n.slice(2):'لل'+n};
 const slotName=k=>(MEALS.find(m=>m[0]===k)||['','الوجبة'])[1];
-const isDrink=x=>(x.cf>0)||(x.w>=150&&!(x.k>=120));
+const isDrink=x=>(x.cf>=10)||(x.w>=150&&!(x.k>=120));
 function listEntries(){
   const out=[];
   S.meals.forEach(m=>out.push({key:'m'+m.id,t:'meal',kind:'meal',id:m.id,n:m.n,e:'⭐',slot:m.slot||curMeal,sub:'وجبة · '+slotName(m.slot||curMeal)}));
