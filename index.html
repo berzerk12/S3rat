@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="سعراتي">
+<meta name="robots" content="noindex,nofollow">
 <title>سعراتي</title>
 <style>
 :root{
@@ -131,7 +132,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   </header>
 
   <main id="vHome">
-    <div class="daynav"><button id="dPrev" type="button" aria-label="اليوم السابق">›</button><button id="dLbl" type="button"></button><button id="dNext" type="button" aria-label="اليوم التالي">‹</button></div>
+    <div class="daynav"><button id="dPrev" type="button" aria-label="اليوم السابق">‹</button><button id="dLbl" type="button"></button><button id="dNext" type="button" aria-label="اليوم التالي">›</button></div>
 
     <section class="card quick">
       <div class="mchips" id="mchips" role="group" aria-label="الوجبة"></div>
@@ -398,21 +399,52 @@ const PROMPT='أنت حاسب تغذية. حلّل النص التالي الذ�
   ' ردّ بـ JSON فقط بهذا الشكل بدون أي نص آخر: {"items":[{"n":"اسم الصنف","q":"الكمية","k":0,"p":0,"c":0,"fi":0,"f":0,"w":0,"cf":0}]} والأرقام صحيحة.\n\nالنص: ';
 const ASK='حلّل أكلي وشربي التالي. '+SPEC+
   ' ردّ فقط بسطر لكل صنف بهذا الشكل بدون أي كلام ثاني: الاسم | السعرات | البروتين | الكارب | الألياف | الدهون | الماء مل | الكافيين ملغ. الأرقام صحيحة.\nأكلي: ';
-async function askGemini(text){
-  const url='https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(S.model||'gemini-flash-latest')+':generateContent';
+const GBASE='https://generativelanguage.googleapis.com/v1beta/';
+async function gfetch(path,opt){
   let r;
+  try{r=await fetch(GBASE+path,opt)}catch(e){throw {code:'net'}}
+  if(!r.ok){
+    let m='';
+    try{const j=await r.json();m=(j&&j.error&&j.error.message)||''}catch(e){}
+    throw {code:r.status,detail:m};
+  }
+  return r.json();
+}
+async function pickModel(){
+  const d=await gfetch('models?pageSize=200',{headers:{'x-goog-api-key':S.key}});
+  const ok=(d.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')).map(m=>m.name.replace('models/',''));
+  const bad=/(image|tts|audio|live|embed|vision|robotics|computer|thinking|exp|learnlm|gemma)/;
+  const c=ok.filter(n=>/^gemini-[\d.]+-flash/.test(n)&&!bad.test(n));
+  const ver=n=>parseFloat((n.match(/^gemini-([\d.]+)-flash/)||[0,0])[1]);
+  c.sort((x,y)=>ver(y)-ver(x)||(/preview/.test(x)-/preview/.test(y))||(/lite/.test(x)-/lite/.test(y))||x.length-y.length);
+  if(c.length)return c[0];
+  return ok.find(n=>/flash-latest$/.test(n))||ok.find(n=>/flash/.test(n)&&!bad.test(n))||'';
+}
+async function askGemini(text,retried){
+  let data;
   try{
-    r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.key},
-      body:JSON.stringify({contents:[{parts:[{text:PROMPT+text}]}],generationConfig:{temperature:0.2,responseMimeType:'application/json'}})});
-  }catch(e){throw {code:'net'}}
-  if(!r.ok)throw {code:r.status};
-  const data=await r.json();
+    data=await gfetch('models/'+encodeURIComponent(S.model||'gemini-flash-latest')+':generateContent',{
+      method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.key},
+      body:JSON.stringify({contents:[{parts:[{text:PROMPT+text}]}],generationConfig:{responseMimeType:'application/json'}})});
+  }catch(e){
+    if(e&&e.code===404&&!retried){
+      const m=await pickModel();
+      if(m&&m!==S.model){S.model=m;save();if($('sModel'))$('sModel').value=m;return askGemini(text,true)}
+    }
+    throw e;
+  }
   const txt=((data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts)||[]).map(p=>p.text||'').join('');
   const items=parseAny(txt);
   if(!items.length)throw {code:'parse'};
   return items;
 }
-const ERR={net:'ما قدرت أتصل. تأكد من النت، أو استخدم "بدون مفتاح أو بدون نت".',400:'الطلب انرفض. تأكد من اسم الموديل في الإعدادات.',401:'المفتاح غير صحيح.',403:'المفتاح غير صالح أو ما له صلاحية.',404:'الموديل غير موجود. غيّر اسمه في الإعدادات.',429:'وصلت حد الاستخدام المجاني، جرّب بعد شوي.',parse:'ما فهمت جواب Gemini، جرّب تكتب أوضح.',nokey:'حط مفتاح Gemini في الإعدادات، أو استخدم "بدون مفتاح أو بدون نت".'};
+const ERR={net:'ما قدرت أتصل. تأكد من النت، أو استخدم "بدون مفتاح أو بدون نت".',400:'الطلب انرفض. تأكد من اسم الموديل في الإعدادات.',401:'المفتاح غير صحيح.',403:'المفتاح غير صالح أو ما له صلاحية.',404:'ما لقيت موديل شغال لمفتاحك.',429:'وصلت حد الاستخدام المجاني، جرّب بعد شوي.',parse:'ما فهمت جواب Gemini، جرّب تكتب أوضح.',nokey:'حط مفتاح Gemini في الإعدادات، أو استخدم "بدون مفتاح أو بدون نت".'};
+function errText(e){
+  if(!e)return 'صار خطأ غير متوقع.';
+  const base=ERR[e.code]||(e.code>=500?'خدمة Google مشغولة، جرّب بعد شوي.':'ما قدرت أكمل.');
+  const extra=e.detail?' ('+e.code+': '+String(e.detail).slice(0,200)+')':(!ERR[e.code]&&e.message?' ('+e.message+')':'');
+  return base+extra;
+}
 function qSay(t,cls){$('qMsg').className='msg'+(cls?' '+cls:'');$('qMsg').textContent=t}
 $('qGo').addEventListener('click',async()=>{
   const text=$('qText').value.trim();if(!text)return;
@@ -425,7 +457,7 @@ $('qGo').addEventListener('click',async()=>{
     const keys=Object.keys(S.cache);if(keys.length>200)delete S.cache[keys[0]];
     S.cache[ck]=items;
     qSay(commit(items,curMeal),'ok');$('qText').value='';
-  }catch(e){qSay(ERR[e&&e.code]||'صار خطأ غير متوقع، جرّب مرة ثانية.','err')}
+  }catch(e){qSay(errText(e),'err')}
   finally{btn.disabled=false;btn.textContent='احسب وأضف'}
 });
 $('mchips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;curMeal=b.dataset.m;renderTop()});
@@ -562,7 +594,7 @@ $('sTest').addEventListener('click',async()=>{
   const m=$('sMsg');m.className='msg';m.textContent='جاري الاختبار...';
   if(!S.key){m.className='msg err';m.textContent=ERR.nokey;return}
   try{const it=await askGemini('بيضة مسلوقة');m.className='msg ok';m.textContent='الاتصال شغال: بيضة مسلوقة = '+it[0].k+' سعرة.'}
-  catch(e){m.className='msg err';m.textContent=ERR[e&&e.code]||'فشل الاتصال.'}
+  catch(e){m.className='msg err';m.textContent=errText(e)}
 });
 $('bkOut').addEventListener('click',async()=>{
   const copy=Object.assign({},S,{key:''});
