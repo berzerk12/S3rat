@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="سعراتي">
+<title>سعراتي</title>
+<style>
+:root{
+  --bg:#0F1720;--surface:#17212C;--surface2:#1F2B38;--ink:#EAF0F6;--muted:#8FA1B3;--line:#2A3846;
+  --kcal:#F76B15;--kcal-bg:#2B1D14;--prot:#E5484D;--prot-bg:#2C181B;--carb:#4C7DF0;--carb-bg:#172036;
+  --fat:#30A46C;--fat-bg:#13281F;--fib:#A78BFA;--fib-bg:#231D38;--water:#38B6FF;--water-bg:#122736;--caf:#D49A5A;--caf-bg:#2A2117;
+  --accent:#38B6FF;--accent-ink:#06202E;--go:#2FBF71;--over:#FF6B6B;
+  --font:system-ui,-apple-system,'Segoe UI',Tahoma,'Noto Sans Arabic',sans-serif;color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root{
+  --bg:#F1F5F9;--surface:#FFFFFF;--surface2:#E8EEF4;--ink:#0F1C2A;--muted:#5E7184;--line:#D5DEE7;
+  --kcal:#D9560A;--kcal-bg:#FDEBDD;--prot:#D13438;--prot-bg:#FCE3E4;--carb:#3A66D8;--carb-bg:#E1E9FB;
+  --fat:#1F8A57;--fat-bg:#DDF3E8;--fib:#7C5CE0;--fib-bg:#EAE4FB;--water:#0A8FD6;--water-bg:#DDF0FB;--caf:#A8671F;--caf-bg:#F7EBDA;
+  --accent:#0A8FD6;--accent-ink:#FFFFFF;--go:#1FA45E;--over:#C62828;color-scheme:light}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;
+  padding:env(safe-area-inset-top,0px) 16px calc(100px + env(safe-area-inset-bottom,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+.app{max-width:560px;margin-inline:auto;padding-top:12px}
+main{display:flex;flex-direction:column;gap:14px}
+.num{font-variant-numeric:tabular-nums}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.logo{width:44px;height:44px;border-radius:14px;background:var(--surface);display:grid;place-items:center;flex:none}
+.top h1{margin:0;font-size:22px;font-weight:800;line-height:1.2}
+.top p{margin:0;font-size:13px;color:var(--muted)}
+.daynav{display:grid;grid-template-columns:44px 1fr 44px;gap:8px}
+.daynav button{border:0;background:var(--surface);border-radius:14px;height:44px;font-size:20px;color:var(--muted)}
+.daynav #dLbl{font-size:15px;font-weight:700;color:var(--ink)}
+.card{background:var(--surface);border-radius:18px;padding:14px}
+.card h3{margin:0 0 10px;font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card h3 small{font-weight:400;font-size:12px;color:var(--muted)}
+.quick{display:flex;flex-direction:column;gap:10px}
+.mchips{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mchips button{border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:8px 4px;font-weight:600;font-size:14px;color:var(--muted)}
+.mchips button[aria-pressed="true"]{border-color:var(--go);color:var(--ink);background:var(--surface2)}
+textarea,input,select{width:100%;min-width:0;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+textarea{min-height:92px;resize:vertical}
+.btn{border:0;border-radius:12px;padding:12px 14px;font-weight:700;background:var(--go);color:#fff;text-align:center;text-decoration:none;display:block;width:100%}
+.btn.big{padding:15px;font-size:17px}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--muted);font-weight:600}
+.btn.danger{background:none;border:1px solid var(--over);color:var(--over)}
+.btn:disabled{opacity:.6}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.msg{font-size:13px;margin:0;color:var(--muted);min-height:1.2em;overflow-wrap:anywhere}
+.msg.ok{color:var(--go)}.msg.err{color:var(--over)}
+.note{font-size:12px;color:var(--muted);margin:0}
+.recent{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.recent button{flex:none;border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 12px;font-size:13px}
+.link{background:none;border:0;color:var(--accent);font-size:13px;padding:0;text-align:start}
+.track{height:11px;border-radius:11px;background:rgba(127,127,127,.22);overflow:hidden;margin-block:8px}
+.track i{display:block;height:100%;border-radius:11px;transition:width .3s}
+.track.over i{background:var(--over)!important}
+.cal{background:var(--kcal-bg)}
+.cal .track i{background:var(--kcal)}
+.bigtxt{font-size:14px;color:var(--muted)}
+.bigtxt b{font-size:30px;color:var(--ink);font-weight:800}
+.macros{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mac{border-radius:16px;padding:12px;min-width:0}
+.mac .nmx{font-size:14px;font-weight:700}
+.mval{font-size:12px;color:var(--muted)}
+.mval b{font-size:20px;color:var(--ink);font-weight:800}
+.mealcard{background:var(--surface);border-radius:18px;overflow:hidden}
+.mh{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.mh b{font-size:17px}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:5px;background:var(--surface2);border-radius:9px;padding:1px 8px;font-size:12px;font-weight:600}
+.chip i{width:8px;height:8px;border-radius:50%}
+.item{display:block;width:100%;text-align:start;background:none;border:0;border-top:1px solid var(--line);padding:11px 14px}
+.item .nm{font-weight:600;overflow-wrap:anywhere}
+.item .sub{font-size:12px;color:var(--muted);margin-top:2px}
+.run{border-top:1px dashed var(--line);padding:10px 14px;font-size:12px;color:var(--muted);background:var(--surface2)}
+.run b{color:var(--ink)}
+.empty{text-align:center;color:var(--muted);padding:22px 14px}
+.wcard{background:var(--water-bg)}.wcard .track i{background:var(--water)}
+.ccard{background:var(--caf-bg)}.ccard .track i{background:var(--caf)}
+.vcard{background:var(--surface)}
+.big{font-size:28px;font-weight:800;color:var(--ink)}
+.row2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.row2 button{border:0;border-radius:12px;padding:12px 4px;background:var(--surface);font-weight:700}
+.wcustom{display:grid;grid-template-columns:1fr 86px auto;gap:8px;margin-top:8px}
+.wcustom button{border:0;border-radius:12px;padding:0 16px;background:var(--surface);font-weight:700}
+.cups{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cups button{width:52px;height:52px;border-radius:16px;border:0;background:var(--surface);font-size:26px;font-weight:700}
+.cups .cnt{text-align:center;font-size:12px;color:var(--muted)}
+.cups .cnt b{display:block;font-size:34px;color:var(--ink);line-height:1.1}
+.vrow{display:flex;align-items:center;gap:8px;border-top:1px solid var(--line)}
+.vrow:first-of-type{border-top:0}
+.vchk{flex:1;display:flex;align-items:center;gap:12px;background:none;border:0;padding:11px 0;text-align:start}
+.box{width:24px;height:24px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;color:transparent;flex:none}
+.vchk[aria-pressed="true"] .box{background:var(--go);border-color:var(--go);color:#fff}
+.vchk[aria-pressed="true"] span.t{color:var(--muted);text-decoration:line-through}
+.tw{display:flex;flex-direction:column;min-width:0}
+.tw small{color:var(--muted);font-size:12px}
+.vx{background:none;border:0;color:var(--over);font-size:20px;padding:6px 10px}
+.vadd{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
+.vadd button{border:0;border-radius:12px;padding:0 16px;background:var(--go);color:#fff;font-weight:700}
+.tabs{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:min(560px,calc(100% - 32px));display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:8px;z-index:9}
+.tabs button{border:0;background:none;border-radius:20px;padding:10px 6px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700}
+.tabs button[aria-current="page"]{background:var(--surface2);color:var(--accent)}
+.tabs span{font-size:14px}.tabs button:not([aria-current="page"]) span{display:none}
+.sheetbg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:20;display:flex;align-items:flex-end}
+.sheet{width:100%;max-width:560px;margin-inline:auto;max-height:92vh;overflow-y:auto;background:var(--surface);border-radius:22px 22px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.sheet h2{margin:0;font-size:18px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:4px;min-width:0}
+summary{cursor:pointer;font-weight:600;font-size:14px;color:var(--muted)}
+details>div{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ch text{fill:var(--muted);font-size:10px}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sgrid .card b{display:block;font-size:24px}.sgrid .card span{font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="logo" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="10" fill="none" stroke="var(--kcal)" stroke-width="4" stroke-dasharray="46 17" stroke-linecap="round"/><circle cx="13" cy="13" r="4" fill="var(--go)"/></svg></div>
+    <div><h1>سعراتي</h1><p id="hello"></p></div>
+  </header>
+
+  <main id="vHome">
+    <div class="daynav"><button id="dPrev" type="button" aria-label="اليوم السابق">›</button><button id="dLbl" type="button"></button><button id="dNext" type="button" aria-label="اليوم التالي">‹</button></div>
+
+    <section class="card quick">
+      <div class="mchips" id="mchips" role="group" aria-label="الوجبة"></div>
+      <textarea id="qText" placeholder="اكتب اللي أكلته أو شربته، مثال: بيضتين وخبز بر ونص كوب شوفان بحليب وقهوة"></textarea>
+      <button class="btn big" id="qGo" type="button">احسب وأضف</button>
+      <p class="msg" id="qMsg" aria-live="polite"></p>
+      <div id="recentBox"><p class="note" style="margin-bottom:6px">الأكثر استخدامًا (اضغط للإضافة مباشرة)</p><div class="recent" id="recent"></div></div>
+      <details id="paste">
+        <summary>بدون مفتاح أو بدون نت؟</summary>
+        <div>
+          <p class="note">1) انسخ الطلب (يشمل اللي كتبته فوق). 2) افتح Gemini والصقه. 3) انسخ جوابه والصقه هنا.</p>
+          <div class="btns"><button class="btn ghost" id="copyAsk" type="button">نسخ الطلب</button><a class="btn ghost" id="openG" href="https://gemini.google.com/app" target="_blank" rel="noopener">فتح Gemini</a></div>
+          <textarea id="gPaste" placeholder="الصق جواب Gemini هنا"></textarea>
+          <button class="btn" id="gAdd" type="button">إضافة للوجبة المحددة</button>
+        </div>
+      </details>
+      <button class="link" id="manual" type="button">إدخال يدوي</button>
+    </section>
+
+    <section class="card cal" aria-label="سعرات اليوم">
+      <h3>سعرات اليوم</h3>
+      <div class="track" id="kTrack"><i id="kBar"></i></div>
+      <div class="bigtxt num" id="kTxt"></div>
+    </section>
+    <section class="macros" id="macros" aria-label="الماكروز"></section>
+
+    <div id="meals" style="display:flex;flex-direction:column;gap:12px"></div>
+
+    <section class="card wcard" aria-label="الماء">
+      <h3>الماء <small id="wSmall"></small></h3>
+      <div class="big num" id="wBig"></div>
+      <div class="track" id="wTrack"><i id="wBar"></i></div>
+      <p class="note num" id="wSplit"></p>
+      <div class="row2" style="margin-top:10px">
+        <button type="button" data-w="250">+ 250 مل</button><button type="button" data-w="500">+ 500 مل</button><button type="button" data-w="1000">+ لتر</button>
+      </div>
+      <div class="wcustom">
+        <input id="wVal" type="number" inputmode="decimal" min="0" placeholder="كمية أخرى">
+        <select id="wUnit" aria-label="الوحدة"><option value="1">مل</option><option value="1000">لتر</option></select>
+        <button type="button" id="wAdd">إضافة</button>
+      </div>
+      <button class="link" id="wUndo" type="button" style="margin-top:8px">تراجع عن آخر إضافة</button>
+    </section>
+
+    <section class="card ccard" aria-label="الكافيين">
+      <h3>الكافيين <small id="cSmall"></small></h3>
+      <div class="cups">
+        <button type="button" id="cMinus" aria-label="نقص كوب">−</button>
+        <div class="cnt"><b class="num" id="cCups">0</b>كوب قهوة</div>
+        <button type="button" id="cPlus" aria-label="زيادة كوب">+</button>
+      </div>
+      <div class="track" id="cTrack"><i id="cBar"></i></div>
+      <p class="note num" id="cTxt"></p>
+      <button class="link" id="cPot" type="button" style="margin-top:6px">+ إبريق (كوبين)</button>
+      <p class="note" style="margin-top:6px">مشروب ثاني (ريد بول، بري وورك آوت)؟ اكتبه في خانة الأكل فوق ويدخل في الكافيين والماء.</p>
+    </section>
+
+    <section class="card vcard" aria-label="الفيتامينات">
+      <h3>فيتامينات اليوم <small id="vSmall"></small></h3>
+      <div id="vList"></div>
+      <div class="vadd" id="vAddRow" hidden><input id="vNew" type="text" placeholder="اسم فيتامين أو مكمل" autocomplete="off"><button type="button" id="vAdd">إضافة</button></div>
+      <button class="link" id="vEdit" type="button" style="margin-top:8px">تعديل القائمة</button>
+    </section>
+  </main>
+
+  <main id="vStats" hidden>
+    <h2 style="margin:0">آخر 14 يوم</h2>
+    <div class="sgrid" id="sgrid"></div>
+    <section class="card"><h3>السعرات</h3><div id="chK"></div></section>
+    <section class="card"><h3>البروتين (جم)</h3><div id="chP"></div></section>
+    <section class="card"><h3>الماء (مل)</h3><div id="chW"></div></section>
+  </main>
+
+  <main id="vSet" hidden>
+    <h2 style="margin:0">الإعدادات</h2>
+    <section class="card" style="display:flex;flex-direction:column;gap:12px">
+      <h3 style="margin:0">الأهداف اليومية</h3>
+      <div class="f2" id="tgrid"></div>
+      <p class="note num" id="tHint"></p>
+    </section>
+    <section class="card" style="display:flex;flex-direction:column;gap:12px">
+      <h3 style="margin:0">ربط Gemini</h3>
+      <p class="note">المفتاح من aistudio.google.com/apikey (مجاني ومنفصل عن اشتراكك). يتخزن في جوالك فقط، لا ترسل الملف لأحد وهو فيه المفتاح.</p>
+      <label>مفتاح Gemini API<input id="sKey" type="password" autocomplete="off" placeholder="AIza..."></label>
+      <label>اسم الموديل<input id="sModel" type="text" autocomplete="off"></label>
+      <label>رابط الـ Gem حقك (اختياري)<input id="sGem" type="url" autocomplete="off" placeholder="https://gemini.google.com/gem/..."></label>
+      <button class="btn ghost" id="sTest" type="button">اختبار الاتصال</button>
+      <p class="msg" id="sMsg" aria-live="polite"></p>
+    </section>
+    <section class="card" style="display:flex;flex-direction:column;gap:12px">
+      <h3 style="margin:0">نسخة احتياطية</h3>
+      <p class="note">البيانات محفوظة في متصفح جوالك فقط. صدّر نسخة بين فترة وفترة وخزنها في ملاحظاتك.</p>
+      <textarea id="bk" placeholder="هنا تظهر النسخة، أو الصق نسخة قديمة عشان تستوردها"></textarea>
+      <div class="btns"><button class="btn ghost" id="bkOut" type="button">تصدير ونسخ</button><button class="btn ghost" id="bkIn" type="button">استيراد</button></div>
+      <button class="btn danger" id="wipe" type="button">مسح كل البيانات</button>
+      <p class="msg" id="bMsg" aria-live="polite"></p>
+    </section>
+  </main>
+</div>
+
+<nav class="tabs" aria-label="التنقل">
+  <button type="button" data-v="Home" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 2 12h3v8h5v-5h4v5h5v-8h3z"/></svg><span>الرئيسية</span></button>
+  <button type="button" data-v="Stats"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-9"/></svg><span>الإحصائيات</span></button>
+  <button type="button" data-v="Set"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg><span>الإعدادات</span></button>
+</nav>
+
+<div class="sheetbg" id="sheetBg" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+    <h2 id="shTitle">إدخال يدوي</h2>
+    <select id="fMeal" aria-label="الوجبة"></select>
+    <input id="fName" type="text" placeholder="اسم الأكلة والكمية" autocomplete="off">
+    <div class="f2">
+      <label>السعرات<input id="fk" type="number" inputmode="numeric" min="0"></label>
+      <label>البروتين (جم)<input id="fp" type="number" inputmode="numeric" min="0"></label>
+      <label>الكارب (جم)<input id="fc" type="number" inputmode="numeric" min="0"></label>
+      <label>الألياف (جم)<input id="ffi" type="number" inputmode="numeric" min="0"></label>
+      <label>الدهون (جم)<input id="ff" type="number" inputmode="numeric" min="0"></label>
+      <label>الماء (مل)<input id="fw" type="number" inputmode="numeric" min="0"></label>
+      <label>الكافيين (ملغ)<input id="fcf" type="number" inputmode="numeric" min="0"></label>
+    </div>
+    <p class="msg err" id="fMsg" aria-live="polite"></p>
+    <button class="btn" id="fSave" type="button">حفظ</button>
+    <button class="btn danger" id="fDel" type="button" hidden>حذف</button>
+    <button class="btn ghost" id="fCancel" type="button">إغلاق</button>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MEALS=[['b','الفطور'],['l','الغداء'],['s','سناك'],['d','العشاء']];
+const MAC=[['p','البروتين','--prot','--prot-bg'],['c','الكارب','--carb','--carb-bg'],['f','الدهون','--fat','--fat-bg'],['fi','الألياف','--fib','--fib-bg']];
+const KEY='sa3rati-v2';
+const dk=d=>d.toLocaleDateString('en-CA');
+const fromKey=k=>new Date(k+'T12:00:00');
+const addDays=(d,n)=>{const x=new Date(d.getTime());x.setDate(x.getDate()+n);return x};
+const todayK=dk(new Date());
+const fmt=n=>Number(n).toLocaleString('en-US');
+const DL=(d,o)=>d.toLocaleDateString('ar-u-ca-gregory-nu-latn',o);
+const VH={'فيتامين د':'مع وجبة فيها دهون','أوميغا 3':'مع وجبة فيها دهون','ماغنيسيوم':'قبل النوم','زنك':'مع وجبة، بعيد عن القهوة والكالسيوم والحديد'};
+const lit=ml=>ml>=1000?(ml/1000).toFixed(2).replace(/\.?0+$/,'')+' لتر':Math.round(ml)+' مل';
+
+const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',model:'gemini-flash-latest',gem:'',days:{},cache:{}};
+let S=JSON.parse(JSON.stringify(DEF));
+let sel=todayK,curMeal='b',vEdit=false,editId=null,storeOK=true;
+try{
+  const raw=localStorage.getItem(KEY);
+  if(raw){const o=JSON.parse(raw);S=Object.assign({},S,o);S.t=Object.assign({},DEF.t,o.t||{});S.days=o.days||{};S.cache=o.cache||{};S.vits=o.vits||[]}
+}catch(e){storeOK=false}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){storeOK=false}
+  if(!storeOK)$('bMsg').textContent='المتصفح ما يسمح بالحفظ، افتح التطبيق من Chrome أو Safari.';
+}
+const EMPTY=()=>({items:[],water:[],cups:0,vit:{}});
+const peek=k=>S.days[k]||EMPTY();
+const day=k=>S.days[k]||(S.days[k]=EMPTY());
+function sum(list){return list.reduce((a,x)=>{for(const k of ['k','p','c','fi','f','w','cf'])a[k]+=x[k]||0;return a},{k:0,p:0,c:0,fi:0,f:0,w:0,cf:0})}
+function chips(o){
+  return '<span class="chip num"><i style="background:var(--kcal)"></i>'+o.k+' سعرة</span>'+
+    MAC.map(m=>'<span class="chip num"><i style="background:var('+m[2]+')"></i>'+o[m[0]]+' '+m[1]+'</span>').join('');
+}
+const foodWater=d=>sum(d.items).w+d.cups*S.cupMl;
+const water=d=>d.water.reduce((a,x)=>a+x.ml,0)+foodWater(d);
+
+/* ---------- render ---------- */
+function renderTop(){
+  $('hello').textContent=DL(new Date(),{weekday:'long',day:'numeric',month:'long'});
+  $('dLbl').textContent=sel===todayK?'اليوم':DL(fromKey(sel),{weekday:'long',day:'numeric',month:'long'});
+  $('mchips').innerHTML=MEALS.map(m=>'<button type="button" data-m="'+m[0]+'" aria-pressed="'+(m[0]===curMeal)+'">'+m[1]+'</button>').join('');
+}
+function renderTotals(){
+  const d=peek(sel),t=sum(d.items),kt=S.t.k,over=t.k-kt;
+  $('kBar').style.width=Math.min(t.k/kt*100,100)+'%';
+  $('kTrack').classList.toggle('over',over>0);
+  $('kTxt').innerHTML='<b>'+fmt(t.k)+'</b> / '+fmt(kt)+' سعرة · '+(over>0?'تجاوزت بـ '+fmt(over):'باقي '+fmt(-over));
+  $('macros').innerHTML=MAC.map(m=>{
+    const v=t[m[0]],tg=S.t[m[0]],ov=v-tg,pct=tg>0?Math.min(v/tg*100,100):0;
+    return '<div class="mac" style="background:var('+m[3]+')"><div class="nmx">'+m[1]+'</div>'+
+      '<div class="track'+(ov>0&&m[0]!=='fi'?' over':'')+'"><i style="width:'+pct+'%;background:var('+m[2]+')"></i></div>'+
+      '<div class="mval num"><b>'+v+'</b> / '+tg+' جم<br>'+(ov>0?(m[0]==='fi'?'تعدّيت الهدف':'زيادة '+ov):'باقي '+(-ov))+'</div></div>';
+  }).join('');
+}
+function renderMeals(){
+  const d=peek(sel);let cum=[],h='';
+  MEALS.forEach(m=>{
+    const xs=d.items.filter(x=>x.m===m[0]);if(!xs.length)return;
+    cum=cum.concat(xs);const ct=sum(cum);
+    h+='<section class="mealcard"><div class="mh"><b>'+m[1]+'</b><div class="chips">'+chips(sum(xs))+'</div></div>'+
+      xs.map(x=>'<button type="button" class="item" data-id="'+x.id+'"><div class="nm">'+esc(x.n)+(x.q?' <span style="color:var(--muted);font-weight:400">· '+esc(x.q)+'</span>':'')+'</div>'+
+        '<div class="sub num">'+x.k+' سعرة · '+x.p+' بروتين · '+x.c+' كارب · '+x.fi+' ألياف · '+x.f+' دهون</div></button>').join('')+
+      '<div class="run num">مجموع اليوم لحد هنا: <b>'+fmt(ct.k)+'</b> سعرة · '+ct.p+' بروتين · '+ct.c+' كارب · '+ct.fi+' ألياف · '+ct.f+' دهون</div></section>';
+  });
+  $('meals').innerHTML=h||'<div class="card empty">ما سجلت شيء بهذا اليوم. اكتب أكلك فوق واضغط "احسب وأضف".</div>';
+}
+function renderWater(){
+  const d=peek(sel),dr=d.water.reduce((a,x)=>a+x.ml,0),fd=foodWater(d),tot=dr+fd,tg=S.t.w;
+  $('wBig').textContent=lit(tot)+' / '+lit(tg);
+  $('wBar').style.width=Math.min(tot/tg*100,100)+'%';
+  $('wSmall').textContent=tot>=tg?'كملت هدفك':'باقي '+lit(tg-tot);
+  $('wSplit').textContent='ماء مسجل '+lit(dr)+' + من الأكل والمشروبات والقهوة '+lit(fd);
+}
+function renderCaf(){
+  const d=peek(sel),mg=d.cups*S.cupMg+sum(d.items).cf,lim=S.t.caf;
+  $('cCups').textContent=d.cups;
+  $('cBar').style.width=Math.min(mg/lim*100,100)+'%';
+  $('cTrack').classList.toggle('over',mg>lim);
+  const left=Math.floor((lim-mg)/S.cupMg);
+  $('cSmall').textContent=mg+' / '+lim+' ملغ';
+  $('cTxt').textContent=mg>lim?'وصلت حد الكافيين اليومي ('+lim+' ملغ).':'تقدر تشرب '+Math.max(left,0)+' كوب كمان (كوبك تقريبًا '+S.cupMg+' ملغ).';
+}
+function renderVit(){
+  const d=peek(sel),n=S.vits.length,done=S.vits.filter(v=>d.vit[v]).length;
+  $('vSmall').textContent=n?done+' / '+n:'';
+  $('vList').innerHTML=n?S.vits.map((v,i)=>'<div class="vrow"><button type="button" class="vchk" data-v="'+i+'" aria-pressed="'+(!!d.vit[v])+'"><span class="box"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tw"><span class="t">'+esc(v)+'</span>'+(VH[v]?'<small>'+VH[v]+'</small>':'')+'</span></button>'+
+    (vEdit?'<button type="button" class="vx" data-vx="'+i+'" aria-label="حذف">×</button>':'')+'</div>').join('')
+    :'<p class="note">ما أضفت فيتامينات. اضغط "تعديل القائمة" وأضف فيتاميناتك مرة وحدة.</p>';
+  $('vAddRow').hidden=!vEdit;
+  $('vEdit').textContent=vEdit?'تم':'تعديل القائمة';
+}
+function renderRecent(){
+  const m={};
+  Object.keys(S.days).forEach(k=>S.days[k].items.forEach(x=>{const key=x.n.trim().toLowerCase();const e=m[key]||(m[key]={x:x,c:0});e.c++;if(x.id>e.x.id)e.x=x}));
+  const out=Object.values(m).sort((a,b)=>b.c-a.c||b.x.id-a.x.id).slice(0,12).map(e=>e.x);
+  $('recentBox').hidden=!out.length;
+  $('recent').innerHTML=out.map((x,i)=>'<button type="button" data-i="'+i+'">'+esc(x.n)+'</button>').join('');
+  $('recent')._items=out;
+}
+function renderAll(){renderTop();renderTotals();renderMeals();renderWater();renderCaf();renderVit();renderRecent()}
+
+/* ---------- adding food ---------- */
+function commit(items,meal){
+  const d=day(sel),base=Date.now();
+  items.forEach((x,i)=>d.items.push(Object.assign({id:base+i,m:meal},x)));
+  save();renderAll();
+  const t=sum(items),mt=sum(d.items.filter(x=>x.m===meal)),dt=sum(d.items);
+  return 'أضفت '+items.length+': '+t.k+' سعرة، '+t.p+' بروتين. مجموع '+MEALS.find(m=>m[0]===meal)[1]+': '+mt.k+' سعرة. مجموع اليوم: '+fmt(dt.k)+' سعرة، '+dt.p+' بروتين، '+dt.c+' كارب، '+dt.fi+' ألياف، '+dt.f+' دهون.';
+}
+const z=v=>{const x=Math.round(+v);return isFinite(x)&&x>0?x:0};
+function norm(r){
+  if(!r||typeof r!=='object')return null;
+  const n=String(r.n||r.name||'').trim().slice(0,80),k=Math.round(+r.k);
+  if(!n||!isFinite(k)||k<0||k>6000)return null;
+  return {n:n,q:String(r.q||'').slice(0,40),k:k,p:z(r.p),c:z(r.c),fi:z(r.fi),f:z(r.f),w:z(r.w),cf:z(r.cf)};
+}
+const toLatin=s=>s.replace(/[٠-٩]/g,c=>String.fromCharCode(c.charCodeAt(0)-1632)).replace(/[۰-۹]/g,c=>String.fromCharCode(c.charCodeAt(0)-1776));
+const num=s=>{const m=toLatin(String(s||'')).match(/\d+(?:[.,]\d+)?/);return m?Math.round(parseFloat(m[0].replace(',','.'))):0};
+function parseAny(text){
+  const t=text.trim();
+  const j=t.match(/[\[{][\s\S]*[\]}]/);
+  if(j){try{let o=JSON.parse(j[0]);o=Array.isArray(o)?o:(o.items||[]);return o.map(norm).filter(Boolean)}catch(e){}}
+  const out=[];
+  t.split(/\r?\n/).forEach(line=>{
+    if(/^[\s|:\-]+$/.test(line))return;
+    const p=line.replace(/^\s*[|*\-•]\s*/,'').replace(/\|\s*$/,'').split('|').map(s=>s.trim());
+    if(p.length<2||!/[\d٠-٩]/.test(p[1]))return;
+    const r=norm({n:p[0].replace(/\*+/g,''),k:num(p[1]),p:num(p[2]),c:num(p[3]),fi:num(p[4]),f:num(p[5]),w:num(p[6]),cf:num(p[7])});
+    if(r)out.push(r);
+  });
+  return out;
+}
+const SPEC='لكل صنف قدّر: k السعرات، p البروتين، c الكارب، fi الألياف، f الدهون (كلها بالجرام)، w كمية الماء بالمل (للمشروبات حجم السائل، وللأكل الماء الموجود فيه تقريبًا)، cf الكافيين بالملغ (0 إن لم يوجد). '+
+  'استخدم الكمية المكتوبة، وإذا لم تُكتب فافترض حصة عادية واكتبها في q. اعتبر الأكل مطبوخًا ما لم يُذكر غير ذلك، وانتبه أن الأكل غالبًا سعودي أو عربي. افصل كل صنف في عنصر مستقل.';
+const PROMPT='أنت حاسب تغذية. حلّل النص التالي الذي يصف أكل وشرب شخص. '+SPEC+
+  ' ردّ بـ JSON فقط بهذا الشكل بدون أي نص آخر: {"items":[{"n":"اسم الصنف","q":"الكمية","k":0,"p":0,"c":0,"fi":0,"f":0,"w":0,"cf":0}]} والأرقام صحيحة.\n\nالنص: ';
+const ASK='حلّل أكلي وشربي التالي. '+SPEC+
+  ' ردّ فقط بسطر لكل صنف بهذا الشكل بدون أي كلام ثاني: الاسم | السعرات | البروتين | الكارب | الألياف | الدهون | الماء مل | الكافيين ملغ. الأرقام صحيحة.\nأكلي: ';
+async function askGemini(text){
+  const url='https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(S.model||'gemini-flash-latest')+':generateContent';
+  let r;
+  try{
+    r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.key},
+      body:JSON.stringify({contents:[{parts:[{text:PROMPT+text}]}],generationConfig:{temperature:0.2,responseMimeType:'application/json'}})});
+  }catch(e){throw {code:'net'}}
+  if(!r.ok)throw {code:r.status};
+  const data=await r.json();
+  const txt=((data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts)||[]).map(p=>p.text||'').join('');
+  const items=parseAny(txt);
+  if(!items.length)throw {code:'parse'};
+  return items;
+}
+const ERR={net:'ما قدرت أتصل. تأكد من النت، أو استخدم "بدون مفتاح أو بدون نت".',400:'الطلب انرفض. تأكد من اسم الموديل في الإعدادات.',401:'المفتاح غير صحيح.',403:'المفتاح غير صالح أو ما له صلاحية.',404:'الموديل غير موجود. غيّر اسمه في الإعدادات.',429:'وصلت حد الاستخدام المجاني، جرّب بعد شوي.',parse:'ما فهمت جواب Gemini، جرّب تكتب أوضح.',nokey:'حط مفتاح Gemini في الإعدادات، أو استخدم "بدون مفتاح أو بدون نت".'};
+function qSay(t,cls){$('qMsg').className='msg'+(cls?' '+cls:'');$('qMsg').textContent=t}
+$('qGo').addEventListener('click',async()=>{
+  const text=$('qText').value.trim();if(!text)return;
+  const ck=text.toLowerCase();
+  if(S.cache[ck]){qSay(commit(S.cache[ck],curMeal)+' (من المحفوظات)','ok');$('qText').value='';return}
+  if(!S.key){qSay(ERR.nokey,'err');return}
+  const btn=$('qGo');btn.disabled=true;btn.textContent='جاري الحساب...';qSay('');
+  try{
+    const items=await askGemini(text);
+    const keys=Object.keys(S.cache);if(keys.length>200)delete S.cache[keys[0]];
+    S.cache[ck]=items;
+    qSay(commit(items,curMeal),'ok');$('qText').value='';
+  }catch(e){qSay(ERR[e&&e.code]||'صار خطأ غير متوقع، جرّب مرة ثانية.','err')}
+  finally{btn.disabled=false;btn.textContent='احسب وأضف'}
+});
+$('mchips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;curMeal=b.dataset.m;renderTop()});
+$('recent').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const x=Object.assign({},$('recent')._items[+b.dataset.i]);delete x.id;delete x.m;
+  qSay(commit([x],curMeal),'ok');
+});
+async function copyText(t){
+  try{await navigator.clipboard.writeText(t);return true}catch(e){}
+  const a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';
+  document.body.appendChild(a);a.select();let ok=false;
+  try{ok=document.execCommand('copy')}catch(e){}
+  a.remove();return ok;
+}
+$('copyAsk').addEventListener('click',async()=>{
+  const ok=await copyText(ASK+$('qText').value.trim());
+  qSay(ok?'اننسخ الطلب. الصقه في Gemini.':'ما اننسخ تلقائيًا.',ok?'ok':'err');
+});
+$('gAdd').addEventListener('click',()=>{
+  const items=parseAny($('gPaste').value);
+  if(!items.length){qSay('ما لقيت أصناف بالشكل المطلوب.','err');return}
+  qSay(commit(items,curMeal),'ok');$('gPaste').value='';$('paste').open=false;
+});
+
+/* ---------- edit sheet ---------- */
+const FIELDS=[['fk','k'],['fp','p'],['fc','c'],['ffi','fi'],['ff','f'],['fw','w'],['fcf','cf']];
+function openSheet(id){
+  editId=id||null;
+  const x=editId?peek(sel).items.find(v=>v.id===editId):null;
+  $('shTitle').textContent=x?'تعديل':'إدخال يدوي';
+  $('fMeal').innerHTML=MEALS.map(m=>'<option value="'+m[0]+'">'+m[1]+'</option>').join('');
+  $('fMeal').value=x?x.m:curMeal;
+  $('fName').value=x?x.n:'';
+  FIELDS.forEach(f=>{$(f[0]).value=x?x[f[1]]:''});
+  $('fDel').hidden=!x;$('fMsg').textContent='';$('sheetBg').hidden=false;
+}
+function closeSheet(){$('sheetBg').hidden=true;editId=null}
+$('manual').addEventListener('click',()=>openSheet());
+$('fCancel').addEventListener('click',closeSheet);
+$('sheetBg').addEventListener('click',e=>{if(e.target===$('sheetBg'))closeSheet()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sheetBg').hidden)closeSheet()});
+$('meals').addEventListener('click',e=>{const b=e.target.closest('.item');if(b)openSheet(+b.dataset.id)});
+$('fSave').addEventListener('click',()=>{
+  const n=$('fName').value.trim(),k=Math.round(+$('fk').value);
+  if(!n||$('fk').value===''||!isFinite(k)||k<0){$('fMsg').textContent='اكتب الاسم والسعرات على الأقل.';return}
+  const rec={m:$('fMeal').value,n:n,q:''};FIELDS.forEach(f=>{rec[f[1]]=z($(f[0]).value)});rec.k=k;
+  const d=day(sel);
+  if(editId){const x=d.items.find(v=>v.id===editId);if(x)Object.assign(x,rec)}
+  else d.items.push(Object.assign({id:Date.now()},rec));
+  save();closeSheet();renderAll();
+});
+$('fDel').addEventListener('click',()=>{day(sel).items=day(sel).items.filter(v=>v.id!==editId);save();closeSheet();renderAll()});
+
+/* ---------- water / caffeine / vitamins ---------- */
+function addWater(ml){if(!(ml>0))return;day(sel).water.push({id:Date.now(),ml:Math.round(ml)});save();renderWater()}
+document.querySelector('.wcard').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b)addWater(+b.dataset.w)});
+$('wAdd').addEventListener('click',()=>{addWater((+$('wVal').value)*(+$('wUnit').value));$('wVal').value=''});
+$('wUndo').addEventListener('click',()=>{const d=day(sel);d.water.pop();save();renderWater()});
+$('cPlus').addEventListener('click',()=>{day(sel).cups++;save();renderCaf();renderWater()});
+$('cMinus').addEventListener('click',()=>{const d=day(sel);if(d.cups>0)d.cups--;save();renderCaf();renderWater()});
+$('cPot').addEventListener('click',()=>{day(sel).cups+=2;save();renderCaf();renderWater()});
+$('vList').addEventListener('click',e=>{
+  const x=e.target.closest('[data-vx]');
+  if(x){const i=+x.dataset.vx;S.vits.splice(i,1);save();renderVit();return}
+  const b=e.target.closest('[data-v]');if(!b)return;
+  const v=S.vits[+b.dataset.v],d=day(sel);d.vit[v]=!d.vit[v];save();renderVit();
+});
+$('vEdit').addEventListener('click',()=>{vEdit=!vEdit;renderVit()});
+function addVit(){const v=$('vNew').value.trim();if(!v||S.vits.includes(v))return;S.vits.push(v);$('vNew').value='';save();renderVit()}
+$('vAdd').addEventListener('click',addVit);
+$('vNew').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addVit()}});
+
+/* ---------- days / tabs ---------- */
+$('dPrev').addEventListener('click',()=>{sel=dk(addDays(fromKey(sel),-1));renderAll()});
+$('dNext').addEventListener('click',()=>{sel=dk(addDays(fromKey(sel),1));renderAll()});
+$('dLbl').addEventListener('click',()=>{sel=todayK;renderAll()});
+function show(v){
+  ['Home','Stats','Set'].forEach(n=>{$('v'+n).hidden=(n!==v)});
+  document.querySelectorAll('.tabs button').forEach(b=>{if(b.dataset.v===v)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+  if(v==='Home')renderAll();if(v==='Stats')renderStats();if(v==='Set')renderSet();
+  window.scrollTo(0,0);
+}
+document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)show(b.dataset.v)});
+
+/* ---------- stats ---------- */
+function chart(vals,target,color){
+  const n=vals.length,W=336,H=150,step=W/n,bw=14,top=12,base=H-20;
+  const mx=Math.max(target*1.15,...vals,1),y=v=>base-(v/mx)*(base-top);
+  let s='<svg class="ch" viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="رسم بياني">';
+  s+='<line x1="0" x2="'+W+'" y1="'+y(target)+'" y2="'+y(target)+'" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>';
+  vals.forEach((v,i)=>{
+    const x=i*step+(step-bw)/2,h=v>0?Math.max(base-y(v),2):0;
+    s+='<rect x="'+x+'" y="'+(base-h)+'" width="'+bw+'" height="'+h+'" rx="4" style="fill:var('+color+')"/>';
+    s+='<text x="'+(x+bw/2)+'" y="'+(H-5)+'" text-anchor="middle">'+addDays(new Date(),i-(n-1)).getDate()+'</text>';
+  });
+  return s+'</svg>';
+}
+function renderStats(){
+  const ks=[],ps=[],ws=[];
+  for(let i=13;i>=0;i--){const d=peek(dk(addDays(new Date(),-i))),t=sum(d.items);ks.push(t.k);ps.push(t.p);ws.push(water(d))}
+  const logged=ks.filter(v=>v>0).length;
+  const avg=a=>logged?Math.round(a.reduce((x,y)=>x+y,0)/logged):0;
+  $('sgrid').innerHTML=
+    '<div class="card"><b class="num">'+fmt(avg(ks))+'</b><span>متوسط السعرات</span></div>'+
+    '<div class="card"><b class="num">'+avg(ps)+'</b><span>متوسط البروتين (جم)</span></div>'+
+    '<div class="card"><b class="num">'+lit(avg(ws))+'</b><span>متوسط الماء</span></div>'+
+    '<div class="card"><b class="num">'+logged+'</b><span>أيام مسجلة من 14</span></div>';
+  $('chK').innerHTML=chart(ks,S.t.k,'--kcal');
+  $('chP').innerHTML=chart(ps,S.t.p,'--prot');
+  $('chW').innerHTML=chart(ws,S.t.w,'--water');
+}
+
+/* ---------- settings ---------- */
+const TG=[['k','السعرات',800],['p','البروتين (جم)',0],['c','الكارب (جم)',0],['fi','الألياف (جم)',0],['f','الدهون (جم)',0],['w','الماء (مل)',500],['caf','حد الكافيين (ملغ)',0],['cupMg','كافيين الكوب (ملغ)',1],['cupMl','حجم الكوب (مل)',50]];
+function renderSet(){
+  $('tgrid').innerHTML=TG.map(g=>'<label>'+g[1]+'<input data-t="'+g[0]+'" type="number" inputmode="numeric" min="'+g[2]+'" value="'+(g[0]==='cupMg'||g[0]==='cupMl'?S[g[0]]:S.t[g[0]])+'"></label>').join('');
+  const mk=S.t.p*4+S.t.c*4+S.t.f*9;
+  $('tHint').textContent='الماكروز اللي حطيتها تساوي '+fmt(mk)+' سعرة (بروتين وكارب 4 للجرام، دهون 9).';
+  $('sKey').value=S.key;$('sModel').value=S.model;$('sGem').value=S.gem;
+}
+$('tgrid').addEventListener('change',e=>{
+  const i=e.target.closest('input');if(!i)return;
+  const key=i.dataset.t,g=TG.find(x=>x[0]===key),v=Math.round(+i.value);
+  if(isFinite(v)&&v>=g[2]){if(key==='cupMg'||key==='cupMl')S[key]=v;else S.t[key]=v}
+  save();renderSet();
+});
+function applyGem(){$('openG').href=S.gem||'https://gemini.google.com/app'}
+$('sKey').addEventListener('change',()=>{S.key=$('sKey').value.trim();save()});
+$('sModel').addEventListener('change',()=>{S.model=$('sModel').value.trim()||'gemini-flash-latest';save()});
+$('sGem').addEventListener('change',()=>{S.gem=$('sGem').value.trim();save();applyGem()});
+$('sTest').addEventListener('click',async()=>{
+  S.key=$('sKey').value.trim();S.model=$('sModel').value.trim()||'gemini-flash-latest';save();
+  const m=$('sMsg');m.className='msg';m.textContent='جاري الاختبار...';
+  if(!S.key){m.className='msg err';m.textContent=ERR.nokey;return}
+  try{const it=await askGemini('بيضة مسلوقة');m.className='msg ok';m.textContent='الاتصال شغال: بيضة مسلوقة = '+it[0].k+' سعرة.'}
+  catch(e){m.className='msg err';m.textContent=ERR[e&&e.code]||'فشل الاتصال.'}
+});
+$('bkOut').addEventListener('click',async()=>{
+  const copy=Object.assign({},S,{key:''});
+  $('bk').value=JSON.stringify(copy);
+  const ok=await copyText($('bk').value);
+  $('bMsg').className='msg'+(ok?' ok':' err');
+  $('bMsg').textContent=ok?'اننسخت النسخة (بدون المفتاح). الصقها في ملاحظاتك.':'ما اننسخت تلقائيًا، حدد النص وانسخه.';
+});
+$('bkIn').addEventListener('click',()=>{
+  try{
+    const o=JSON.parse($('bk').value);if(!o||!o.days||!o.t)throw 0;
+    const key=S.key;S=Object.assign({},DEF,o);S.t=Object.assign({},DEF.t,o.t);S.key=key||o.key||'';save();renderSet();renderAll();
+    $('bMsg').className='msg ok';$('bMsg').textContent='تم الاستيراد.';
+  }catch(e){$('bMsg').className='msg err';$('bMsg').textContent='النسخة غير صالحة.'}
+});
+let wipeT=null;
+$('wipe').addEventListener('click',()=>{
+  if(!wipeT){$('wipe').textContent='اضغط مرة ثانية للتأكيد';wipeT=setTimeout(()=>{wipeT=null;$('wipe').textContent='مسح كل البيانات'},4000);return}
+  clearTimeout(wipeT);wipeT=null;$('wipe').textContent='مسح كل البيانات';
+  S.days={};S.cache={};save();renderAll();$('bMsg').className='msg ok';$('bMsg').textContent='تم المسح.';
+});
+
+{const h=new Date().getHours();curMeal=h<11?'b':h<16?'l':h<18?'s':'d'}
+applyGem();
+show('Home');
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
