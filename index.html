@@ -14,7 +14,7 @@
 :root{
   --bg:#F2F2F7;--card:#FFFFFF;--fill:#F2F2F7;--fill2:#E5E5EA;--ink:#111114;--muted:#6C6C70;--line:rgba(60,60,67,.14);
   --blue:#0A84FF;--green:#34C759;--red:#FF3B30;--orange:#FF9500;--purple:#AF52DE;--teal:#32ADE6;--brown:#A2845E;--pink:#FF2D55;
-  --kcal:#F0993A;--prot:#E4675E;--carb:#4F8FE0;--fat:#4FB67C;--fib:#9B7BD4;--water:#32ADE6;--caf:#A2845E;
+  --kcal:#F0993A;--prot:#E4675E;--carb:#4F8FE0;--fat:#4FB67C;--fib:#9B7BD4;--sug:#E86AA6;--water:#32ADE6;--caf:#A2845E;
   --tint:rgba(10,132,255,.12);--ok:#1E9E48;--warn:#C77700;--no:#D70015;
   --font:-apple-system,BlinkMacSystemFont,'SF Arabic','SF Pro Text',system-ui,'Segoe UI',Tahoma,'Noto Sans Arabic',sans-serif;
   --bar:rgba(249,249,251,.86);--shadow:0 1px 2px rgba(0,0,0,.04),0 6px 18px rgba(0,0,0,.05);color-scheme:light;
@@ -22,7 +22,7 @@
 @media (prefers-color-scheme: dark){:root{
   --bg:#000000;--card:#1C1C1E;--fill:#2C2C2E;--fill2:#3A3A3C;--ink:#F5F5F7;--muted:#98989F;--line:rgba(235,235,245,.14);
   --blue:#0A84FF;--green:#30D158;--red:#FF453A;--orange:#FF9F0A;--purple:#BF5AF2;--teal:#64D2FF;--brown:#C4A57B;--pink:#FF375F;
-  --kcal:#F2A24B;--prot:#E8766E;--carb:#5D9BE6;--fat:#5CC18A;--fib:#A98BDC;--water:#64D2FF;--caf:#C4A57B;
+  --kcal:#F2A24B;--prot:#E8766E;--carb:#5D9BE6;--fat:#5CC18A;--fib:#A98BDC;--sug:#EE7FB4;--water:#64D2FF;--caf:#C4A57B;
   --tint:rgba(10,132,255,.22);--ok:#32D74B;--warn:#FFB340;--no:#FF6961;--bar:rgba(28,28,30,.86);--shadow:none;color-scheme:dark}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
@@ -317,6 +317,51 @@ section[id]{scroll-margin-top:12px}
 #secCaf{border-inline-start:4px solid rgba(162,132,94,.55)}
 #secWater{border-inline-start:4px solid rgba(50,173,230,.55)}
 #secVit{border-inline-start:4px solid rgba(175,82,222,.5)}
+
+.cp.on button{background:var(--blue)!important;color:#fff!important}
+/* ---- redesigned meals ---- */
+.mk-meal{background:var(--card);border-radius:16px;padding:12px 14px;margin-bottom:10px;box-shadow:inset 0 0 0 1px var(--line)}
+.mk-meal .tt{display:flex;align-items:center;gap:8px}
+.mk-meal .tt .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.mk-meal .tt b{font-size:16px}
+.mk-meal .tt .t{font-size:12.5px;color:var(--muted)}
+.mk-meal .tt .k{margin-inline-start:auto;font-weight:700;font-size:15px}
+.mk-meal .item{display:flex;align-items:baseline;gap:8px;padding:6px 0;font-size:14.5px;border:0;border-top:1px solid var(--line);width:100%;text-align:start;background:none;color:var(--ink)}
+.mk-meal .tt+.item{margin-top:6px;border-top:0}
+.mk-meal .item .nm{flex:1;font-weight:500;font-size:14.5px;overflow-wrap:anywhere}
+.mk-meal .item .q{color:var(--muted);font-size:12.5px}
+.mk-meal .item .kk{color:var(--muted);font-weight:500;font-size:13px;min-width:34px;text-align:end}
+.mk-meal .ft{font-size:12.5px;color:var(--muted);margin:6px 0 8px}
+details.mk-vit{background:var(--fill);border-radius:10px;padding:6px 10px;margin-bottom:8px}
+details.mk-vit>summary{font-size:12.5px;font-weight:500;color:var(--muted)}
+details.mk-vit>div{display:block;margin-top:6px}
+.mk-f{display:flex;gap:8px}
+.mk-f button{flex:1;border:0;border-radius:11px;padding:9px 6px;font-weight:700;font-size:14px;background:var(--fill);color:var(--blue)}
+.mk-f button.p{flex:2;background:rgba(10,132,255,.14)}
+.mk-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.mk-row .nm{flex:1;font-size:15px}.mk-row small{display:block;color:var(--muted);font-size:12px}
+.mk-row button{border:0;border-radius:50%;min-width:34px;height:34px;background:rgba(10,132,255,.14);color:var(--blue);font-size:20px;font-weight:700}
+.mk-row button.done{border-radius:17px;padding:0 10px;font-size:13px;background:rgba(48,209,88,.16);color:var(--green)}
+.cathd{font-weight:700;font-size:13px;color:var(--muted);margin:12px 0 2px}
+/* ---- suggestions / recipes / cooking ---- */
+#sgCard[hidden]{display:none!important}
+.opt3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.opt3 button{border:0;border-radius:14px;padding:12px 6px;background:var(--fill);color:var(--muted);font-weight:700;font-size:14px;line-height:1.5}
+.opt3 button small{display:block;font-weight:500;font-size:11.5px}
+.opt3 button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 2px var(--blue)}
+.stp{display:flex;align-items:center;justify-content:center;gap:16px;margin:8px 0}
+.stp button{width:38px;height:38px;border-radius:50%;border:0;background:var(--fill);color:var(--blue);font-size:22px;font-weight:700}
+.stp b{font-size:26px;min-width:90px;text-align:center}
+.ckl{display:flex;align-items:center;gap:12px;padding:10px 0;min-height:0;line-height:1.5;border:0;border-top:1px solid var(--line);width:100%;background:none;color:var(--ink);font:inherit;text-align:start}
+.ckl .tx{flex:1;font-size:15px;line-height:1.7}
+.ckl .tm{white-space:nowrap;font-size:12.5px;color:var(--muted)}
+.cbx{width:24px;height:24px;border-radius:7px;flex:none;display:inline-flex;align-items:center;justify-content:center;font-size:15px;box-shadow:inset 0 0 0 2px var(--line);color:#fff}
+.cbx.on{background:var(--green);box-shadow:none}
+.ckl.on .tx{opacity:.55}
+.sgbest{box-shadow:inset 0 0 0 1.5px var(--green)!important}
+.lnkb{font-size:13px;font-weight:600;color:var(--blue);text-decoration:none;background:var(--fill);border-radius:10px;padding:8px 12px;display:inline-block}
+.tgb{font-size:12px;color:var(--muted);background:var(--fill);border-radius:8px;padding:3px 8px;display:inline-block}
+.sgrun{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--fill);border-radius:12px;padding:10px 12px;font-size:14px;font-weight:600}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -373,7 +418,6 @@ section[id]{scroll-margin-top:12px}
       <div class="btns2"><button class="btn sm" id="qGo" type="button">احسب وأضف</button><button class="btn sm soft" id="barBtn" type="button">📷 صوّر الملصق</button></div>
       <p class="msg" id="qMsg" aria-live="polite"></p>
       <div id="pend" style="display:flex;flex-direction:column;gap:8px"></div>
-      <div id="shortBox"><p class="cap">اختصاراتي (وجبات، أكل، مشروبات، سناكات)</p><div class="recent" id="shorts"></div></div>
       <div id="recentBox" hidden><div class="recent" id="recent"></div></div>
       <hr class="hr">
       <p class="cap" style="margin:0">وجبات اليوم</p>
@@ -385,10 +429,19 @@ section[id]{scroll-margin-top:12px}
     <section class="card slim" id="myMeals" aria-label="قائمة الطعام">
       <div class="rowsp"><div><b>⭐ قائمة الطعام</b><div class="cap" id="mmCount"></div></div><button type="button" class="link" id="mmToggle">فتح</button></div>
       <div id="mmBody" hidden>
-        <input id="mmSearch" type="search" placeholder="🔍 ابحث في اختصاراتك..." autocomplete="off">
-        <div class="seg" id="mmFilter"><button type="button" data-f="all" aria-pressed="true">الكل</button><button type="button" data-f="meal" aria-pressed="false">وجبات</button><button type="button" data-f="drink" aria-pressed="false">مشروبات</button><button type="button" data-f="add" aria-pressed="false">إضافات</button></div>
+        <input id="mmSearch" type="search" placeholder="🔍 ابحث في قائمة الطعام..." autocomplete="off">
+        <div class="chiprow" id="mmFilter"></div>
         <div id="mmList"></div>
         <div class="rowsp"><button type="button" class="link" id="mmNew">+ جديد</button><button type="button" class="link" id="mmEdit">تعديل</button></div>
+      </div>
+    </section>
+    <section class="card slim" id="sgCard" aria-label="اقتراحات لباقي يومك" style="margin-top:-8px" hidden>
+      <div class="rowsp"><div><b>💡 اقتراحات لباقي يومك</b><div class="cap" id="sgCap"></div></div><button type="button" class="link" id="sgToggle">فتح</button></div>
+      <div id="sgBody" hidden>
+        <div id="sgRp"></div>
+        <div class="seg" id="sgTabs" style="margin:10px 0"><button type="button" data-sgt="0">وجباتي السابقة</button><button type="button" data-sgt="1">✨ وصفة جديدة</button></div>
+        <div id="sgView"></div>
+        <div class="tot" id="sgWater" style="line-height:1.9;margin-top:10px"></div>
       </div>
     </section>
 
@@ -522,10 +575,18 @@ section[id]{scroll-margin-top:12px}
       <label>البروتين (جم)<input id="fp" type="number" inputmode="decimal" min="0"></label>
       <label>الكارب (جم)<input id="fc" type="number" inputmode="decimal" min="0"></label>
       <label>الألياف (جم)<input id="ffi" type="number" inputmode="decimal" min="0"></label>
+      <label>منها سكر (جم)<input id="fs" type="number" inputmode="decimal" min="0"></label>
       <label>الدهون (جم)<input id="ff" type="number" inputmode="decimal" min="0"></label>
       <label>الماء (مل)<input id="fw" type="number" inputmode="numeric" min="0"></label>
       <label>الكافيين (ملغ)<input id="fcf" type="number" inputmode="numeric" min="0"></label>
     </div>
+    <div id="ckBox"><p class="note" style="margin:8px 0 6px">🔥 طريقة الطبخ (اختياري)</p>
+      <div class="opt3" id="ckOpts"><button type="button" data-ck="none">بدون زيت<small>مسلوق · مشوي · فرن</small></button><button type="button" data-ck="olive">🫒 زيت زيتون<small>9 سعرات/جم</small></button><button type="button" data-ck="butter">🧈 زبدة<small>7 سعرات/جم</small></button></div>
+      <div id="ckG" hidden><p class="note" style="margin:10px 0 0">كم غرام تقريباً؟</p>
+        <div class="chiprow" id="ckQ"></div>
+        <div class="stp"><button type="button" data-ckg="1">+</button><b class="num"><span id="ckV">10</span> <small style="font-size:13px;font-weight:500">جم</small></b><button type="button" data-ckg="-1">−</button></div>
+        <p class="note" style="margin:0;text-align:center">بخّة خفيفة ≈ 2 جم · ملعقة صغيرة ≈ 5 جم · كبيرة ≈ 14 جم</p></div>
+      <div class="tot" id="ckT" hidden></div></div>
     <p class="msg err" id="fMsg" aria-live="polite"></p>
     <button class="btn" id="fSave" type="button">حفظ</button>
     <button class="btn danger" id="fDel" type="button" hidden>حذف</button>
@@ -539,7 +600,7 @@ section[id]{scroll-margin-top:12px}
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const MEALS=[['b','الفطور'],['l','الغداء'],['s','سناك'],['d','العشاء']];
-const MAC=[['p','البروتين','--prot'],['c','الكارب','--carb'],['f','الدهون','--fat'],['fi','الألياف','--fib']];
+const MAC=[['p','البروتين','--prot'],['c','الكارب','--carb'],['f','الدهون','--fat'],['fi','الألياف','--fib'],['s','السكر','--sug']];
 const KEY='sa3rati-v2';
 const dk=d=>d.toLocaleDateString('en-CA');
 const fromKey=k=>new Date(k+'T12:00:00');
@@ -556,13 +617,13 @@ const EN=[[4,'نشيط','⚡'],[3,'عادي','🙂'],[2,'وسط','😐'],[1,'ت�
 const enAvg=d=>{const v=[d.energy,d.en2,d.en3].filter(x=>x!=null);return v.length?avgOf(v):null};
 const MD=[[5,'ممتاز','😄'],[4,'مبسوط','🙂'],[3,'عادي','😐'],[2,'مو زين','🙁'],[1,'زعلان','😢']];
 
-const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},lastBk:0,bkSnooze:0,prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
+const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,s:45,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},lastBk:0,bkSnooze:0,rcp:[],prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
 let S=JSON.parse(JSON.stringify(DEF));
 let mornOpen=null,mornFor='';
 let sel=TK(),curMeal='b',vEdit=false,editId=null,storeOK=true,curView='Home',repOff=0,lastTK=TK();
 try{
   const raw=localStorage.getItem(KEY);
-  if(raw){const o=JSON.parse(raw);S=Object.assign({},S,o);S.t=Object.assign({},DEF.t,o.t||{});S.days=o.days||{};S.cache=o.cache||{};S.vits=o.vits||[];S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.pend=o.pend||[];S.reps=o.reps||{};S.prof=Object.assign({},DEF.prof,o.prof||{})}
+  if(raw){const o=JSON.parse(raw);S=Object.assign({},S,o);S.t=Object.assign({},DEF.t,o.t||{});S.days=o.days||{};S.cache=o.cache||{};S.vits=o.vits||[];S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.pend=o.pend||[];S.reps=o.reps||{};S.rcp=Array.isArray(o.rcp)?o.rcp:[];S.prof=Object.assign({},DEF.prof,o.prof||{})}
 }catch(e){storeOK=false}
 delete S.gem;
 S.pend.forEach(p=>{if(p.st==='run')p.st='wait'});
@@ -577,8 +638,8 @@ const peek=k=>S.days[k]||EMPTY();
 const day=k=>S.days[k]||(S.days[k]=EMPTY());
 const stamp=()=>sel===TK()?nowMin():null;
 function sum(list){
-  const a=list.reduce((a,x)=>{for(const k of ['k','p','c','fi','f','w','cf'])a[k]+=x[k]||0;return a},{k:0,p:0,c:0,fi:0,f:0,w:0,cf:0});
-  ['p','c','fi','f'].forEach(k=>a[k]=r1(a[k]));['k','w','cf'].forEach(k=>a[k]=Math.round(a[k]));return a;
+  const a=list.reduce((a,x)=>{for(const k of ['k','p','c','fi','f','s','w','cf'])a[k]+=x[k]||0;return a},{k:0,p:0,c:0,s:0,fi:0,f:0,w:0,cf:0});
+  ['p','c','fi','f','s'].forEach(k=>a[k]=r1(a[k]));['k','w','cf'].forEach(k=>a[k]=Math.round(a[k]));return a;
 }
 const foodWater=d=>sum(d.items).w+d.cups*S.cupMl;
 const water=d=>d.water.reduce((a,x)=>a+x.ml,0)+foodWater(d);
@@ -743,11 +804,12 @@ function renderMeals(){
   const d=peek(sel);let h='';
   MEALS.forEach(m=>{
     const xs=d.items.filter(x=>x.m===m[0]);if(!xs.length)return;
-    const mt=sum(xs),ts=xs.map(x=>x.t).filter(t=>t!=null);
-    h+='<div class="mrw"><div class="bk" style="background:'+MCOL[m[0]]+'"></div><div class="bd"><div class="tt"><span>'+m[1]+'</span><span class="num">'+mt.k+' سعرة</span></div>'+
-      xs.map(x=>'<button type="button" class="item" data-id="'+x.id+'"><span class="nm">'+esc(x.n)+(x.q?' <span class="muted">· '+esc(x.q)+'</span>':'')+'</span><span class="kk num">'+x.k+'</span></button>').join('')+
-      '<div class="ft num">'+(ts.length?tStr(Math.min.apply(null,ts))+' · ':'')+mt.p+' بروتين · '+mt.c+' كارب · '+mt.f+' دهون · <button type="button" class="svm" data-savemeal="'+m[0]+'">⭐ احفظها كوجبة</button></div>'+
-      mealNote(d,m[0])+'</div></div>';
+    const mt=sum(xs),ts=xs.map(x=>x.t).filter(t=>t!=null),note=mealNote(d,m[0]);
+    h+='<div class="mk-meal"><div class="tt"><span class="dot" style="background:'+MCOL[m[0]]+'"></span><b>'+m[1]+'</b>'+(ts.length?'<span class="t">'+tStr(Math.min.apply(null,ts))+'</span>':'')+'<span class="num k">'+mt.k+' سعرة</span></div>'+
+      xs.map(x=>'<button type="button" class="item" data-id="'+x.id+'"><span class="nm">'+esc(x.n)+'</span>'+(x.q||x.ck?'<span class="q">'+(x.q?esc(x.q):'')+(x.ck?(x.q?' · ':'')+(x.ck.t==='butter'?'🧈':'🫒')+' '+x.ck.g+' جم':'')+'</span>':'')+'<span class="kk num">'+x.k+'</span></button>').join('')+
+      '<div class="ft num">'+mt.p+' بروتين · '+mt.c+' كارب'+(mt.s?' (منها '+mt.s+' سكر)':'')+' · '+mt.f+' دهون</div>'+
+      (note?'<details class="mk-vit"><summary>💊 ملاحظات الفيتامينات</summary>'+note+'</details>':'')+
+      '<div class="mk-f"><button type="button" class="p" data-addto="'+m[0]+'">＋ إضافة</button><button type="button" data-savemeal="'+m[0]+'">⭐ احفظها</button></div></div>';
   });
   $('meals').innerHTML=h||'<p class="cap" style="padding:6px 0">ما سجلت شيء بهذا اليوم. اكتب أكلك فوق واضغط «احسب وأضف».</p>';
 }
@@ -845,7 +907,7 @@ function norm(r){
   if(!r||typeof r!=='object')return null;
   const n=String(r.n||r.name||'').trim().slice(0,80),k=Math.round(+r.k);
   if(!n||!isFinite(k)||k<0||k>6000)return null;
-  return {n:n,q:String(r.q||'').slice(0,40),k:k,p:dec(r.p),c:dec(r.c),fi:dec(r.fi),f:dec(r.f),w:z(r.w),cf:z(r.cf),ca:z(r.ca),fe:z(r.fe),g:z(r.g)||gramsFromQ(r.q)};
+  return {n:n,q:String(r.q||'').slice(0,40),k:k,p:dec(r.p),c:dec(r.c),fi:dec(r.fi),f:dec(r.f),s:dec(r.s),w:z(r.w),cf:z(r.cf),ca:z(r.ca),fe:z(r.fe),g:z(r.g)||gramsFromQ(r.q)};
 }
 const toLatin=s=>String(s).replace(/[٠-٩]/g,c=>String.fromCharCode(c.charCodeAt(0)-1632+48)).replace(/[۰-۹]/g,c=>String.fromCharCode(c.charCodeAt(0)-1776+48)).replace(/[٫،]/g,'.');
 function gramsFromQ(q){return /(جم|غ|غرام|جرام|مل|\bg\b|ml)/i.test(String(q||''))?z(num(q)):0}
@@ -865,12 +927,12 @@ function parseAny(text){
   });
   return out;
 }
-const SPEC='لكل صنف قدّر: k السعرات، p البروتين، c الكارب، fi الألياف، f الدهون (كلها بالجرام)، w كمية الماء بالمل (للمشروبات حجم السائل، وللأكل الماء الموجود فيه تقريبًا)، cf الكافيين بالملغ (0 إن لم يوجد). '+
+const SPEC='لكل صنف قدّر: k السعرات، p البروتين، c الكارب، fi الألياف، f الدهون (كلها بالجرام)، s السكر بالجرام (منه ضمن الكارب، 0 إن ما فيه سكر مضاف أو طبيعي ملحوظ)، w كمية الماء بالمل (للمشروبات حجم السائل، وللأكل الماء الموجود فيه تقريبًا)، cf الكافيين بالملغ (0 إن لم يوجد). '+
   'استخدم الكمية المكتوبة، وإذا لم تُكتب فافترض حصة عادية واكتبها في q. اعتبر الأكل مطبوخًا ما لم يُذكر غير ذلك، وانتبه أن الأكل غالبًا سعودي أو عربي. افصل كل صنف في عنصر مستقل. وأضف g: الكمية بالجرام أو المل كرقم صحيح للصنف كله (للحبات قدّر وزنها).';
 const PROMPT='أنت حاسب تغذية. حلّل النص التالي الذي يصف أكل وشرب شخص. '+SPEC+
-  ' لا تكرر أي صنف، والاسم المركب مثل «بودينق بروتين» أو «شيك بروتين» صنف واحد فقط. وأضف ca: الكالسيوم بالملغ وfe: الحديد بالملغ للصنف كله. ردّ بـ JSON فقط بهذا الشكل بدون أي نص آخر: {"items":[{"n":"اسم الصنف","q":"الكمية","k":0,"p":0,"c":0,"fi":0,"f":0,"w":0,"cf":0,"ca":0,"fe":0,"g":0}]} والأرقام صحيحة.\n\nالنص: ';
+  ' لا تكرر أي صنف، والاسم المركب مثل «بودينق بروتين» أو «شيك بروتين» صنف واحد فقط. وأضف ca: الكالسيوم بالملغ وfe: الحديد بالملغ للصنف كله. ردّ بـ JSON فقط بهذا الشكل بدون أي نص آخر: {"items":[{"n":"اسم الصنف","q":"الكمية","k":0,"p":0,"c":0,"fi":0,"f":0,"s":0,"w":0,"cf":0,"ca":0,"fe":0,"g":0}]} والأرقام صحيحة.\n\nالنص: ';
 const ASK='احسب لكل صنف (أكل سعودي/عربي): الاسم | سعرات | بروتين | كارب | ألياف | دهون | ماء مل | كافيين ملغ | جرام. رد بسطر لكل صنف فقط بدون شرح، والأرقام صحيحة.\nالأكل: ';
-const LABELP='هذي صورة عبوة منتج غذائي وفيها ملصق القيمة الغذائية (Nutrition Facts). اقرأ الأرقام كما هي مكتوبة بالضبط ولا تحوّلها. n اسم المنتج كما هو مكتوب على العبوة (الاسم التجاري، وإذا كان بالعربي والإنجليزي اكتب العربي). إذا ما ظهر الاسم بوضوح اكتب "" فارغ ولا تخمن. bg عدد الجرامات (أو المل) اللي كُتبت الأرقام لأجلها (مثلاً 100 أو 25 إذا كانت لكل حصة 25 جم). sg وزن العبوة أو القطعة الكاملة أو الحصة إن كان مكتوباً (مثلاً 25)، وإلا 0. k السعرات، p البروتين، c الكربوهيدرات، fi الألياف، f الدهون (بالجرام، ويسمح بكسر عشري) كما هي مكتوبة لـ bg. ردّ بـ JSON فقط: {"n":"","bg":100,"sg":0,"k":0,"p":0,"c":0,"fi":0,"f":0}';
+const LABELP='هذي صورة عبوة منتج غذائي وفيها ملصق القيمة الغذائية (Nutrition Facts). اقرأ الأرقام كما هي مكتوبة بالضبط ولا تحوّلها. n اسم المنتج كما هو مكتوب على العبوة (الاسم التجاري، وإذا كان بالعربي والإنجليزي اكتب العربي). إذا ما ظهر الاسم بوضوح اكتب "" فارغ ولا تخمن. bg عدد الجرامات (أو المل) اللي كُتبت الأرقام لأجلها (مثلاً 100 أو 25 إذا كانت لكل حصة 25 جم). sg وزن العبوة أو القطعة الكاملة أو الحصة إن كان مكتوباً (مثلاً 25)، وإلا 0. k السعرات، p البروتين، c الكربوهيدرات، fi الألياف، f الدهون (بالجرام، ويسمح بكسر عشري) كما هي مكتوبة لـ bg. su السكريات (سطر «منها سكر» أو Sugars تحت الكربوهيدرات) وإذا ما انكتب 0. ردّ بـ JSON فقط: {"n":"","bg":100,"sg":0,"k":0,"p":0,"c":0,"fi":0,"f":0,"su":0}';
 const GBASE='https://generativelanguage.googleapis.com/v1beta/';
 async function gfetch(path,opt){
   let r;
@@ -953,7 +1015,7 @@ async function askLabel(b64){
   let o;try{o=JSON.parse(m[0])}catch(e){throw {code:'parse'}}
   let bg=+o.bg;if(!(bg>0))bg=100;
   const sc=v=>Math.round((+v||0)*100/bg*10)/10;
-  const r={n:String(o.n||'').trim().slice(0,60),k:Math.round(sc(o.k)),p:sc(o.p),c:sc(o.c),fi:sc(o.fi),f:sc(o.f),bg:bg,sg:(+o.sg>0&&+o.sg<5000)?Math.round(+o.sg*10)/10:(bg!==100?bg:0)};
+  const r={n:String(o.n||'').trim().slice(0,60),k:Math.round(sc(o.k)),p:sc(o.p),c:sc(o.c),fi:sc(o.fi),f:sc(o.f),su:sc(o.su),bg:bg,sg:(+o.sg>0&&+o.sg<5000)?Math.round(+o.sg*10)/10:(bg!==100?bg:0)};
   if(!(r.k>0)&&!(r.p||r.c||r.f))throw {code:'parse'};
   return r;
 }
@@ -1045,7 +1107,7 @@ function copySync(t){
   return ok;
 }
 /* ---------- edit sheet ---------- */
-const FIELDS=[['fk','k'],['fp','p'],['fc','c'],['ffi','fi'],['ff','f'],['fw','w'],['fcf','cf']];
+const FIELDS=[['fk','k'],['fp','p'],['fc','c'],['ffi','fi'],['fs','s'],['ff','f'],['fw','w'],['fcf','cf']];
 function openSheet(id){
   editId=id||null;
   const x=editId?peek(sel).items.find(v=>v.id===editId):null;
@@ -1063,7 +1125,8 @@ $('sheetBg').addEventListener('click',e=>{if(e.target===$('sheetBg'))closeSheet(
 $('fSave').addEventListener('click',()=>{
   const n=$('fName').value.trim(),k=Math.round(+$('fk').value);
   if(!n||$('fk').value===''||!isFinite(k)||k<0){$('fMsg').textContent='اكتب الاسم والسعرات على الأقل.';return}
-  const rec={m:$('fMeal').value,n:n,q:''};FIELDS.forEach(f=>{rec[f[1]]=f[1]==='k'?k:(['p','c','fi','f'].includes(f[1])?dec($(f[0]).value):z($(f[0]).value))});
+  const rec={m:$('fMeal').value,n:n,q:''};FIELDS.forEach(f=>{rec[f[1]]=f[1]==='k'?k:(['p','c','fi','f','s'].includes(f[1])?dec($(f[0]).value):z($(f[0]).value))});
+  ckApply(rec);
   snap();const d=day(sel);
   if(editId){const x=d.items.find(v=>v.id===editId);if(x)Object.assign(x,rec)}
   else d.items.push(Object.assign({id:Date.now(),t:stamp()},rec));
@@ -1145,65 +1208,60 @@ $('wt').addEventListener('change',()=>{const v=dec($('wt').value);setDay(d=>{if(
 $('dnote').addEventListener('change',()=>{const v=$('dnote').value.trim().slice(0,200);setDay(d=>{if(!v)delete d.note;else d.note=v})});
 
 /* ---------- saved meals + products ---------- */
-const KEYS=['k','p','c','fi','f','w','cf'];
+const KEYS=['k','p','c','fi','f','s','w','cf'];
 let M=null,mmEdit=false;
 function scaleRow(r){
   const f=r.b.g>0?(r.g||0)/r.b.g:1,o={};
   KEYS.forEach(k=>{const v=(r.b[k]||0)*f;o[k]=(k==='k'||k==='w'||k==='cf')?Math.round(v):r1(v)});return o;
 }
 function rowFrom(x,g){const b={g:g||0};KEYS.forEach(k=>b[k]=x[k]||0);return {n:x.n,b:b,g:g||0,free:!(g>0)}}
-const macroLine=s=>s.k+' سعرة · '+s.p+' بروتين · '+s.c+' كارب · '+s.fi+' ألياف · '+s.f+' دهون';
+const macroLine=s=>s.k+' سعرة · '+s.p+' بروتين · '+s.c+' كارب'+(s.s?' (منها '+s.s+' سكر)':'')+' · '+s.fi+' ألياف · '+s.f+' دهون';
 const totalsOf=rows=>sum(rows.filter(r=>r.g>0).map(scaleRow));
 let mmOpen=false,mmF='all',mmQ='',flash={};
 const lam=k=>{const n=slotName(k);return n.startsWith('ال')?'لل'+n.slice(2):'لل'+n};
 const slotName=k=>(MEALS.find(m=>m[0]===k)||['','الوجبة'])[1];
 const isDrink=x=>(x.cf>=10)||(x.w>=150&&!(x.k>=120));
+const CATS=[['meal','الوجبات','🍽️'],['drink','المشروبات','🥤'],['sauce','الصوصات','🧴'],['snack','السناكات','🥜'],['extra','إضافات الطعام','🧀']];
+const catOf=x=>x.cat||(isDrink(x)?'drink':'snack');
+const catI=k=>(CATS.find(c=>c[0]===k)||CATS[3]);
 function listEntries(){
   const out=[];
-  S.meals.forEach(m=>out.push({key:'m'+m.id,t:'meal',kind:'meal',id:m.id,n:m.n,e:'⭐',slot:m.slot||curMeal,sub:'وجبة · '+slotName(m.slot||curMeal)}));
-  S.snacks.forEach(x=>{const dr=isDrink(x);out.push({key:'s'+x.id,t:'sn',kind:dr?'drink':'meal',id:x.id,n:x.n,e:dr?'🥤':'🥜',slot:x.slot||'s',sub:(dr?'مشروب':'سناك')+' · '+slotName(x.slot||'s')+(x.cf?' · '+x.cf+' ملغ':'')});});
-  S.adds.forEach(a=>out.push({key:'a'+a.id,t:'add',kind:'add',id:a.id,n:a.n,e:'🧴',slot:curMeal,sub:'إضافة · تكتب الجرامات'}));
+  S.meals.forEach(m=>out.push({key:'m'+m.id,t:'meal',kind:'meal',id:m.id,n:m.n,e:'🍽️',slot:m.slot||curMeal,sub:'وجبة · '+slotName(m.slot||curMeal)}));
+  S.snacks.forEach(x=>{const c=catOf(x);out.push({key:'s'+x.id,t:'sn',kind:c,id:x.id,n:x.n,e:catI(c)[2],slot:x.slot||(c==='extra'?curMeal:'s'),sub:catI(c)[1]+(x.k?' · '+x.k+' سعرة':'')+(x.p?' · '+x.p+' بروتين':'')+(x.cf?' · '+x.cf+' ملغ':'')});});
+  S.adds.forEach(a=>{const c=a.cat==='extra'?'extra':'sauce';out.push({key:'a'+a.id,t:'add',kind:c,id:a.id,n:a.n,e:catI(c)[2],slot:curMeal,sub:catI(c)[1]+' · تكتب الجرامات'});});
   return out;
 }
 function renderMyMeals(){
-  const all=listEntries(),nm=S.meals.length,na=S.adds.length;
-  $('mmCount').textContent=all.length?(all.length-na)+' اختصارات · '+na+' إضافات':'ما فيه اختصارات بعد';
+  const all=listEntries();
+  $('mmCount').textContent=all.length?all.length+' عنصر · كل شي تضيفه بضغطة':'ما فيه عناصر بعد';
   $('mmToggle').textContent=mmOpen?'إغلاق':'فتح';
   $('mmBody').hidden=!mmOpen;
-  document.querySelectorAll('#mmFilter button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.f===mmF)));
+  $('mmFilter').innerHTML=[['all','الكل','']].concat(CATS.map(c=>[c[0],c[1],c[2]+' '])).map(c=>'<span class="cp'+(c[0]===mmF?' on':'')+'"><button type="button" data-f="'+c[0]+'">'+c[2]+c[1]+'</button></span>').join('');
   $('mmEdit').textContent=mmEdit?'تم':'تعديل';
   if(!mmOpen)return;
   const q=mmQ.trim().toLowerCase();
   const list=all.filter(x=>(mmF==='all'||x.kind===mmF)&&(!q||x.n.toLowerCase().includes(q)));
-  $('mmList').innerHTML=list.length?list.map(x=>{
+  const row=x=>{
     const fl=flash[x.key]&&Date.now()-flash[x.key]<3500;
-    const btn=mmEdit?'<button type="button" class="dx" data-del="'+x.t+':'+x.id+'" aria-label="حذف">×</button>':
+    const btn=mmEdit?(x.t!=='meal'?'<select class="catsel" data-cat="'+x.t+':'+x.id+'" aria-label="القسم">'+(x.t==='sn'?[['drink','مشروب'],['snack','سناك'],['extra','إضافة طعام']]:[['sauce','صوص'],['extra','إضافة طعام']]).map(o=>'<option value="'+o[0]+'"'+(o[0]===x.kind?' selected':'')+'>'+o[1]+'</option>').join('')+'</select>':'')+'<button type="button" class="dx" data-del="'+x.t+':'+x.id+'" aria-label="حذف">×</button>':
       '<button type="button" class="add'+(fl?' done':'')+'" data-add="'+x.t+':'+x.id+'">'+(fl?'✓ أضيف '+lam(x.slot):'+ '+lam(x.slot))+'</button>';
     return '<div class="lrow"><div class="nm">'+x.e+' '+esc(x.n)+'<small>'+esc(x.sub)+'</small></div>'+btn+'</div>';
-  }).join(''):'<p class="cap" style="padding:8px 0">'+(all.length?'ما لقيت شي بهذا البحث.':'احفظ وجباتك المتكررة وإضافاتك (صوصات، منتجات) وسناكاتك ومشروباتك هنا، وتضيفها بضغطة. اضغط «+ جديد».')+'</p>';
+  };
+  let h='';
+  if(mmF==='all'&&!q){CATS.forEach(c=>{const l=list.filter(x=>x.kind===c[0]);if(l.length)h+='<div class="cathd">'+c[2]+' '+c[1]+' ('+l.length+')</div>'+l.map(row).join('')})}
+  else h=list.map(row).join('');
+  $('mmList').innerHTML=h||'<p class="cap" style="padding:8px 0">'+(all.length?'ما لقيت شي بهذا البحث.':'احفظ وجباتك وصوصاتك وسناكاتك ومشروباتك وإضافاتك هنا، وتضيفها بضغطة. اضغط «+ جديد».')+'</p>';
 }
-function renderShorts(){
-  const sh=[];
-  S.meals.forEach(m=>sh.push({a:'m:'+m.id,l:'⭐ '+m.n}));
-  S.snacks.forEach(x=>sh.push({a:'s:'+x.id,l:(isDrink(x)?'🥤 ':'🥜 ')+x.n+(x.cf?' · '+x.cf:'')}));
-  $('shortBox').hidden=!sh.length;
-  $('shorts').innerHTML=sh.map(x=>'<button type="button" data-sc="'+x.a+'">'+esc(x.l)+'</button>').join('');
-}
+function renderShorts(){}
 function addMealDirect(m,slot){
   const items=m.parts.map(p=>Object.assign({n:p.n,q:p.g+' جم',g:p.g},scaleRow({b:p,g:p.g})));
   qSay(commit(items,slot),'ok');
 }
 function addSnack(s){
-  const it={n:s.n,q:'',k:s.k||0,p:s.p||0,c:s.c||0,fi:s.fi||0,f:s.f||0,w:s.w||0,cf:s.cf||0};
+  const it={n:s.n,q:'',k:s.k||0,p:s.p||0,c:s.c||0,fi:s.fi||0,f:s.f||0,s:s.s||0,w:s.w||0,cf:s.cf||0};
   qSay(commit([it],s.slot||'s'),'ok');
 }
 function flashKey(k){flash[k]=Date.now();renderMyMeals();setTimeout(renderMyMeals,3600)}
-$('shorts').addEventListener('click',e=>{
-  const b=e.target.closest('[data-sc]');if(!b)return;
-  const [t,id]=b.dataset.sc.split(':');
-  if(t==='m'){const m=S.meals.find(x=>String(x.id)===id);if(m)addMealDirect(m,m.slot||curMeal)}
-  else{const x=S.snacks.find(v=>String(v.id)===id);if(x)addSnack(x)}
-});
 $('mmToggle').addEventListener('click',()=>{mmOpen=!mmOpen;if(!mmOpen)mmEdit=false;renderMyMeals()});
 $('mmSearch').addEventListener('input',e=>{mmQ=e.target.value;renderMyMeals()});
 $('mmFilter').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(b){mmF=b.dataset.f;renderMyMeals()}});
@@ -1230,8 +1288,8 @@ $('myMeals').addEventListener('click',e=>{
 {const _rmm=renderMyMeals;renderMyMeals=function(){_rmm();renderShorts()}}
 function openS2(state){M=state;$('sheet2').hidden=false;renderS2();$('s2body').scrollTop=0}
 function closeS2(){$('sheet2').hidden=true;M=null}
-function updateTot(){if(M&&M.mode==='review'){const el=$('s2tot');if(el){const t=sum(M.items);el.innerHTML='المجموع: <b>'+fmt(t.k)+'</b> سعرة · '+t.p+' بروتين · '+t.c+' كارب · '+t.fi+' ألياف · '+t.f+' دهون'}return}
- const el=$('s2tot');if(!el||!M||!M.rows)return;const t=totalsOf(M.rows);el.innerHTML='المجموع: <b>'+fmt(t.k)+'</b> سعرة · '+t.p+' بروتين · '+t.c+' كارب · '+t.fi+' ألياف · '+t.f+' دهون'}
+function updateTot(){if(M&&M.mode==='review'){const el=$('s2tot');if(el){const t=sum(M.items);el.innerHTML='المجموع: <b>'+fmt(t.k)+'</b> سعرة · '+t.p+' بروتين · '+t.c+' كارب'+(t.s?' (منها '+t.s+' سكر)':'')+' · '+t.fi+' ألياف · '+t.f+' دهون'}return}
+ const el=$('s2tot');if(!el||!M||!M.rows)return;const t=totalsOf(M.rows);el.innerHTML='المجموع: <b>'+fmt(t.k)+'</b> سعرة · '+t.p+' بروتين · '+t.c+' كارب'+(t.s?' (منها '+t.s+' سكر)':'')+' · '+t.fi+' ألياف · '+t.f+' دهون'}
 function s2msg(t,ok){const m=$('s2msg');if(m){m.textContent=t;m.className='msg '+(ok?'ok':'err')}}
 const slotSel=()=>'<select id="s2slot" aria-label="الوجبة">'+MEALS.map(m=>'<option value="'+m[0]+'"'+(m[0]===M.slot?' selected':'')+'>'+m[1]+'</option>').join('')+'</select>';
 function prodChips(){return S.adds.length?'<div><p class="note" style="margin-bottom:6px">أضف من إضافاتي (تكتب الجرامات بعدها)</p><div class="chiprow">'+S.adds.map(a=>'<span class="cp add"><button type="button" data-addp="'+a.id+'">+ '+esc(a.n)+'</button></span>').join('')+'</div></div>':''}
@@ -1243,7 +1301,7 @@ function renderS2(){
     if(M.err){
       $('s2body').innerHTML='<h2>تعذر الحساب</h2><p class="msg err">'+esc(M.err)+'</p><button type="button" class="btn big" data-act="rv_retry">أعد المحاولة</button><button type="button" class="btn soft" data-act="rv_bg">احسبه بالخلفية (يعيد المحاولة لحاله)</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';return;
     }
-    const ff=[['k','السعرات'],['p','البروتين'],['c','الكارب'],['fi','الألياف'],['f','الدهون'],['cf','كافيين ملغ']];
+    const ff=[['k','السعرات'],['p','البروتين'],['c','الكارب'],['fi','الألياف'],['s','منها سكر'],['f','الدهون'],['cf','كافيين ملغ']];
     $('s2body').innerHTML='<h2>راجع قبل الإضافة</h2><p class="note">'+(M.note||'هذي تقديرات الذكاء الاصطناعي. عدّل أي رقم فيه خطأ، ولا يُضاف شي قبل ما تضغط «إضافة».')+'</p>'+
       '<label>تنضاف إلى وجبة'+slotSel()+'</label>'+
       (M.items.length?M.items.map((x,i)=>'<div class="rvcard"><div class="rvh"><input type="text" data-rn="'+i+'" value="'+esc(x.n)+'" aria-label="الاسم"><button type="button" class="vx" data-rrm="'+i+'" aria-label="حذف">×</button></div>'+
@@ -1268,8 +1326,8 @@ function renderS2(){
   if(M.mode==='new'){
     $('s2body').innerHTML='<h2>وش تبي تضيف؟</h2>'+
       '<button type="button" class="btn soft" data-act="n_meal">⭐ وجبة جديدة (مكونات بالجرامات)</button>'+
-      '<button type="button" class="btn soft" data-act="n_prod">🧴 إضافة أو منتج (صوص، عصير، صوّر الملصق)</button>'+
-      '<button type="button" class="btn soft" data-act="n_snack">🥤 سناك أو مشروب (طاقة، بروتين...)</button>'+
+      '<button type="button" class="btn soft" data-act="n_prod">🧴 صوص أو منتج (تكتب الجرامات، أو صوّر الملصق)</button>'+
+      '<button type="button" class="btn soft" data-act="n_snack">🥤 سناك أو مشروب أو إضافة طعام (طاقة، بروتين، جبن...)</button>'+
       '<button type="button" class="btn ghost" data-act="close">إغلاق</button>';return;
   }
   if(M.mode==='water'){
@@ -1281,10 +1339,11 @@ function renderS2(){
     $('s2body').innerHTML='<h2>'+(caf?'☕ كافيين يدوي':'🥤 سناك أو مشروب جديد')+'</h2>'+
       (caf?'<div class="chiprow"><span class="cp"><button type="button" data-qn="قهوة|'+S.cupMl+'">قهوة</button></span><span class="cp"><button type="button" data-qn="مشروب طاقة|250">مشروب طاقة</button></span></div>':'')+
       '<input id="dn" type="text" placeholder="الاسم، مثال: ريد بول" autocomplete="off" value="'+esc(M.name||'')+'">'+
+      (caf?'':'<label>نوعه<select id="dcat"><option value="snack">🥜 سناك</option><option value="drink">🥤 مشروب</option><option value="extra">🧀 إضافة طعام (جبن، خضار، بيض...)</option></select></label>')+
       '<button type="button" class="btn soft" data-act="dfill">✨ عبّي الأرقام بالذكاء الاصطناعي</button>'+
       '<div class="f2"><label>الكافيين (ملغ)<input id="dcf" type="number" inputmode="numeric" min="0"></label><label>السعرات<input id="dk" type="number" inputmode="numeric" min="0"></label>'+
       '<label>البروتين (جم)<input id="dp" type="number" inputmode="decimal" min="0"></label><label>الكارب (جم)<input id="dc" type="number" inputmode="decimal" min="0"></label>'+
-      '<label>الدهون (جم)<input id="df" type="number" inputmode="decimal" min="0"></label><label>الماء (مل)<input id="dw" type="number" inputmode="numeric" min="0" value="'+(M.w||'')+'"></label></div>'+
+      '<label>منها سكر (جم)<input id="ds" type="number" inputmode="decimal" min="0"></label><label>الدهون (جم)<input id="df" type="number" inputmode="decimal" min="0"></label><label>الماء (مل)<input id="dw" type="number" inputmode="numeric" min="0" value="'+(M.w||'')+'"></label></div>'+
       '<label>تنحسب في وجبة<select id="s2slot">'+MEALS.map(m=>'<option value="'+m[0]+'"'+(m[0]==='s'?' selected':'')+'>'+m[1]+'</option>').join('')+'</select></label>'+
       (caf?'<label class="chk"><input type="checkbox" id="dsave"> احفظه كاختصار</label>':'')+
       '<p class="msg err" id="s2msg" aria-live="polite"></p>'+
@@ -1297,9 +1356,10 @@ function renderS2(){
       '<label class="btn soft" style="color:var(--blue);flex-direction:row;justify-content:center;gap:8px;font-size:16px">📷 صوّر أو اختر صورة الملصق<input id="prFile" type="file" accept="image/*" style="display:none"></label>'+
       '<p class="msg" id="s2msg" aria-live="polite"></p>'+
       '<input id="prN" type="text" placeholder="اسم المنتج (اكتبه إذا ما انقرأ)" autocomplete="off" value="'+esc(M.pn||'')+'">'+
+      '<label>نوعه<select id="prCat"><option value="sauce">🧴 صوص</option><option value="extra">🧀 إضافة طعام</option></select></label>'+
       '<div class="f2"><label>السعرات<input id="prK" type="number" inputmode="decimal" min="0"></label><label>البروتين<input id="prP" type="number" inputmode="decimal" min="0"></label>'+
       '<label>الكارب<input id="prC" type="number" inputmode="decimal" min="0"></label><label>الألياف<input id="prFi" type="number" inputmode="decimal" min="0"></label>'+
-      '<label>الدهون<input id="prF" type="number" inputmode="decimal" min="0"></label></div>'+
+      '<label>منها سكر<input id="prS" type="number" inputmode="decimal" min="0"></label><label>الدهون<input id="prF" type="number" inputmode="decimal" min="0"></label></div>'+
       '<div class="tot num" id="prInfo" style="line-height:1.9"></div>'+
       '<button type="button" class="btn big" data-act="prsave">حفظ في إضافاتي</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
     return;
@@ -1346,7 +1406,7 @@ function paUpd(){
 $('s2body').addEventListener('input',e=>{
   const t=e.target;if(!M)return;
   if(t.id==='paG'){paUpd();return}
-  if(M.mode==='prod'&&/^pr[KPCF]/.test(t.id||'')){prInfo();return}
+  if(M.mode==='prod'&&/^pr[KPCFS]/.test(t.id||'')){prInfo();return}
   if(t.dataset.g!==undefined){
     const i=+t.dataset.g,r=M.rows[i],g=parseFloat(t.value)||0;
     if(M.mode==='save'||r.free)r.b.g=g;
@@ -1368,7 +1428,7 @@ $('s2body').addEventListener('change',async e=>{
       const b64=await readImage(f);
       const r=await askLabel(b64);
       if(!M||M.mode!=='prod')return;
-      if(r.n)$('prN').value=r.n;$('prK').value=r.k;$('prP').value=r.p;$('prC').value=r.c;$('prFi').value=r.fi;$('prF').value=r.f;M.sg=r.sg||0;prInfo();
+      if(r.n)$('prN').value=r.n;$('prK').value=r.k;$('prP').value=r.p;$('prC').value=r.c;$('prFi').value=r.fi;$('prS').value=r.su||'';$('prF').value=r.f;M.sg=r.sg||0;prInfo();
       s2msg(r.n?'تأكد من الاسم والأرقام ثم احفظ.':'الاسم ما ظهر، اكتبه بيدك.',!!r.n);if(!r.n)$('prN').focus();
     }catch(err){s2msg(errText(err)+' تقدر تكتب الأرقام بيدك.')}
   }
@@ -1418,7 +1478,7 @@ $('s2body').addEventListener('click',async e=>{
     const nm=$('dn').value.trim();if(!nm){s2msg('اكتب الاسم أول.');return}
     if(!hasAI()){s2msg(ERR.nokey);return}
     b.disabled=true;b.textContent='جاري الحساب...';
-    try{const it=(await askGemini(nm))[0];if(!M)return;$('dcf').value=it.cf||'';$('dk').value=it.k||'';$('dp').value=it.p||'';$('dc').value=it.c||'';$('df').value=it.f||'';$('dw').value=it.w||'';s2msg('انحسبت. راجع الأرقام وعدّلها لو تبي.',true)}
+    try{const it=(await askGemini(nm))[0];if(!M)return;$('dcf').value=it.cf||'';$('dk').value=it.k||'';$('dp').value=it.p||'';$('dc').value=it.c||'';$('df').value=it.f||'';$('ds').value=it.s||'';$('dw').value=it.w||'';s2msg('انحسبت. راجع الأرقام وعدّلها لو تبي.',true)}
     catch(err){s2msg(errText(err))}
     if(M){b.disabled=false;b.textContent='✨ عبّي الأرقام بالذكاء الاصطناعي'}
     return;
@@ -1427,8 +1487,8 @@ $('s2body').addEventListener('click',async e=>{
     const n=$('dn').value.trim(),cf=z($('dcf').value),k=z($('dk').value);
     if(!n){s2msg('اكتب الاسم.');return}
     if(act==='dadd'&&!(cf>0)&&!(k>0)){s2msg('اكتب الكافيين أو السعرات.');return}
-    const it={n:n,q:'',k:k,p:dec($('dp').value),c:dec($('dc').value),fi:0,f:dec($('df').value),w:z($('dw').value),cf:cf},slot=$('s2slot').value;
-    if(act==='dsave'||($('dsave')&&$('dsave').checked)){S.snacks.push(Object.assign({id:Date.now(),slot:slot},it));save();renderMyMeals()}
+    const it={n:n,q:'',k:k,p:dec($('dp').value),c:dec($('dc').value),fi:0,f:dec($('df').value),s:dec($('ds').value),w:z($('dw').value),cf:cf},slot=$('s2slot').value;
+    if(act==='dsave'||($('dsave')&&$('dsave').checked)){S.snacks.push(Object.assign({id:Date.now(),slot:slot,cat:($('dcat')&&$('dcat').value)||(M&&M.from==='caf'?'drink':undefined)},it));save();renderMyMeals()}
     if(act==='dadd'){const msg=commit([it],slot);closeS2();qSay(msg,'ok')}
     else{renderCaf();closeS2();toast('تم حفظ «'+n+'» في سناكاتي',false)}
     return;
@@ -1436,7 +1496,7 @@ $('s2body').addEventListener('click',async e=>{
   if(act==='prsave'){
     const n=$('prN').value.trim(),k=Math.round(+$('prK').value);
     if(!n||$('prK').value===''||!(k>=0)){s2msg('اكتب الاسم والسعرات.');return}
-    const na={id:Date.now(),sg:M.sg||0,n:n,g:100,k:k,p:dec($('prP').value),c:dec($('prC').value),fi:dec($('prFi').value),f:dec($('prF').value),w:0,cf:0};S.adds.push(na);
+    const na={id:Date.now(),sg:M.sg||0,n:n,g:100,k:k,p:dec($('prP').value),c:dec($('prC').value),fi:dec($('prFi').value),f:dec($('prF').value),s:dec($('prS').value),cat:$('prCat').value,w:0,cf:0};S.adds.push(na);
     save();renderMyMeals();const dr=M.direct,sl=M.slot;if(dr){openS2({mode:'padd',p:na,slot:sl||curMeal,g:na.sg||0});toast('انحفظ «'+n+'» في إضافاتي. اكتب الجرامات وأضفه',false)}else{closeS2();toast('تم حفظ «'+n+'» في إضافاتي',false)}return;
   }
   if(act==='padd'){
@@ -1597,7 +1657,7 @@ function periodSummary(keys){
   const sl=ds.filter(x=>x.sleep>0),sp=ds.filter(x=>x.spend!=null),md=ds.filter(x=>x.mood!=null),wt=ds.filter(x=>x.wt>0);
   const nV=S.vits.length,vTot=lg.reduce((a,x)=>a+x.vits.length,0);
   return {ds:ds,lg:lg,keys:keys,days:keys.length,
-    kcal:Math.round(avgOf(lg.map(x=>x.t.k))),prot:Math.round(avgOf(lg.map(x=>x.t.p))),water:Math.round(avgOf(lg.map(x=>x.water))),caf:Math.round(avgOf(lg.map(x=>x.caf))),
+    kcal:Math.round(avgOf(lg.map(x=>x.t.k))),prot:Math.round(avgOf(lg.map(x=>x.t.p))),water:Math.round(avgOf(lg.map(x=>x.water))),caf:Math.round(avgOf(lg.map(x=>x.caf))),sug:Math.round(avgOf(lg.map(x=>x.t.s||0))),
     sleep:sl.length?r1(avgOf(sl.map(x=>x.sleep))):null,sleepN:sl.length,train:ds.filter(x=>x.train).length,trainSet:ds.filter(x=>x.train!=null).length,
     vitPct:(nV&&lg.length)?Math.round(vTot/(nV*lg.length)*100):null,
     spendTot:Math.round(sp.reduce((a,x)=>a+x.spend,0)),spendN:sp.length,mood:md.length?r1(avgOf(md.map(x=>x.mood))):null,
@@ -1652,7 +1712,7 @@ const RT={g:'ممتاز',a:'جيد',r:'منخفض',h:'مرتفع',n:'—'};
 const rateHi=(v,t,g,a)=>v==null?'n':v>=t*g?'g':v>=t*a?'a':'r';
 function metr(keys){
   const P=periodSummary(keys),ds=P.ds,en=ds.filter(x=>x.energy!=null),wt=ds.filter(x=>x.wt>0),ok=P.lg.length>0;
-  return {P:P,kcal:ok?P.kcal:null,prot:ok?P.prot:null,water:ok?P.water:null,caf:ok?P.caf:null,sleep:P.sleep,
+  return {P:P,kcal:ok?P.kcal:null,prot:ok?P.prot:null,water:ok?P.water:null,caf:ok?P.caf:null,sug:ok?P.sug:null,sleep:P.sleep,
     en:en.length?avgOf(en.map(x=>x.energy)):null,tr:P.trainSet?P.train/P.trainSet:null,trTxt:P.trainSet?P.train+'/'+P.trainSet:null,
     vit:P.vitPct,mood:P.mood,spend:P.spendN?P.spendTot:null,wt:wt.length?r1(avgOf(wt.map(x=>x.wt))):null,exp:expectedAt(keys[keys.length-1])};
 }
@@ -1660,6 +1720,7 @@ const WROWS=[
   ['السعرات',m=>m.kcal==null?'—':fmt(m.kcal),m=>{if(m.kcal==null)return'n';const r=m.kcal/S.t.k;return Math.abs(r-1)<=.1?'g':Math.abs(r-1)<=.2?'a':(r>1?'h':'r')}],
   ['البروتين',m=>m.prot==null?'—':m.prot,m=>m.prot==null?'n':rateHi(m.prot,S.t.p,.92,.78)],
   ['الماء (ل)',m=>m.water==null?'—':r1(m.water/1000),m=>m.water==null?'n':rateHi(m.water,S.t.w,.95,.75)],
+  ['السكر (جم)',m=>m.sug==null?'—':m.sug,m=>m.sug==null?'n':(S.t.s>0?(m.sug<=S.t.s?'g':m.sug<=S.t.s*1.2?'a':'h'):'n')],
   ['الكافيين',m=>m.caf==null?'—':m.caf,m=>m.caf==null?'n':m.caf<=S.t.caf?'g':m.caf<=S.t.caf*1.15?'a':'h'],
   ['النوم (س)',m=>m.sleep==null?'—':m.sleep,m=>m.sleep==null?'n':m.sleep>=7?'g':m.sleep>=6.3?'a':'r'],
   ['النشاط',m=>m.en==null?'—':(EN.find(o=>o[0]===Math.round(m.en))||[0,'—'])[1],m=>m.en==null?'n':m.en>=2.6?'g':m.en>=1.8?'a':'r'],
@@ -1880,7 +1941,7 @@ async function sharePDF(){
 $('pdfGo').addEventListener('click',()=>openS2({mode:'pdf',stage:'pick',opts:pdfOptions(),err:''}));
 
 /* ---------- settings ---------- */
-const TG=[['k','السعرات',800],['p','البروتين (جم)',0],['c','الكارب (جم)',0],['fi','الألياف (جم)',0],['f','الدهون (جم)',0],['w','الماء (مل، أو اكتب باللتر مثل 4)',500],['caf','حد الكافيين (ملغ)',0],['cupMg','كافيين الكوب (ملغ)',1],['cupMl','حجم الكوب (مل)',50]];
+const TG=[['k','السعرات',800],['p','البروتين (جم)',0],['c','الكارب (جم)',0],['fi','الألياف (جم)',0],['f','الدهون (جم)',0],['s','حد السكر (جم)',0],['w','الماء (مل، أو اكتب باللتر مثل 4)',500],['caf','حد الكافيين (ملغ)',0],['cupMg','كافيين الكوب (ملغ)',1],['cupMl','حجم الكوب (مل)',50]];
 function renderSet(){
   $('tgrid').innerHTML=TG.map(g=>'<label>'+g[1]+'<input data-t="'+g[0]+'" type="number" inputmode="numeric" min="'+g[2]+'" value="'+(g[0]==='cupMg'||g[0]==='cupMl'?S[g[0]]:S.t[g[0]])+'"></label>').join('');
   const mk=S.t.p*4+S.t.c*4+S.t.f*9;
@@ -1943,7 +2004,7 @@ function renderUndo(){const p=prevSnap();$('bkUndo').hidden=!p;if(p)$('bkUndo').
 function snapNow(){try{localStorage.setItem(PREVKEY,JSON.stringify(Object.assign({},S,{key:'',orKey:''})));return true}catch(e){return false}}
 function applyData(o){
   const key=S.key,ork=S.orKey,lb=S.lastBk||0;
-  S=Object.assign({},DEF,o);S.t=Object.assign({},DEF.t,o.t);S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.cache=o.cache||{};S.pend=[];S.vits=o.vits||[];S.prof=Object.assign({},DEF.prof,o.prof||{});
+  S=Object.assign({},DEF,o);S.t=Object.assign({},DEF.t,o.t);S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.cache=o.cache||{};S.pend=[];S.rcp=Array.isArray(o.rcp)?o.rcp:[];S.vits=o.vits||[];S.prof=Object.assign({},DEF.prof,o.prof||{});
   S.key=key||'';S.orKey=ork||'';S.lastBk=Math.max(lb,+o.lastBk||0);delete S.bkv;delete S.bkAt;
   fixDays();save();renderSet();renderAll();
 }
@@ -1988,6 +2049,476 @@ $('wipe').addEventListener('click',()=>{
 });
 
 {const h=new Date().getHours();curMeal=h<11?'b':h<16?'l':h<18?'s':'d'}
+/* =====================================================
+   طريقة الطبخ + اقتراحات + وصفات
+   ===================================================== */
+/* ---------- طريقة الطبخ (في شاشة تعديل الوجبة) ---------- */
+const CKINFO={olive:{k:9,f:1},butter:{k:7.2,f:.81}};
+let CKS={t:'none',g:10,o:{t:'none',g:0}};
+function ckAdd(c){const i=CKINFO[c.t];return i&&c.g>0?{k:Math.round(c.g*i.k),f:r1(c.g*i.f)}:{k:0,f:0}}
+function ckRender(){
+  document.querySelectorAll('#ckOpts button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.ck===CKS.t)));
+  const on=CKS.t!=='none';$('ckG').hidden=!on;$('ckV').textContent=CKS.g;
+  $('ckQ').innerHTML=[2,5,10,15,20].map(g=>'<span class="cp'+(g===CKS.g?' on':'')+'"><button type="button" data-ckq="'+g+'">'+(g===2?'بخّة 2':g)+'</button></span>').join('');
+  const a=ckAdd(CKS),o=ckAdd(CKS.o),t=$('ckT');
+  if(on){t.hidden=false;t.innerHTML='يضيف <b class="num">+'+a.k+' سعرة · +'+a.f+' جم دهون</b> للوجبة'+(CKS.o.t!=='none'?' <small class="cap">(بدل '+o.k+' سعرة محسوبة قبل)</small>':'')}
+  else if(CKS.o.t!=='none'){t.hidden=false;t.innerHTML='راح تنشال سعرات الطبخ السابقة (<b class="num">'+o.k+'</b> سعرة)'}
+  else t.hidden=true;
+}
+function ckApply(rec){
+  const a=ckAdd(CKS),o=ckAdd(CKS.o);
+  rec.k=Math.max(0,Math.round(rec.k+a.k-o.k));rec.f=Math.max(0,r1((rec.f||0)+a.f-o.f));
+  rec.ck=CKS.t!=='none'?{t:CKS.t,g:CKS.g}:undefined;
+  CKS={t:'none',g:10,o:{t:'none',g:0}};
+}
+{const _os=openSheet;openSheet=function(id){
+  _os(id);
+  const x=id?peek(sel).items.find(v=>v.id===id):null,c=x&&x.ck?{t:x.ck.t,g:x.ck.g}:{t:'none',g:0};
+  CKS={t:c.t,g:c.g||10,o:c};ckRender();
+}}
+$('ckBox').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.ck){const t=b.dataset.ck;if(t!==CKS.t){CKS.t=t;if(t!=='none'&&!(CKS.g>0))CKS.g=10}}
+  else if(b.dataset.ckg){const d=+b.dataset.ckg;CKS.g=Math.max(1,Math.min(100,CKS.g+d*(d>0?(CKS.g<5?1:5):(CKS.g<=5?1:5))))}
+  else if(b.dataset.ckq)CKS.g=+b.dataset.ckq;
+  else return;
+  ckRender();
+});
+
+/* ---------- المكونات والوصفات ---------- */
+// [الاسم, سعرات, بروتين, كارب, دهون, ألياف, سكر] لكل 100 جم
+const IG={
+  chk:['صدر دجاج (نيّء)',120,22.5,0,2.6,0,0],pot:['بطاطس',77,2,17.5,.1,2.2,.8],oil:['زيت زيتون',884,0,0,100,0,0],
+  egg:['بيض',143,12.6,.7,9.5,0,.4],che:['جبن موزاريلا',280,22,2.2,22,0,1],spn:['سبانخ',23,2.9,3.6,.4,2.2,.4],
+  pep:['فلفل ألوان',31,1,6,.3,2.1,4.2],mce:['لحم مفروم قليل الدسم',190,19,0,12,0,0],onn:['بصل',40,1.1,9.3,.1,1.7,4.2],
+  tom:['طماطم',18,.9,3.9,.2,1.2,2.6],rice:['رز أبيض (نيّء)',360,7,79,.6,1.3,0],tun:['تونة بالماء (مصفاة)',116,26,0,1,0,0],
+  brd:['خبز بر',250,10,45,3,6,3],cuc:['خيار',15,.7,3.6,.1,.5,1.7],yog:['زبادي يوناني',60,10,3.6,.4,0,3.6],
+  oat:['شوفان',389,17,66,7,10.6,1],ban:['موز',89,1.1,23,.3,2.6,12],cot:['جبن قريش',98,11,3.4,4.3,0,2.7],
+  hum:['حمص مطبوخ',164,8.9,27,2.6,7.6,4.8],brc:['بروكلي',34,2.8,7,.4,2.6,1.7]
+};
+const MTH={oven:'🔥 فرن',pan:'🍳 على المقلاة',air:'💨 إيرفراير',boil:'♨️ سلق (بدون زيت)',none:'🥣 بدون طبخ · حط وكل'};
+// ing: [مفتاح, جرام، قابل للتعديل حسب باقيك؟]
+const RECIPES=[
+ {id:'chpot',n:'دجاج بالفرن مع بطاطس',e:'🍗',m:'oven',en:'baked chicken and potatoes',
+  ing:[['chk',250,1],['pot',250,1],['oil',5,0]],free:['ثوم (2 فص)','ليمون (حبة)','بهارات: بابريكا، ملح، فلفل أسود'],
+  steps:[['شغّل الفرن على 200°.',2],['قطّع البطاطس مكعبات وحطها في صينية مع الزيت والملح.',5],['تبّل الدجاج بالثوم المهروس وعصير الليمون والبهارات.',5],['رص الدجاج مع البطاطس في الصينية.',2],['أدخلها الفرن 35 دقيقة، وقلّب البطاطس في النص.',35],['اتركها ترتاح 5 دقائق وقدّمها.',5]]},
+ {id:'kebab',n:'كباب لحم مفروم بالفرن مع خضار',e:'🥩',m:'oven',en:'oven baked kofta kebab',
+  ing:[['mce',200,1],['onn',60,0],['tom',100,0],['pep',80,0],['oil',3,0]],free:['بقدونس مفروم','بهارات كباب','ملح'],
+  steps:[['شغّل الفرن على 220°.',2],['افرم البصل والبقدونس واخلطهم مع اللحم والبهارات والملح.',6],['شكّل اللحم أصابع على سيخ أو في صينية.',5],['قطّع الطماطم والفلفل ورصها حول الكباب وبخّها بالزيت.',4],['أدخلها الفرن 15 دقيقة، وقلّب الكباب مرة.',15],['قدّمه مع الخضار.',1]]},
+ {id:'omel',n:'عجة بيض بالخضار والجبن',e:'🍳',m:'pan',en:'vegetable omelette',
+  ing:[['egg',150,1],['pep',50,0],['spn',40,0],['che',30,0],['oil',3,0]],free:['ملح','فلفل أسود'],
+  steps:[['قطّع الفلفل والسبانخ ناعم.',3],['اخفق البيض مع الجبن والملح والفلفل الأسود.',2],['سخّن المقلاة على نار متوسطة مع بخّة الزيت.',1],['حط الخضار 2 دقيقة ثم اسكب خليط البيض.',3],['غطّها على نار هادئة 4 دقائق حتى تستوي، واقلبها أو اطويها وقدّمها.',5]]},
+ {id:'airch',n:'صدر دجاج إيرفراير مع بروكلي',e:'🥦',m:'air',en:'air fryer chicken breast and broccoli',
+  ing:[['chk',250,1],['brc',200,1],['oil',5,0]],free:['بابريكا وثوم بودرة وملح','ليمون'],
+  steps:[['قطّع الدجاج مكعبات وتبّله بالبهارات والزيت.',5],['حطه في سلة الإيرفراير على 200° لمدة 12 دقيقة.',12],['أضف البروكلي وكمّل 6 دقائق.',6],['قدّمه مع الليمون.',1]]},
+ {id:'rice',n:'رز بالدجاج على المقلاة',e:'🍚',m:'pan',en:'one pan chicken and rice',
+  ing:[['rice',70,1],['chk',200,1],['onn',50,0],['oil',8,0]],free:['بهارات كبسة أو برياني','ملح','ماء (كوبين)'],
+  steps:[['اغسل الرز وانقعه 10 دقائق (أو اغسله مرتين).',3],['قطّع البصل وقلّبه في المقلاة بالزيت 3 دقائق.',4],['أضف الدجاج مقطّع مكعبات مع البهارات وقلّب 5 دقائق.',6],['أضف الرز وكوبين ماء، وغطّها على نار هادئة 15 دقيقة.',18],['اتركها ترتاح 5 دقائق وقدّمها.',5]]},
+ {id:'eggveg',n:'بيض مسلوق مع خضار وخبز',e:'🥚',m:'boil',en:'egg salad',
+  ing:[['egg',150,1],['cuc',100,0],['tom',80,0],['brd',40,1]],free:['ملح وفلفل','ليمون'],
+  steps:[['اسلق البيض في ماء يغلي 10 دقائق.',12],['برّده بالماء وقشّره وقطّعه.',2],['قطّع الخيار والطماطم وقدّمها مع الخبز.',3]]},
+ {id:'tuna',n:'تونة مع خبز وخيار وطماطم',e:'🐟',m:'none',en:'tuna cucumber sandwich',
+  ing:[['tun',120,1],['brd',60,1],['cuc',100,0],['tom',60,0]],free:['ليمون','ملح وفلفل'],
+  steps:[['افتح التونة وصفّها.',1],['قطّع الخيار والطماطم.',2],['حط التونة والخضار على الخبز أو بجانبه وكُل.',2]]},
+ {id:'yogoat',n:'زبادي يوناني مع شوفان وموز',e:'🥣',m:'none',en:'greek yogurt oats banana bowl',
+  ing:[['yog',200,1],['oat',40,0],['ban',100,0]],free:[],
+  steps:[['حط الزبادي في صحن.',1],['أضف الشوفان والموز مقطّع.',1],['قلّب وكُل.',1]]},
+ {id:'cott',n:'جبن قريش مع خيار وطماطم',e:'🥗',m:'none',en:'cottage cheese bowl cucumber tomato',
+  ing:[['cot',200,1],['cuc',100,0],['tom',80,0]],free:['ملح وفلفل أسود'],
+  steps:[['قطّع الخيار والطماطم.',2],['حطها فوق الجبن القريش وكُل.',1]]},
+ {id:'hum',n:'حمص مع خبز وخضار',e:'🫓',m:'none',en:'hummus plate with vegetables',
+  ing:[['hum',150,1],['brd',60,1],['cuc',100,0],['oil',5,0]],free:['ليمون','كمون وملح'],
+  steps:[['اهرس الحمص مع الليمون والكمون إذا تبي.',2],['رش الزيت وقدّمه مع الخبز والخيار.',2]]}
+];
+const igOf=x=>x[3]||IG[x[0]];
+const isBuiltin=id=>RECIPES.some(r=>r.id===id);
+const recById=id=>RECIPES.find(r=>r.id===id)||(S.rcp||[]).find(r=>r.id===id)||SG.gen.find(r=>r.id===id)||(S.rp&&S.rp.r&&S.rp.r.id===id?S.rp.r:null);
+const isSaved=id=>(S.rcp||[]).some(r=>r.id===id);
+const recMin=r=>r.steps.reduce((a,s)=>a+s[1],0);
+function recMacro(r,w){
+  const t={k:0,p:0,c:0,f:0,fi:0,s:0};
+  r.ing.forEach((x,i)=>{const d=igOf(x),g=w[i]||0;t.k+=d[1]*g/100;t.p+=d[2]*g/100;t.c+=d[3]*g/100;t.f+=d[4]*g/100;t.fi+=d[5]*g/100;t.s+=d[6]*g/100});
+  t.k=Math.round(t.k);['p','c','f','fi','s'].forEach(k=>t[k]=r1(t[k]));return t;
+}
+function recWeights(r,target){
+  const base=r.ing.map(x=>x[1]);
+  if(!target)return base;
+  let fix=0,sc=0;r.ing.forEach((x,i)=>{const k=igOf(x)[1]*x[1]/100;if(x[2])sc+=k;else fix+=k});
+  if(!(sc>0))return base;
+  const f=Math.max(.6,Math.min(1.5,(target-fix)/sc));
+  return r.ing.map((x,i)=>x[2]?Math.max(5,Math.round(x[1]*f/5)*5):x[1]);
+}
+
+/* ---------- حسابات باقي اليوم ---------- */
+function remain(){
+  const d=peek(sel),t=sum(d.items);
+  return {k:S.t.k-t.k,p:Math.max(0,S.t.p-t.p),w:Math.max(0,S.t.w-water(d))};
+}
+function habit(){
+  const acc={},ks=Object.keys(S.days).sort().slice(-14);
+  ks.forEach(k=>{const d=S.days[k];MEALS.forEach(m=>{const ts=(d.items||[]).filter(x=>x.m===m[0]&&x.t!=null).map(x=>x.t);if(ts.length)(acc[m[0]]=acc[m[0]]||[]).push(Math.min.apply(null,ts))})});
+  const def={b:480,l:810,s:990,d:1230},o={};
+  MEALS.forEach(m=>{const a=acc[m[0]];o[m[0]]=a&&a.length>=2?Math.round(a.reduce((x,y)=>x+y,0)/a.length/5)*5:def[m[0]]});
+  return o;
+}
+const rnd5=m=>Math.round(m/5)*5;
+const LATE=1410;
+// يرجع أوقات ووجبات مقترحة بالترتيب
+function planSlots(kinds){
+  const now=nowMin(),H=habit(),out=[];let last=now+10;
+  kinds.forEach(kd=>{
+    let slot,t;
+    if(kd==='snack'){slot='s';t=Math.max(last+(out.length?90:0),now+15);if(H.s>t&&H.s<=LATE&&!out.length)t=H.s}
+    else{
+      const cand=[['l',H.l],['d',H.d]].filter(c=>c[1]>=Math.max(last,now-20));
+      if(cand.length){slot=cand[0][0];t=cand[0][1]}else{slot=now<960?'l':'d';t=Math.max(last,now+15)}
+      if(out.length&&t<last+60)t=last+60;
+    }
+    t=Math.max(rnd5(t),rnd5(now+10));if(t>LATE)t=LATE;
+    out.push({slot:slot,t:t});last=t+30;
+  });
+  return out;
+}
+function mealTarget(){
+  const r=remain(),n=nowMin(),left=n<660?3:n<930?2:1;
+  if(r.k<=0)return 0;
+  if(r.k<300)return r.k;
+  return Math.max(250,Math.min(750,Math.round(r.k/left/10)*10));
+}
+function waterPlan(){
+  const r=remain(),n=nowMin();
+  if(r.w<=0)return '💧 شربت كفايتك من الماء اليوم 👌';
+  const endM=1350,left=Math.max(30,endM-n);
+  if(n>=endM)return '💧 باقي لك '+lit(r.w)+' ماء. اشرب على قدرك قبل النوم بوقت.';
+  let cup=300,cups=Math.ceil(r.w/cup);
+  if(left/cups<25){cup=400;cups=Math.ceil(r.w/cup)}
+  let gap=Math.max(15,rnd5(left/cups));
+  const lastT=Math.min(endM,n+gap*(cups-1));
+  return '💧 باقي '+lit(r.w)+': كوب ('+cup+' مل) كل '+gap+' دقيقة تقريباً، وآخر كوب قبل '+tStr(Math.max(lastT,n+gap))+'.';
+}
+
+/* ---------- حالة الواجهة ---------- */
+const SG={open:false,tab:0,flt:'all',gen:[],busy:false,err:'',seen:[]};
+if(!Array.isArray(S.rcp))S.rcp=[];
+let SGO=[];
+function entryList(){
+  const out=[];
+  S.meals.forEach(m=>{
+    const items=m.parts.map(p=>Object.assign({n:p.n,q:p.g+' جم',g:p.g},scaleRow({b:p,g:p.g})));
+    out.push({kind:'meal',n:m.n,items:items,t:sum(items)});
+  });
+  S.snacks.forEach(x=>{
+    if(catOf(x)==='drink'||catOf(x)==='extra')return;
+    const it={n:x.n,q:'',k:x.k||0,p:x.p||0,c:x.c||0,fi:x.fi||0,f:x.f||0,s:x.s||0,w:x.w||0,cf:x.cf||0};
+    out.push({kind:'snack',n:x.n,items:[it],t:sum([it])});
+  });
+  return out.filter(e=>e.t.k>0);
+}
+function sgScore(T,r){return Math.max(0,r.k-T.k)+3*Math.max(0,T.k-r.k)+3*Math.max(0,r.p-T.p)}
+function buildMine(){
+  const r=remain(),E=entryList(),opts=[];
+  if(r.k<150)return {done:true,opts:[]};
+  if(!E.length)return {empty:true,opts:[]};
+  const lim=r.k*1.08+30,sc=T=>sgScore(T,r);
+  const comb=(a,b)=>sum(a.items.concat(b.items));
+  let best1=null,bestMS=null,bestMM=null;
+  E.forEach(a=>{if(a.t.k<=lim){const s=sc(a.t);if(!best1||s<best1.s)best1={s:s,es:[a],T:a.t}}});
+  for(let i=0;i<E.length;i++)for(let j=0;j<E.length;j++){
+    if(i===j)continue;const a=E[i],b=E[j];
+    if(a.kind==='meal'&&b.kind==='snack'){const T=comb(a,b);if(T.k<=lim){const s=sc(T);if(!bestMS||s<bestMS.s)bestMS={s:s,es:[a,b],T:T}}}
+    if(a.kind==='meal'&&b.kind==='meal'&&i<j){const T=comb(a,b);if(T.k<=lim){const s=sc(T);if(!bestMM||s<bestMM.s)bestMM={s:s,es:[a,b],T:T}}}
+  }
+  [[best1,'وجبة واحدة',['meal']],[bestMS,'وجبة + سناك',['meal','snack']],[bestMM,'وجبتين',['meal','meal']]].forEach(x=>{
+    if(!x[0])return;
+    const o=x[0];o.title=x[1];
+    const kinds=o.es.length===1?[o.es[0].kind==='snack'?'snack':'meal']:x[2];
+    o.plan=planSlots(kinds);opts.push(o);
+  });
+  if(!opts.length){ // ولا شي يدخل: أقرب وجبة أصغر
+    const s=E.slice().sort((a,b)=>a.t.k-b.t.k)[0];
+    opts.push({s:0,es:[s],T:s.t,title:'أقرب خيار عندك',plan:planSlots([s.kind==='snack'?'snack':'meal']),over:true});
+  }
+  opts.sort((a,b)=>a.s-b.s);
+  return {opts:opts,r:r};
+}
+function covTxt(T,r){
+  const pk=r.k>0?Math.round(T.k/r.k*100):0,pp=r.p>0?Math.round(T.p/r.p*100):100;
+  return {pk:pk,pp:pp,txt:'سعرات '+pk+'% · بروتين '+Math.min(pp,999)+'%'};
+}
+function optCard(o,i,r,best){
+  const cv=covTxt(o.T,r);
+  const times=o.plan.map(p=>tStr(p.t)).join(' و ');
+  let h='<div class="rvcard'+(best?' sgbest':'')+'"><div class="rowsp"><b style="font-size:15px">'+(best?'⭐ الأنسب · ':'')+esc(o.title)+'</b><span class="cap num">'+times+'</span></div>';
+  o.es.forEach((e,j)=>{
+    const sl=o.plan[j].slot;
+    h+='<div class="lrow" style="padding:6px 0"><div class="nm">'+esc(e.n)+'<small>'+e.t.k+' سعرة · '+e.t.p+' بروتين</small></div><button type="button" class="add" data-sga="'+i+':'+j+'">+ '+lam(sl)+'</button></div>';
+  });
+  h+='<div class="mrow"><div class="t"><span>يغطي من باقيك</span><span class="num">'+cv.txt+'</span></div><div class="bar"><i style="width:'+Math.min(cv.pk,100)+'%;background:var(--kcal)"></i></div></div>';
+  if(o.es.length>1)h+='<button type="button" class="btn sm" data-sga="'+i+':all">أضف الكل</button>';
+  if(o.over)h+='<p class="note" style="margin:6px 0 0">كل وجباتك المحفوظة أكبر من باقيك، هذا أقربها. جرّب «وصفة جديدة».</p>';
+  else if(cv.pk>103)h+='<p class="note" style="margin:6px 0 0">يتجاوز السعرات شوي.</p>';
+  else if(cv.pp<70&&r.p>20)h+='<p class="note" style="margin:6px 0 0">البروتين يظل ناقص ~'+Math.round(r.p-o.T.p)+' جم.</p>';
+  return h+'</div>';
+}
+function viewMine(){
+  const B=buildMine();
+  if(B.done)return '<div class="tot">باقي لك أقل من 150 سعرة 👌 يكفي اليوم. اشرب ماء وارتاح.</div>';
+  if(B.empty)return '<p class="note">احفظ وجباتك وسناكاتك في «قائمة الطعام» وأرتب لك منها اقتراحات بأرقامك الحقيقية. جرّب «وصفة جديدة» الحين.</p>';
+  SGO=B.opts;
+  return '<p class="note" style="margin:0 0 6px">من وجباتك وسناكاتك المحفوظة (أرقام حقيقية).</p>'+B.opts.map((o,i)=>optCard(o,i,B.r,i===0)).join('');
+}
+
+/* ---------- توليد وصفات جديدة (الذكاء يعطي المكونات والخطوات، والحساب عندي) ---------- */
+const IGK=[['cot',/قريش/],['hum',/حمص/],['chk',/دجاج|فراخ/],['pot',/بطاط/],['oil',/زيت زيتون/],['egg',/بيض/],['che',/موزاريلا|جبن/],['spn',/سبانخ/],['pep',/فلفل (ألوان|رومي|حلو)/],['mce',/لحم مفروم|لحم/],['onn',/بصل/],['tom',/طماطم|بندورة/],['rice',/رز|أرز|ارز/],['tun',/تونة/],['brd',/خبز/],['cuc',/خيار/],['yog',/زبادي/],['oat',/شوفان/],['ban',/موز/],['brc',/بروكلي/]];
+const clampN=(v,a,b)=>{v=+v;return isFinite(v)?Math.max(a,Math.min(b,v)):0};
+function cleanRecipe(o,i,target){
+  if(!o||!Array.isArray(o.ing)||!Array.isArray(o.steps))return null;
+  const n=String(o.n||'').trim().slice(0,60);if(!n)return null;
+  const ing=[];
+  o.ing.forEach((x,j)=>{
+    const name=String(x.n||'').trim().slice(0,40),g=Math.round(clampN(x.g,0,1500));if(!name||!(g>0))return;
+    const hit=IGK.find(m=>m[1].test(name));
+    if(hit){ing.push([hit[0],g,0]);return}
+    let p=clampN(x.p,0,100),c=clampN(x.c,0,100),f=clampN(x.f,0,100),k=clampN(x.k,0,900);
+    const calc=4*p+4*c+9*f;if(!(k>0)||Math.abs(k-calc)>.25*Math.max(k,calc))k=Math.round(calc);
+    ing.push(['x'+j,g,0,[name,Math.round(k),r1(p),r1(c),r1(f),r1(clampN(x.fi,0,100)),r1(clampN(x.s,0,100))]]);
+  });
+  if(ing.length<2)return null;
+  const steps=o.steps.map(s=>[String(s&&s.t||'').trim().slice(0,160),Math.round(clampN(s&&s.m,1,60))||1]).filter(s=>s[0]);
+  if(steps.length<2)return null;
+  const m=MTH[o.m]?o.m:'pan';
+  const r={id:'g'+Date.now()+'_'+i,n:n,e:String(o.e||'🍽️').slice(0,4),m:m,en:String(o.en||n).slice(0,60),ing:ing,free:(Array.isArray(o.free)?o.free:[]).map(x=>String(x).trim().slice(0,50)).filter(Boolean).slice(0,8),steps:steps.slice(0,10),gen:1};
+  // الأصناف الرئيسية (مو الزيت) قابلة للضبط على باقيك
+  const tk=ing.reduce((a,x)=>a+igOf(x)[1]*x[1]/100,0);
+  r.ing.forEach(x=>{const k=igOf(x)[1]*x[1]/100;x[2]=(tk>0&&k/tk>=.25&&!/زيت|زبدة|سمن/.test(igOf(x)[0]))?1:0});
+  r.ing=r.ing.map(x=>x.slice());
+  const w=recWeights(r,target);r.ing.forEach((x,j)=>{x[1]=w[j]});
+  const t=recMacro(r,r.ing.map(x=>x[1]));
+  if(!(t.k>=120&&t.k<=1300))return null;
+  return r;
+}
+function genPrompt(tg){
+  const r=remain(),pl=planSlots(['meal'])[0];
+  return 'أنت طباخ ومدرب تغذية. اقترح 3 وصفات جديدة لشخص سعودي. هدف الوجبة حوالي '+tg+' سعرة، وباقي له اليوم '+Math.round(r.p)+' جم بروتين (خل الوصفة غنية بالبروتين). الوجبة القادمة: '+slotName(pl.slot)+'. '+
+   'الشروط: مكونات متوفرة في أي بقالة وبيت عادي، تكلفة معقولة (لا ستيك ولا مأكولات بحرية فاخرة ولا مكونات نادرة)، خطوات قصيرة وواضحة. وصفتان تُطبخ (فرن أو مقلاة أو إيرفراير أو سلق) ووصفة واحدة بدون طبخ تجهز بـ5 دقايق. '+
+   'أوزان المكونات بالجرام وهو نيّء (الدجاج واللحم والرز قبل الطبخ). لكل مكوّن اكتب قيمه لكل 100 جم: k سعرات، p بروتين، c كارب، f دهون، fi ألياف، s سكر. زيت الزيتون إن احتجته بكمية صغيرة 5-10 جم. البهارات والملح والماء والثوم والليمون ضعها في free كنص. m طريقة الطبخ وحدة من: oven (فرن)، pan (مقلاة)، air (إيرفراير)، boil (سلق)، none (بدون طبخ). en اسم الوجبة بالإنجليزي. لكل خطوة t النص وm الدقائق. '+
+   (SG.seen.length?'لا تكرر هذي الوصفات: '+SG.seen.slice(-9).join('، ')+'. ':'')+
+   'ردّ بـ JSON فقط: {"recipes":[{"n":"","e":"🍗","m":"oven","en":"","ing":[{"n":"","g":0,"k":0,"p":0,"c":0,"f":0,"fi":0,"s":0}],"free":[""],"steps":[{"t":"","m":0}]}]}';
+}
+async function sgGen(){
+  if(SG.busy)return;
+  if(!hasAI()){SG.err='الوصفات الجديدة تحتاج مفتاح Gemini. حطه من الإعدادات. الوصفات الجاهزة تشتغل بدونه.';renderSug();return}
+  SG.busy=true;SG.err='';renderSug();
+  try{
+    const tg=mealTarget()||300;
+    const txt=await aiCall([{text:genPrompt(tg)}]);
+    const m=txt.match(/\{[\s\S]*\}/);if(!m)throw {code:'parse'};
+    let o;try{o=JSON.parse(m[0])}catch(e){throw {code:'parse'}}
+    const rs=(o.recipes||[]).slice(0,4).map((x,i)=>cleanRecipe(x,i,tg)).filter(Boolean);
+    if(!rs.length)throw {code:'parse'};
+    SG.gen=rs.concat(SG.gen).slice(0,6);rs.forEach(x=>SG.seen.push(x.n));SG.flt='all';
+  }catch(e){SG.err=errText(e)}
+  SG.busy=false;renderSug();
+}
+
+/* ---------- قائمة الوصفات ---------- */
+function rowOf(r,tg){const w=recWeights(r,tg);return {r:r,w:w,t:recMacro(r,w)}}
+function recList(){
+  const rm=remain(),tg=mealTarget()||300,left=nowMin()<660?3:nowMin()<930?2:1;
+  const sc=x=>Math.abs(x.t.k-tg)+3*Math.max(0,rm.p/left-x.t.p);
+  const built=RECIPES.map(r=>rowOf(r,tg)).sort((a,b)=>sc(a)-sc(b));
+  const gen=SG.gen.filter(r=>!isSaved(r.id)).map(r=>rowOf(r,tg)),saved=(S.rcp||[]).map(r=>rowOf(r,tg));
+  const f=SG.flt,okf=x=>f==='all'||(f==='none'?x.r.m==='none':x.r.m!=='none');
+  let rows=gen.filter(okf).concat(saved.filter(okf));
+  if(f==='all')rows=rows.concat(built.filter(x=>x.r.m!=='none').slice(0,3),built.filter(x=>x.r.m==='none').slice(0,3));
+  else rows=rows.concat(built.filter(okf).slice(0,f==='none'?4:4));
+  return rows;
+}
+function recCard(x){
+  const q=recMin(x.r);
+  const tags=(x.r.gen&&!isSaved(x.r.id)?'<span class="tgb">✨ جديدة</span>':'')+(isSaved(x.r.id)?'<span class="tgb">💾 محفوظة</span>':'');
+  const ing=x.r.ing.map((y,i)=>esc(igOf(y)[0].replace(/ \(نيّء\)| \(مصفاة\)| \(نيّء\)/g,''))+' '+x.w[i]).slice(0,4).join(' · ');
+  return '<div class="rvcard"><div class="rowsp"><b>'+esc(x.r.e)+' '+esc(x.r.n)+'</b><span class="cap num" style="white-space:nowrap">'+x.t.k+' سعرة</span></div>'+
+    '<div class="cap num">⏱ '+q+' دقيقة · بروتين '+x.t.p+' · كارب '+x.t.c+' · دهون '+x.t.f+'</div>'+
+    '<div class="cap" style="margin-top:3px">'+ing+'</div>'+
+    '<div style="display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:wrap"><span class="tgb">'+MTH[x.r.m]+'</span>'+tags+'</div>'+
+    '<button type="button" class="btn sm" style="margin-top:8px" data-rpo="'+x.r.id+'">📖 افتح الوصفة</button></div>';
+}
+function viewRec(){
+  if(remain().k<150)return '<div class="tot">باقي لك أقل من 150 سعرة 👌 يكفي اليوم.</div>';
+  const tg=mealTarget()||300,rm=remain();
+  let h='<p class="note" style="margin:0 0 6px">وصفات مضبوطة على باقيك (~'+tg+' سعرة للوجبة · بروتين باقي '+Math.round(rm.p)+'). السعرات والبروتين محسوبة من أوزان المكونات، مو تخمين.</p>'+
+    '<div class="chiprow" style="margin-bottom:8px">'+[['all','الكل'],['cook','🍳 تطبخها'],['none','⚡ بدون طبخ']].map(f=>'<span class="cp'+(SG.flt===f[0]?' on':'')+'"><button type="button" data-sgf="'+f[0]+'">'+f[1]+'</button></span>').join('')+'</div>';
+  if(SG.err)h+='<p class="msg err">'+esc(SG.err)+'</p>';
+  h+=recList().map(recCard).join('');
+  h+=SG.busy?'<p class="note" style="text-align:center">⏳ جاري تجهيز وصفات جديدة...</p>':'<button type="button" class="btn big" style="margin-top:6px" data-sggen="1">✨ ولّد وصفات جديدة</button>'+(hasAI()?'':'<p class="note" style="margin:6px 0 0;text-align:center">تحتاج مفتاح Gemini. بدونه تشتغل الوصفات الجاهزة.</p>');
+  return h;
+}
+
+/* ---------- بطاقة الاقتراحات ---------- */
+function renderSug(){
+  const c=$('sgCard');if(!c)return;
+  const isToday=sel===TK();
+  c.hidden=!isToday;if(!isToday)return;
+  const r=remain();
+  $('sgCap').textContent=r.k>0?'باقي '+fmt(Math.round(r.k))+' سعرة · '+Math.round(r.p)+' بروتين · '+lit(r.w)+' ماء':'وصلت هدف السعرات اليوم';
+  $('sgToggle').textContent=SG.open?'إغلاق':'فتح';
+  $('sgBody').hidden=!SG.open;
+  if(!SG.open)return;
+  document.querySelectorAll('#sgTabs button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.sgt===SG.tab)));
+  $('sgRp').innerHTML=S.rp&&recById(S.rp.id)?'<div class="sgrun"><span>🍳 عندك وصفة شغالة: '+esc(recById(S.rp.id).n)+'</span><button type="button" class="link" data-rpo="'+S.rp.id+'">كمّل</button></div>':'';
+  $('sgView').innerHTML=SG.tab===0?viewMine():viewRec();
+  $('sgWater').innerHTML=waterPlan()+(r.k>=150?'<br>🕗 '+(function(){const p=planSlots(['meal'])[0];return slotName(p.slot)+' بوقتك المعتاد: حوالي '+tStr(p.t)})():'');
+}
+{const _ra=renderAll;renderAll=function(){_ra();renderSug()}}
+$('sgToggle').addEventListener('click',()=>{SG.open=!SG.open;renderSug()});
+$('sgTabs').addEventListener('click',e=>{const b=e.target.closest('[data-sgt]');if(b){SG.tab=+b.dataset.sgt;renderSug()}});
+$('sgCard').addEventListener('click',e=>{
+  const a=e.target.closest('[data-sga]');
+  if(a){
+    const [i,j]=a.dataset.sga.split(':'),o=SGO[+i];if(!o)return;
+    snap();
+    const idx=j==='all'?o.es.map((_,k)=>k):[+j];
+    idx.forEach(k=>{commitTo(sel,o.es[k].items,o.plan[k].slot,stamp(),false)});
+    const T=sum(idx.reduce((l,k)=>l.concat(o.es[k].items),[]));
+    toast('تمت الإضافة ('+T.k+' سعرة)',true);return;
+  }
+  const fl=e.target.closest('[data-sgf]');
+  if(fl){SG.flt=fl.dataset.sgf;renderSug();return}
+  if(e.target.closest('[data-sggen]')){sgGen();return}
+  const rp=e.target.closest('[data-rpo]');
+  if(rp)openRecipe(rp.dataset.rpo);
+});
+
+/* ---------- صفحة الوصفة ---------- */
+function openRecipe(id){
+  const r=recById(id);if(!r)return;
+  if(S.rp&&S.rp.id===id){
+    openS2({mode:'recipe',id:id,have:S.rp.have||{},done:S.rp.done||{},w:S.rp.w,w0:S.rp.w0||S.rp.w.slice(),slot:S.rp.slot||'d'});return;
+  }
+  const w=recWeights(r,mealTarget()||300);
+  openS2({mode:'recipe',id:id,have:{},done:{},w:w,w0:w.slice(),slot:planSlots(['meal'])[0].slot});
+  rpSave();
+}
+function rpSave(){
+  if(!M||M.mode!=='recipe')return;
+  const rr=recById(M.id);
+  S.rp={id:M.id,have:M.have,done:M.done,w:M.w,w0:M.w0,slot:M.slot,at:S.rp&&S.rp.id===M.id?S.rp.at:Date.now()};
+  if(rr&&!isBuiltin(M.id))S.rp.r=rr;
+  save();
+}
+const cbx=on=>'<span class="cbx'+(on?' on':'')+'">'+(on?'✓':'')+'</span>';
+function ingTxt(r,i,w){const x=r.ing[i],g=w[i];return esc(igOf(x)[0])+'</span><span class="tm num">'+g+' جم · '+Math.round(igOf(x)[1]*g/100)+' سعرة'}
+function renderRecipe(){
+  const r=recById(M.id),t=recMacro(r,M.w);
+  const hv=r.ing.filter((x,i)=>M.have['i'+i]).length+r.free.filter((x,i)=>M.have['f'+i]).length,all=r.ing.length+r.free.length;
+  const left=r.steps.reduce((a,s,i)=>a+(M.done[i]?0:s[1]),0);
+  const yt='https://www.youtube.com/results?search_query='+encodeURIComponent('طريقة '+r.n);
+  const bbc='https://www.bbcgoodfood.com/search?q='+encodeURIComponent(r.en);
+  let h='<div class="rowsp"><button type="button" class="link" data-act="close">‹ رجوع</button><button type="button" class="link" data-rp="cancel" style="color:var(--red)">إلغاء الوصفة</button></div>'+
+    '<h2 style="margin:6px 0 2px">'+esc(r.e)+' '+esc(r.n)+'</h2>'+
+    '<div class="cap num">'+MTH[r.m]+' · ⏱ الوقت المتوقع: <b>'+recMin(r)+' دقيقة</b>'+(r.gen?' <span class="tgb">✨ وصفة جديدة</span>':'')+'</div>'+
+    '<div class="tot num" style="margin-top:10px">للوجبة: <b>'+t.k+' سعرة</b> · '+t.p+' بروتين · '+t.c+' كارب'+(t.s?' (منها '+t.s+' سكر)':'')+' · '+t.f+' دهون</div>'+
+    '<div style="font-weight:700;margin:16px 0 0">🛒 المكونات <span class="cap">('+hv+' من '+all+' جاهزة)</span></div>';
+  r.ing.forEach((x,i)=>{h+='<button type="button" class="ckl'+(M.have['i'+i]?' on':'')+'" data-rp="have:i'+i+'">'+cbx(M.have['i'+i])+'<span class="tx">'+ingTxt(r,i,M.w)+'</span></button>'});
+  r.free.forEach((x,i)=>{h+='<button type="button" class="ckl'+(M.have['f'+i]?' on':'')+'" data-rp="have:f'+i+'">'+cbx(M.have['f'+i])+'<span class="tx">'+esc(x)+'</span></button>'});
+  h+='<p class="note" style="margin:8px 0 0">علّم على اللي موجود عندك، واللي ناقص اشتريه قبل ما تبدأ. الأوزان للمكوّن نيّء.</p>'+
+    '<div style="font-weight:700;margin:16px 0 0">👩‍🍳 طريقة التحضير</div>';
+  r.steps.forEach((s,i)=>{h+='<button type="button" class="ckl'+(M.done[i]?' on':'')+'" data-rp="done:'+i+'">'+cbx(M.done[i])+'<span class="tx"><b>'+(i+1)+'.</b> '+esc(s[0])+'</span><span class="tm num">'+s[1]+' د</span></button>'});
+  h+='<div class="tot" style="margin-top:10px;display:flex;justify-content:space-between"><span>⏱ باقي من الوقت</span><b class="num">'+(left?'~ '+left+' دقيقة':'خلصت 🎉')+'</b></div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0"><a class="lnkb" href="'+yt+'" target="_blank" rel="noopener">▶ شوف الطريقة (يوتيوب)</a><a class="lnkb" href="'+bbc+'" target="_blank" rel="noopener">📖 وصفة صحية (BBC Good Food)</a></div>'+
+    '<button type="button" class="btn big" data-rp="finish">✅ اكتملت الوجبة</button>'+
+    (isBuiltin(r.id)?'':isSaved(r.id)?'<button type="button" class="btn ghost" data-rp="unsave">🗑 احذفها من وصفاتي</button>':'<button type="button" class="btn soft" data-rp="save">💾 احفظها في وصفاتي</button>')+
+    '<button type="button" class="btn ghost" data-act="close">إغلاق (وأكمل بعدين)</button>';
+  $('s2body').innerHTML=h;
+}
+function renderWeigh(){
+  const r=recById(M.id),t=recMacro(r,M.w),t0=recMacro(r,recWeights(r,mealTarget()||300)),rem=remain();
+  let h='<h2>⚖️ تأكد من الأوزان</h2><p class="note">عدّل كل مكوّن لو وزنك الفعلي مختلف عن المقترح. الأرقام تتحدث مباشرة. الأوزان للمكوّن نيّء.</p>';
+  r.ing.forEach((x,i)=>{
+    h+='<div style="padding:10px 0;border-top:1px solid var(--line)"><div class="rowsp"><b>'+esc(igOf(x)[0])+'</b><span class="cap num">'+Math.round(igOf(x)[1]*M.w[i]/100)+' سعرة · المقترح '+(M.w0?M.w0[i]:x[1])+'</span></div>'+
+      '<div class="stp"><button type="button" data-rp="w:'+i+':1">+</button><b class="num">'+M.w[i]+' <small style="font-size:13px;font-weight:500">جم</small></b><button type="button" data-rp="w:'+i+':-1">−</button></div></div>';
+  });
+  h+='<label>تنضاف إلى وجبة<select id="s2slot">'+MEALS.map(m=>'<option value="'+m[0]+'"'+(m[0]===M.slot?' selected':'')+'>'+m[1]+'</option>').join('')+'</select></label>'+
+    '<div class="tot num" style="line-height:1.9">المجموع: <b>'+t.k+' سعرة</b> · '+t.p+' بروتين · '+t.c+' كارب'+(t.s?' (منها '+t.s+' سكر)':'')+' · '+t.f+' دهون<br><small class="cap">باقي لك اليوم '+Math.round(rem.k)+' سعرة'+(t.k>rem.k?' (تتجاوزه بـ '+Math.round(t.k-rem.k)+')':'')+'</small></div>'+
+    '<button type="button" class="btn big" data-rp="confirm">تأكيد وإضافة</button><button type="button" class="btn ghost" data-rp="back">رجوع للوصفة</button>';
+  $('s2body').innerHTML=h;
+}
+{const _rs=renderS2;renderS2=function(){
+  if(M&&M.mode==='recipe')return renderRecipe();
+  if(M&&M.mode==='rweigh')return renderWeigh();
+  return _rs();
+}}
+$('s2body').addEventListener('click',e=>{
+  const b=e.target.closest('[data-rp]');if(!b||!M||(M.mode!=='recipe'&&M.mode!=='rweigh'))return;
+  const v=b.dataset.rp,keep=$('s2body').scrollTop;
+  if(v.startsWith('have:')){const k=v.slice(5);M.have[k]=!M.have[k];rpSave();renderS2();$('s2body').scrollTop=keep;return}
+  if(v.startsWith('done:')){const k=v.slice(5);M.done[k]=!M.done[k];rpSave();renderS2();$('s2body').scrollTop=keep;return}
+  if(v==='cancel'){S.rp=null;save();closeS2();renderSug();toast('تم إلغاء الوصفة',false);return}
+  if(v==='save'){const r=recById(M.id);if(r&&!isSaved(r.id)){S.rcp.push(JSON.parse(JSON.stringify(r)));save();toast('انحفظت في وصفاتي',false)}renderS2();$('s2body').scrollTop=keep;return}
+  if(v==='unsave'){S.rcp=S.rcp.filter(x=>x.id!==M.id);save();toast('انحذفت من وصفاتي',false);renderS2();$('s2body').scrollTop=keep;return}
+  if(v==='finish'){M.mode='rweigh';rpSave();renderS2();$('s2body').scrollTop=0;return}
+  if(v==='back'){M.mode='recipe';renderS2();$('s2body').scrollTop=0;return}
+  if(v.startsWith('w:')){
+    const [,i,d]=v.split(':'),x=recById(M.id).ing[+i],g=M.w[+i];
+    const st=g<=10?1:5;M.w[+i]=Math.max(0,Math.min(3000,g+(+d)*st));rpSave();renderS2();$('s2body').scrollTop=keep;return
+  }
+  if(v==='confirm'){
+    const r=recById(M.id),t=recMacro(r,M.w),slot=$('s2slot').value,tg=M.w.reduce((a,x)=>a+x,0);
+    if(!(t.k>0)){return}
+    const it={n:r.n,q:MTH[r.m].replace(/^\S+\s/,'')+' · '+tg+' جم',k:t.k,p:t.p,c:t.c,fi:t.fi,f:t.f,s:t.s,w:0,cf:0,g:tg};
+    commit([it],slot);S.rp=null;save();closeS2();renderSug();return;
+  }
+});
+renderSug();
+{const _cs=closeS2;closeS2=function(){_cs();renderSug()}}
+
+/* ---------- شاشة ＋ إضافة (من قائمة الطعام إلى وجبة) ---------- */
+let atCat='meal';
+function entryItems(e){
+  if(e.t==='meal'){const m=S.meals.find(v=>v.id===e.id);return m?m.parts.map(p=>Object.assign({n:p.n,q:p.g+' جم',g:p.g},scaleRow({b:p,g:p.g}))):[]}
+  const x=S.snacks.find(v=>v.id===e.id);
+  return x?[{n:x.n,q:'',k:x.k||0,p:x.p||0,c:x.c||0,fi:x.fi||0,f:x.f||0,s:x.s||0,w:x.w||0,cf:x.cf||0}]:[];
+}
+function atRows(){
+  const q=(M.q||'').trim().toLowerCase();
+  const l=listEntries().filter(x=>x.kind===M.cat&&(!q||x.n.toLowerCase().includes(q)));
+  if(!l.length)return '<p class="note" style="padding:8px 0">'+(q?'ما لقيت شي بهذا البحث.':'ما فيه عناصر بهذا القسم بعد. اضغط «＋ جديد» وضيف.')+'</p>';
+  return l.map(x=>{const fl=flash[x.key]&&Date.now()-flash[x.key]<3000;
+    return '<div class="mk-row"><div class="nm">'+esc(x.n)+'<small>'+esc(x.sub.replace(/^[^·]*· ?/,'')||x.sub)+'</small></div><button type="button" class="'+(fl?'done':'')+'" data-at="'+x.key+'">'+(fl?'✓ أضيف':'＋')+'</button></div>'}).join('');
+}
+function renderAddTo(){
+  $('s2body').innerHTML='<h2>＋ إضافة إلى '+slotName(M.slot)+'</h2>'+
+    '<input id="atq" type="search" placeholder="🔍 ابحث في قائمة الطعام..." autocomplete="off" value="'+esc(M.q||'')+'">'+
+    '<div class="chiprow" style="margin:10px 0">'+CATS.map(c=>'<span class="cp'+(c[0]===M.cat?' on':'')+'"><button type="button" data-atc="'+c[0]+'">'+c[2]+' '+c[1]+'</button></span>').join('')+'</div>'+
+    '<div id="atList">'+atRows()+'</div>'+
+    '<div style="display:flex;gap:8px;margin-top:10px"><button class="btn sm" style="flex:1;background:var(--fill);color:var(--ink)" type="button" data-at="new">＋ جديد</button><button class="btn" type="button" style="flex:2;width:auto" data-act="close">تم</button></div>';
+}
+{const _r2=renderS2;renderS2=function(){if(M&&M.mode==='addto')return renderAddTo();return _r2()}}
+$('meals').addEventListener('click',e=>{
+  const b=e.target.closest('[data-addto]');if(!b)return;
+  openS2({mode:'addto',slot:b.dataset.addto,cat:atCat,q:''});
+});
+$('s2body').addEventListener('input',e=>{if(e.target.id==='atq'&&M&&M.mode==='addto'){M.q=e.target.value;$('atList').innerHTML=atRows()}});
+$('s2body').addEventListener('click',e=>{
+  if(!M||M.mode!=='addto')return;
+  const c=e.target.closest('[data-atc]');
+  if(c){M.cat=atCat=c.dataset.atc;renderAddTo();return}
+  const b=e.target.closest('[data-at]');if(!b)return;
+  const k=b.dataset.at;
+  if(k==='new'){curMeal=M.slot;openS2({mode:'new'});return}
+  const en=listEntries().find(x=>x.key===k);if(!en)return;
+  if(en.t==='add'){const a=S.adds.find(v=>v.id===en.id);if(a)openS2({mode:'padd',p:a,slot:M.slot,g:0});return}
+  const items=entryItems(en);if(!items.length)return;
+  snap();commitTo(sel,items,M.slot,stamp(),false);
+  flash[k]=Date.now();$('atList').innerHTML=atRows();setTimeout(()=>{if(M&&M.mode==='addto'&&$('atList'))$('atList').innerHTML=atRows()},3100);
+  toast('تمت إضافة «'+en.n+'» ('+sum(items).k+' سعرة)',true);
+});
+$('myMeals').addEventListener('change',e=>{
+  const s=e.target.closest('.catsel');if(!s)return;
+  const [t,id]=s.dataset.cat.split(':'),x=(t==='sn'?S.snacks:S.adds).find(v=>String(v.id)===id);
+  if(x){x.cat=s.value;save();renderMyMeals()}
+});
 show('Home');
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
