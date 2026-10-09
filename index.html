@@ -171,7 +171,7 @@ label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5
 .tog button[aria-pressed="true"].y{background:rgba(52,199,89,.16);color:var(--ok);box-shadow:inset 0 0 0 2px var(--green)}
 .tog button[aria-pressed="true"].n{background:rgba(142,142,147,.2);color:var(--ink);box-shadow:inset 0 0 0 2px var(--fill2)}
 /* tab bar */
-.tabs{position:fixed;inset-inline:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(22px);backdrop-filter:saturate(180%) blur(22px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));z-index:9}
+.tabs{position:fixed;inset-inline:0;bottom:0;display:grid;grid-template-columns:repeat(3,1fr);background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(22px);backdrop-filter:saturate(180%) blur(22px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));z-index:9}
 .tabs button{border:0;background:none;padding:4px 2px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:1px;font-size:11px;font-weight:600}
 .tabs button span.e{font-size:23px;line-height:1.2;filter:grayscale(1);opacity:.7}
 .tabs button[aria-current="page"]{color:var(--blue)}
@@ -195,6 +195,18 @@ label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5
 .ch text{fill:var(--muted);font-size:10px}
 .ins{margin:0;padding-inline-start:20px;display:flex;flex-direction:column;gap:7px;font-size:14px}
 .pv{width:100%;border-radius:12px}
+section[id]{scroll-margin-top:12px}
+.pcard{display:flex;align-items:center;gap:10px;background:var(--fill);border-radius:14px;padding:10px 12px;font-size:13px}
+.pcard .tx{flex:1;min-width:0}
+.pcard .tx b{display:block;font-size:14px;overflow-wrap:anywhere}
+.pcard .tx span{color:var(--muted);font-size:12px}
+.pcard.fail .tx span{color:var(--no)}
+.pcard button{border:0;border-radius:999px;padding:7px 12px;font-weight:700;font-size:13px;background:var(--card);color:var(--blue)}
+.pcard button.x{color:var(--red)}
+.cap{font-size:12px;color:var(--muted);margin:2px 0 6px;font-weight:600}
+.cp.sn button{color:var(--ink)}
+.chk{flex-direction:row;align-items:center;gap:10px;font-size:15px;color:var(--ink)}
+.chk input{width:22px;height:22px;flex:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -209,7 +221,7 @@ label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5
     </div>
   </header>
 
-  <!-- اليوم -->
+  <!-- اليوم (كل شي في صفحة وحدة بترتيب اليوم) -->
   <main id="vHome">
     <section class="card hero" aria-label="سعرات اليوم">
       <div class="ringwrap">
@@ -218,23 +230,32 @@ label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5
         <div class="mini" id="macros"></div>
       </div>
       <div class="pills">
-        <button type="button" class="pill" data-go="Body">💧 الماء<b class="num" id="pW"></b></button>
-        <button type="button" class="pill" data-go="Body">☕ الكافيين<b class="num" id="pC"></b></button>
-        <button type="button" class="pill" data-go="Body">💊 الفيتامينات<b class="num" id="pV"></b></button>
+        <button type="button" class="pill" data-scroll="secWater">💧 الماء<b class="num" id="pW"></b></button>
+        <button type="button" class="pill" data-scroll="secCaf">☕ الكافيين<b class="num" id="pC"></b></button>
+        <button type="button" class="pill" data-scroll="secVit">💊 الفيتامينات<b class="num" id="pV"></b></button>
       </div>
     </section>
 
-    <section class="card" aria-label="أضف أكلك">
+    <section class="card" id="secMorning" aria-label="صباحك">
+      <div class="sh"><div class="ic" style="background:rgba(88,86,214,.18)">😴</div><h3>صباحك <small>كم نمت؟</small></h3></div>
+      <div class="step"><button type="button" id="slM" aria-label="أنقص نص ساعة">−</button><div class="v num" id="slV">—</div><button type="button" id="slP" aria-label="زد نص ساعة">+</button></div>
+      <div class="seg" id="slQ"><button type="button" data-h="5">5</button><button type="button" data-h="6">6</button><button type="button" data-h="7">7</button><button type="button" data-h="8">8</button><button type="button" data-h="9">9</button></div>
+      <div class="sh" style="margin-top:4px"><div class="ic" style="background:rgba(255,204,0,.2)">⚡</div><h3>نشاطك الصباح</h3></div>
+      <div class="opts" id="enOpts"></div>
+    </section>
+
+    <section class="card" id="secFood" aria-label="أضف أكلك">
       <div class="sh"><div class="ic" style="background:rgba(255,149,0,.16)">✍️</div><h3>وش أكلت؟</h3></div>
       <div class="seg" id="mchips" role="group" aria-label="الوجبة"></div>
       <textarea id="qText" placeholder="اكتب اللي أكلته أو شربته، مثال: بيضتين وخبز بر ونص كوب شوفان بحليب وقهوة"></textarea>
       <button class="btn big" id="qGo" type="button">احسب وأضف</button>
       <p class="msg" id="qMsg" aria-live="polite"></p>
+      <div id="pend" style="display:flex;flex-direction:column;gap:8px"></div>
       <div id="recentBox"><p class="note" style="margin-bottom:8px">الأكثر استخدامًا، اضغط للإضافة مباشرة</p><div class="recent" id="recent"></div></div>
       <details id="paste">
-        <summary>بدون مفتاح أو بدون نت؟</summary>
+        <summary>اسأل Gemini</summary>
         <div>
-          <p class="note">انسخ الطلب، افتح Gemini والصقه، ثم انسخ جوابه والصقه هنا.</p>
+          <p class="note">لو طلع ضغط أو خطأ: انسخ الطلب، افتح Gemini والصقه، ثم انسخ جوابه كله والصقه هنا.</p>
           <div class="btns"><button class="btn soft" id="copyAsk" type="button">نسخ الطلب</button><a class="btn soft" id="openG" href="https://gemini.google.com/app" target="_blank" rel="noopener">فتح Gemini</a></div>
           <textarea id="gPaste" placeholder="الصق جواب Gemini هنا"></textarea>
           <button class="btn" id="gAdd" type="button">إضافة للوجبة المحددة</button>
@@ -244,19 +265,16 @@ label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5
     </section>
 
     <section class="card" id="myMeals" aria-label="وجباتي">
-      <div class="sh"><div class="ic" style="background:rgba(52,199,89,.16)">⭐</div><h3>وجباتي</h3><button type="button" class="link" id="mmNew">+ جديدة</button></div>
+      <div class="sh"><div class="ic" style="background:rgba(52,199,89,.16)">⭐</div><h3>وجباتي</h3><button type="button" class="link" id="mmNew">+ جديد</button></div>
       <div class="chiprow" id="mmMeals"></div>
-      <div class="sh" style="margin-top:2px"><div class="ic" style="background:rgba(10,132,255,.14)">🧴</div><h3>إضافاتي <small>صوصات، عصيرات، منتجات</small></h3><button type="button" class="link" id="prNew">+ منتج</button></div>
-      <div class="chiprow" id="mmAdds"></div>
+      <div id="mmAdds"></div>
+      <div id="mmSnacks"></div>
       <button type="button" class="link" id="mmEdit" style="align-self:flex-start">تعديل القوائم</button>
     </section>
 
     <div id="meals" style="display:flex;flex-direction:column;gap:14px"></div>
-  </main>
 
-  <!-- الجسم -->
-  <main id="vBody" hidden>
-    <section class="card" style="background:var(--card)" aria-label="الماء">
+    <section class="card" id="secWater" aria-label="الماء">
       <div class="sh"><div class="ic" style="background:rgba(50,173,230,.18)">💧</div><h3>الماء <small id="wSmall"></small></h3></div>
       <div class="big num" id="wBig"></div>
       <div class="bar" style="height:10px"><i id="wBar" style="background:var(--water);width:0"></i></div>
@@ -273,21 +291,22 @@ label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5
       <button class="undo" id="wUndo" type="button">↩︎ تراجع عن آخر ماء</button>
     </section>
 
-    <section class="card" aria-label="الكافيين">
+    <section class="card" id="secCaf" aria-label="الكافيين">
       <div class="sh"><div class="ic" style="background:rgba(162,132,94,.2)">☕</div><h3>الكافيين <small id="cSmall"></small></h3></div>
       <div class="cups">
         <button class="rb" type="button" id="cMinus" aria-label="نقص كوب">−</button>
-        <div class="cnt"><b class="num" id="cCups">0</b>كوب قهوة</div>
+        <div class="cnt"><b class="num" id="cCups">0</b>كوب قهوة (البيت)</div>
         <button class="rb" type="button" id="cPlus" aria-label="زيادة كوب">+</button>
       </div>
       <div class="bar" style="height:10px"><i id="cBar" style="background:var(--caf);width:0"></i></div>
       <p class="note num" id="cTxt"></p>
       <div class="log" id="cLog"></div>
       <div class="btns"><button class="btn soft" id="cPot" type="button">+ إبريق (كوبين)</button><button class="undo" id="cUndo" type="button">↩︎ تراجع</button></div>
-      <p class="note">مشروب ثاني (ريد بول، بري وورك آوت)؟ اكتبه في خانة الأكل وينحسب في الكافيين والماء.</p>
+      <div id="cQuick"></div>
+      <button class="btn soft" id="cManual" type="button">+ كافيين يدوي (قهوة أو مشروب طاقة)</button>
     </section>
 
-    <section class="card" aria-label="الفيتامينات">
+    <section class="card" id="secVit" aria-label="الفيتامينات">
       <div class="sh"><div class="ic" style="background:rgba(175,82,222,.16)">💊</div><h3>الفيتامينات <small id="vSmall"></small></h3></div>
       <div id="vSum"></div>
       <div id="vList"></div>
@@ -295,15 +314,9 @@ label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5
       <button class="link" id="vEdit" type="button" style="align-self:flex-start">تعديل القائمة</button>
     </section>
 
-    <section class="card" aria-label="النوم">
-      <div class="sh"><div class="ic" style="background:rgba(88,86,214,.18)">😴</div><h3>النوم <small>الليلة اللي فاتت</small></h3></div>
-      <div class="step"><button type="button" id="slM" aria-label="أنقص نص ساعة">−</button><div class="v num" id="slV">—</div><button type="button" id="slP" aria-label="زد نص ساعة">+</button></div>
-      <div class="seg" id="slQ"><button type="button" data-h="5">5</button><button type="button" data-h="6">6</button><button type="button" data-h="7">7</button><button type="button" data-h="8">8</button><button type="button" data-h="9">9</button></div>
-    </section>
-
-    <section class="card" aria-label="النشاط">
-      <div class="sh"><div class="ic" style="background:rgba(255,204,0,.2)">⚡</div><h3>نشاطك اليوم</h3></div>
-      <div class="opts" id="enOpts"></div>
+    <section class="card" aria-label="نشاط نص اليوم">
+      <div class="sh"><div class="ic" style="background:rgba(255,204,0,.2)">⚡</div><h3>نشاطك نص اليوم</h3></div>
+      <div class="opts" id="en2Opts"></div>
     </section>
 
     <section class="card" aria-label="التمرين">
@@ -311,19 +324,19 @@ label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5
       <div class="tog" id="trOpts"><button type="button" class="y" data-t="1">تمرنت اليوم ✓</button><button type="button" class="n" data-t="0">ما تمرنت</button></div>
     </section>
 
-    <section class="card" aria-label="المزاج">
-      <div class="sh"><div class="ic" style="background:rgba(255,45,85,.14)">😊</div><h3>مبسوط اليوم؟</h3></div>
+    <section class="card" aria-label="ختام اليوم">
+      <div class="sh"><div class="ic" style="background:rgba(255,45,85,.14)">🌙</div><h3>ختام يومك</h3></div>
+      <div class="sh" style="margin-top:2px"><h3 style="font-size:15px">نشاطك آخر اليوم</h3></div>
+      <div class="opts" id="en3Opts"></div>
+      <div class="sh" style="margin-top:4px"><h3 style="font-size:15px">مبسوط اليوم؟</h3></div>
       <div class="opts" id="mdOpts"></div>
-    </section>
-
-    <section class="card" aria-label="مصروف ووزن">
-      <div class="sh"><div class="ic" style="background:rgba(52,199,89,.16)">💸</div><h3>مصروف اليوم والوزن</h3></div>
       <div class="f2">
-        <label>المصروف (ريال)<input id="spend" type="number" inputmode="decimal" min="0" placeholder="0"></label>
-        <label>الوزن (كجم) اختياري<input id="wt" type="number" inputmode="decimal" min="0" placeholder="—"></label>
+        <label>💸 مصروف اليوم (ريال)<input id="spend" type="number" inputmode="decimal" min="0" placeholder="0"></label>
+        <label>⚖️ الوزن (كجم) اختياري<input id="wt" type="number" inputmode="decimal" min="0" placeholder="—"></label>
       </div>
       <label>ملاحظة اليوم (اختياري)<input id="dnote" type="text" autocomplete="off" placeholder="أي شي تبي تتذكره"></label>
     </section>
+    <p class="note" style="text-align:center;padding:4px 0 8px">✓ خلصت يومك</p>
   </main>
 
   <!-- التقارير -->
@@ -387,7 +400,6 @@ label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5
 
 <nav class="tabs" aria-label="التنقل">
   <button type="button" data-v="Home" aria-current="page"><span class="e">🍽️</span>اليوم</button>
-  <button type="button" data-v="Body"><span class="e">💪</span>الجسم</button>
   <button type="button" data-v="Rep"><span class="e">📊</span>التقارير</button>
   <button type="button" data-v="Set"><span class="e">⚙️</span>الإعدادات</button>
 </nav>
@@ -433,15 +445,17 @@ const nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
 const tStr=m=>{if(m==null)return'';const h=Math.floor(m/60),mm=m%60;return (h%12||12)+':'+String(mm).padStart(2,'0')+' '+(h<12?'ص':'م')};
 const gapStr=m=>{const h=Math.floor(m/60),mm=m%60;if(h===0)return mm+' دقيقة';const hs=h===1?'ساعة':h===2?'ساعتين':h+' ساعات';return hs+(mm?' و'+mm+' دقيقة':'')};
 const EN=[[4,'نشيط','⚡'],[3,'عادي','🙂'],[2,'وسط','😐'],[1,'تعبان','😪'],[0,'مرهق','🥱']];
+const enAvg=d=>{const v=[d.energy,d.en2,d.en3].filter(x=>x!=null);return v.length?avgOf(v):null};
 const MD=[[5,'ممتاز','😄'],[4,'مبسوط','🙂'],[3,'عادي','😐'],[2,'مو زين','🙁'],[1,'زعلان','😢']];
 
-const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
+const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
 let S=JSON.parse(JSON.stringify(DEF));
 let sel=TK(),curMeal='b',vEdit=false,editId=null,storeOK=true,curView='Home',repOff=0,lastTK=TK();
 try{
   const raw=localStorage.getItem(KEY);
-  if(raw){const o=JSON.parse(raw);S=Object.assign({},S,o);S.t=Object.assign({},DEF.t,o.t||{});S.days=o.days||{};S.cache=o.cache||{};S.vits=o.vits||[];S.meals=o.meals||[];S.adds=o.adds||[];S.prof=Object.assign({},DEF.prof,o.prof||{})}
+  if(raw){const o=JSON.parse(raw);S=Object.assign({},S,o);S.t=Object.assign({},DEF.t,o.t||{});S.days=o.days||{};S.cache=o.cache||{};S.vits=o.vits||[];S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.pend=o.pend||[];S.prof=Object.assign({},DEF.prof,o.prof||{})}
 }catch(e){storeOK=false}
+S.pend.forEach(p=>{if(p.st==='run')p.st='wait'});
 function fixDays(){Object.keys(S.days).forEach(k=>{const d=S.days[k];if(!d||typeof d!=='object'){delete S.days[k];return}d.items=d.items||[];d.water=d.water||[];d.cups=d.cups||0;d.cupT=d.cupT||[];d.vit=d.vit||{}})}
 fixDays();
 function save(){
@@ -581,9 +595,9 @@ function vitSummary(d){
 
 /* ---------- render ---------- */
 function setTitle(){
-  const t={Home:'اليوم',Body:'الجسم',Rep:'التقارير',Set:'الإعدادات'}[curView];
+  const t={Home:'اليوم',Rep:'التقارير',Set:'الإعدادات'}[curView];
   $('ttl').textContent=t;
-  $('daynav').hidden=!(curView==='Home'||curView==='Body');
+  $('daynav').hidden=curView!=='Home';
 }
 function renderTop(){
   $('hello').textContent=DL(new Date(),{weekday:'long',day:'numeric',month:'long'});
@@ -605,7 +619,7 @@ function renderRing(){
   const w=water(d);
   $('pW').textContent=lit(w);
   $('pC').textContent=cafMg(d)+' ملغ';
-  const n=S.vits.length;$('pV').textContent=n?S.vits.filter(v=>vTaken(d,v)).length+' / '+n:'—';
+  const n=S.vits.length;$('pV').textContent=n?S.vits.filter(v=>vTaken(d,v)).length+' من '+n:'—';
 }
 function renderMeals(){
   const d=peek(sel);let cum=[],h='';
@@ -640,7 +654,10 @@ function renderCaf(){
   $('cTxt').textContent=mg>lim?'وصلت حد الكافيين اليومي ('+lim+' ملغ).':'تقدر تشرب '+Math.max(left,0)+' كوب كمان (كوبك تقريبًا '+S.cupMg+' ملغ).';
   let h=(d.cupT||[]).map((t,i)=>'<div class="lr"><span>☕ كوب</span><span class="muted num">'+tStr(t)+'</span><button type="button" data-cd="'+i+'" aria-label="حذف">×</button></div>').join('');
   const extra=d.cups-(d.cupT||[]).length;if(extra>0)h+='<div class="lr"><span class="muted">+ '+extra+' كوب بدون وقت</span></div>';
+  h+=d.items.filter(x=>x.cf>0).map(x=>'<div class="lr"><span>🥤 '+esc(x.n)+' <span class="muted num">· '+x.cf+' ملغ</span></span><span class="muted num">'+tStr(x.t)+'</span><button type="button" data-ci="'+x.id+'" aria-label="حذف">×</button></div>').join('');
   $('cLog').innerHTML=h;
+  const qs=S.snacks.filter(s=>s.cf>0);
+  $('cQuick').innerHTML=qs.length?'<p class="cap">اختصاراتك (اضغط للإضافة)</p><div class="chiprow">'+qs.map(s=>'<span class="cp sn"><button type="button" data-cq="'+s.id+'">🥤 '+esc(s.n)+' · '+s.cf+'</button></span>').join('')+'</div>':'';
   $('cUndo').disabled=d.cups<=0;
 }
 function renderVit(){
@@ -668,7 +685,7 @@ function renderBody(){
   const d=peek(sel);
   $('slV').innerHTML=d.sleep?'<span class="num">'+d.sleep+'</span> <small>ساعة</small>':'—';
   document.querySelectorAll('#slQ button').forEach(b=>b.setAttribute('aria-pressed',String(d.sleep===+b.dataset.h)));
-  $('enOpts').innerHTML=EN.map(o=>'<button type="button" data-e="'+o[0]+'" aria-pressed="'+(d.energy===o[0])+'"><span>'+o[2]+'</span>'+o[1]+'</button>').join('');
+  [['enOpts','energy'],['en2Opts','en2'],['en3Opts','en3']].forEach(e=>{$(e[0]).innerHTML=EN.map(o=>'<button type="button" data-e="'+o[0]+'" data-ek="'+e[1]+'" aria-pressed="'+(d[e[1]]===o[0])+'"><span>'+o[2]+'</span>'+o[1]+'</button>').join('')});
   $('mdOpts').innerHTML=MD.map(o=>'<button type="button" data-md="'+o[0]+'" aria-pressed="'+(d.mood===o[0])+'"><span>'+o[2]+'</span>'+o[1]+'</button>').join('');
   document.querySelectorAll('#trOpts button').forEach(b=>b.setAttribute('aria-pressed',String(d.train!=null&&(d.train?1:0)===+b.dataset.t)));
   $('spend').value=d.spend!=null?d.spend:'';
@@ -684,15 +701,20 @@ function renderRecent(){
   $('recent')._items=out;
 }
 function renderAll(){
-  renderTop();renderRing();renderMeals();renderMyMeals();renderRecent();renderWater();renderCaf();renderVit();renderBody();
+  renderTop();renderRing();renderMeals();renderMyMeals();renderRecent();renderWater();renderCaf();renderVit();renderBody();renderPend();
 }
 
 /* ---------- adding food ---------- */
-function commit(items,meal){
-  snap();
-  const d=day(sel),base=Date.now(),t=stamp();
+function commitTo(dk_,items,meal,t,quiet){
+  const d=day(dk_),base=Date.now();
   items.forEach((x,i)=>d.items.push(Object.assign({id:base+i,m:meal,t:t},x)));
   save();renderAll();
+  if(quiet){const tt=sum(items);toast('اكتمل حساب: '+items.map(x=>x.n).join('، ').slice(0,60)+' ('+tt.k+' سعرة)',false)}
+}
+function commit(items,meal){
+  snap();
+  const d=day(sel),t=stamp();
+  commitTo(sel,items,meal,t,false);
   const tt=sum(items),mt=sum(d.items.filter(x=>x.m===meal)),dt=sum(d.items);
   toast('تمت إضافة '+items.length+' ('+tt.k+' سعرة)',true);
   return 'أضفت '+items.length+': '+tt.k+' سعرة، '+tt.p+' بروتين. مجموع '+MEALS.find(m=>m[0]===meal)[1]+': '+mt.k+' سعرة. مجموع اليوم: '+fmt(dt.k)+' سعرة، '+dt.p+' بروتين، '+dt.c+' كارب، '+dt.fi+' ألياف، '+dt.f+' دهون.';
@@ -751,17 +773,25 @@ async function pickModel(){
   if(c.length)return c[0];
   return ok.find(n=>/flash-latest$/.test(n))||ok.find(n=>/flash/.test(n)&&!bad.test(n))||'';
 }
-async function gcall(parts,retried){
+const FALLBACK='gemini-flash-lite-latest';
+async function gcall(parts,o){
+  o=o||{};
+  const model=o.model||S.model||'gemini-flash-latest';
+  const cfg={responseMimeType:'application/json'};
+  if(!S.noThink&&!o.nt)cfg.thinkingConfig={thinkingBudget:0};
   let data;
   try{
-    data=await gfetch('models/'+encodeURIComponent(S.model||'gemini-flash-latest')+':generateContent',{
+    data=await gfetch('models/'+encodeURIComponent(model)+':generateContent',{
       method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.key},
-      body:JSON.stringify({contents:[{parts:parts}],generationConfig:{responseMimeType:'application/json'}})});
+      body:JSON.stringify({contents:[{parts:parts}],generationConfig:cfg})});
+    if(o.nt&&!S.noThink){S.noThink=true;save()}
   }catch(e){
-    if(e&&e.code===404&&!retried){
+    if(e&&e.code===400&&!S.noThink&&!o.nt)return gcall(parts,Object.assign({},o,{nt:1}));
+    if(e&&e.code===404&&!o.pm&&!o.fb){
       const m=await pickModel();
-      if(m&&m!==S.model){S.model=m;save();if($('sModel'))$('sModel').value=m;return gcall(parts,true)}
+      if(m&&m!==S.model){S.model=m;save();if($('sModel'))$('sModel').value=m;return gcall(parts,Object.assign({},o,{pm:1,model:m}))}
     }
+    if(e&&(e.code===503||e.code===500||e.code===502||e.code===429)&&!o.fb&&!/lite/.test(model))return gcall(parts,Object.assign({},o,{fb:1,model:FALLBACK}));
     throw e;
   }
   return ((data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts)||[]).map(p=>p.text||'').join('');
@@ -787,20 +817,54 @@ function errText(e){
   return base+extra;
 }
 function qSay(t,cls){$('qMsg').className='msg'+(cls?' '+cls:'');$('qMsg').textContent=t}
-$('qGo').addEventListener('click',async()=>{
+$('qGo').addEventListener('click',()=>{
   const text=$('qText').value.trim();if(!text)return;
   const ck=text.toLowerCase();
   if(S.cache[ck]){qSay(commit(S.cache[ck],curMeal)+' (من المحفوظات)','ok');$('qText').value='';return}
-  if(!S.key){qSay(ERR.nokey,'err');return}
-  const btn=$('qGo');btn.disabled=true;btn.textContent='جاري الحساب...';qSay('');
-  try{
-    const items=await askGemini(text);
-    const keys=Object.keys(S.cache);if(keys.length>200)delete S.cache[keys[0]];
-    S.cache[ck]=items;
-    qSay(commit(items,curMeal),'ok');$('qText').value='';
-  }catch(e){qSay(errText(e),'err')}
-  finally{btn.disabled=false;btn.textContent='احسب وأضف'}
+  if(!S.key){qSay(ERR.nokey,'err');$('paste').open=true;return}
+  qSay('');
+  S.pend.push({id:Date.now(),text:text,meal:curMeal,day:sel,t:stamp(),st:'wait',tries:0,next:0,err:''});
+  $('qText').value='';save();renderPend();toast('تمت إضافته لقائمة الحساب، تقدر تكمل',false);runPend();
 });
+let pendBusy=false;
+async function runPend(){
+  if(pendBusy)return;pendBusy=true;
+  try{
+    for(;;){
+      const p=S.pend.find(x=>x.st==='wait'&&x.next<=Date.now());if(!p)break;
+      p.st='run';renderPend();
+      try{
+        const items=await askGemini(p.text);
+        const keys=Object.keys(S.cache);if(keys.length>200)delete S.cache[keys[0]];
+        S.cache[p.text.toLowerCase()]=items;
+        S.pend=S.pend.filter(x=>x!==p);
+        commitTo(p.day,items,p.meal,p.t,true);
+      }catch(e){
+        p.tries=(p.tries||0)+1;p.err=errText(e);
+        const tr=e&&(e.code==='net'||e.code===429||(e.code>=500&&e.code<600));
+        if(tr&&p.tries<8){p.st='wait';p.next=Date.now()+Math.min(20000*p.tries,120000)}else p.st='fail';
+        save();renderPend();
+      }
+      save();renderPend();
+    }
+  }finally{pendBusy=false}
+}
+function renderPend(){
+  $('pend').innerHTML=S.pend.map(p=>{
+    const m=MEALS.find(x=>x[0]===p.meal),sub=p.st==='run'?'جاري الحساب...':p.st==='wait'?(p.tries?'بانتظار إعادة المحاولة تلقائيًا ('+esc(p.err)+')':'بانتظار الحساب...'):'تعذر: '+esc(p.err);
+    return '<div class="pcard'+(p.st==='fail'?' fail':'')+'"><span>'+(p.st==='fail'?'⚠️':'⏳')+'</span><div class="tx"><b>'+esc(p.text.slice(0,70))+'</b><span>'+(m?m[1]+' · ':'')+sub+(p.t!=null?' · '+tStr(p.t):'')+'</span></div>'+
+      (p.st!=='run'?'<button type="button" data-pr="'+p.id+'">إعادة</button>':'')+(p.st==='fail'?'<button type="button" data-pa="'+p.id+'">اسأل Gemini</button>':'')+'<button type="button" class="x" data-px="'+p.id+'" aria-label="حذف">×</button></div>';
+  }).join('');
+}
+$('pend').addEventListener('click',async e=>{
+  const r=e.target.closest('[data-pr]'),x=e.target.closest('[data-px]'),a=e.target.closest('[data-pa]');
+  if(r){const p=S.pend.find(v=>String(v.id)===r.dataset.pr);if(p){p.st='wait';p.next=0;save();renderPend();runPend()}return}
+  if(x){S.pend=S.pend.filter(v=>String(v.id)!==x.dataset.px);save();renderPend();return}
+  if(a){const p=S.pend.find(v=>String(v.id)===a.dataset.pa);if(p){const ok=await copyText(ASK+p.text);$('paste').open=true;qSay(ok?'اننسخ الطلب. الصقه في Gemini، ثم الصق جوابه في «اسأل Gemini» تحت.':'ما اننسخ تلقائيًا، انسخ النص بيدك.',ok?'ok':'err');$('paste').scrollIntoView({behavior:'smooth',block:'center'})}}
+});
+setInterval(()=>{if(S.pend.some(p=>p.st==='wait'&&p.next<=Date.now()))runPend();else if(S.pend.some(p=>p.st==='wait'))renderPend()},15000);
+window.addEventListener('online',()=>{S.pend.forEach(p=>{if(p.st==='wait')p.next=0});runPend()});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')runPend()});
 $('mchips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;curMeal=b.dataset.m;renderTop()});
 $('recent').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
@@ -853,7 +917,7 @@ $('fDel').addEventListener('click',()=>{snap();day(sel).items=day(sel).items.fil
 
 /* ---------- water / caffeine / vitamins ---------- */
 function addWater(ml){if(!(ml>0))return;snap();day(sel).water.push({id:Date.now(),ml:Math.round(ml),t:stamp()});save();renderAll();toast('+ '+Math.round(ml)+' مل ماء',true)}
-$('vBody').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b)addWater(+b.dataset.w)});
+$('secWater').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b)addWater(+b.dataset.w)});
 $('wAdd').addEventListener('click',()=>{addWater((+$('wVal').value)*(+$('wUnit').value));$('wVal').value=''});
 $('wUndo').addEventListener('click',()=>{const d=day(sel);if(!d.water.length)return;snap();d.water.pop();save();renderAll();toast('تم التراجع عن آخر ماء',true)});
 $('wLog').addEventListener('click',e=>{const b=e.target.closest('[data-wd]');if(!b)return;snap();day(sel).water.splice(+b.dataset.wd,1);save();renderAll();toast('تم الحذف',true)});
@@ -863,7 +927,12 @@ $('cPot').addEventListener('click',()=>addCups(2));
 function dropCup(i){const d=day(sel);if(d.cups<=0)return;snap();d.cups--;if(i==null||i>=d.cupT.length){if(d.cupT.length>d.cups)d.cupT.pop()}else d.cupT.splice(i,1);save();renderAll();toast('تم نقص كوب',true)}
 $('cMinus').addEventListener('click',()=>dropCup());
 $('cUndo').addEventListener('click',()=>dropCup());
-$('cLog').addEventListener('click',e=>{const b=e.target.closest('[data-cd]');if(b)dropCup(+b.dataset.cd)});
+$('cLog').addEventListener('click',e=>{
+  const b=e.target.closest('[data-cd]');if(b){dropCup(+b.dataset.cd);return}
+  const i=e.target.closest('[data-ci]');if(i){snap();const d=day(sel);d.items=d.items.filter(x=>String(x.id)!==i.dataset.ci);save();renderAll();toast('تم الحذف',true)}
+});
+$('cQuick').addEventListener('click',e=>{const b=e.target.closest('[data-cq]');if(!b)return;const s=S.snacks.find(v=>String(v.id)===b.dataset.cq);if(s)addSnack(s)});
+$('cManual').addEventListener('click',()=>openS2({mode:'drink',from:'caf',name:'قهوة',w:S.cupMl,save:false}));
 $('vList').addEventListener('click',e=>{
   const x=e.target.closest('[data-vx]');
   if(x){const i=+x.dataset.vx;S.vits.splice(i,1);save();renderVit();return}
@@ -902,7 +971,7 @@ function setDay(fn){const d=day(sel);fn(d);save();renderBody();renderRing()}
 $('slP').addEventListener('click',()=>setDay(d=>{d.sleep=Math.min(14,r1((d.sleep||0)+.5))}));
 $('slM').addEventListener('click',()=>setDay(d=>{const v=r1((d.sleep||0)-.5);if(v<=0)delete d.sleep;else d.sleep=v}));
 $('slQ').addEventListener('click',e=>{const b=e.target.closest('[data-h]');if(b)setDay(d=>{d.sleep=+b.dataset.h})});
-$('enOpts').addEventListener('click',e=>{const b=e.target.closest('[data-e]');if(!b)return;const v=+b.dataset.e;setDay(d=>{if(d.energy===v)delete d.energy;else d.energy=v})});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-ek]');if(!b)return;const v=+b.dataset.e,k=b.dataset.ek;setDay(d=>{if(d[k]===v)delete d[k];else d[k]=v})});
 $('mdOpts').addEventListener('click',e=>{const b=e.target.closest('[data-md]');if(!b)return;const v=+b.dataset.md;setDay(d=>{if(d.mood===v)delete d.mood;else d.mood=v})});
 $('trOpts').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;const v=b.dataset.t==='1';setDay(d=>{if(d.train===v)delete d.train;else d.train=v})});
 $('spend').addEventListener('change',()=>{const v=dec($('spend').value);setDay(d=>{if($('spend').value==='')delete d.spend;else d.spend=v})});
@@ -920,24 +989,32 @@ function rowFrom(x,g){const b={g:g||0};KEYS.forEach(k=>b[k]=x[k]||0);return {n:x
 const macroLine=s=>s.k+' سعرة · '+s.p+' بروتين · '+s.c+' كارب · '+s.fi+' ألياف · '+s.f+' دهون';
 const totalsOf=rows=>sum(rows.filter(r=>r.g>0).map(scaleRow));
 function renderMyMeals(){
-  const cp=(label,kind,id)=>'<span class="cp'+(kind==='add'?' add':'')+'"><button type="button" data-'+(kind==='add'?'padd':'use')+'="'+id+'">'+esc(label)+'</button>'+
-    (mmEdit?'<button type="button" class="cpx" data-del'+(kind==='add'?'a':'m')+'="'+id+'" aria-label="حذف">×</button>':'')+'</span>';
-  $('mmMeals').innerHTML=S.meals.length?S.meals.map(m=>cp(m.n,'meal',m.id)).join(''):'<span class="note">احفظ وجباتك المتكررة وتلقاها هنا.</span>';
-  $('mmAdds').innerHTML=S.adds.length?S.adds.map(a=>cp(a.n,'add',a.id)).join(''):'<span class="note">صوّر ملصق أي منتج جديد وتحفظه هنا، وكل مرة تكتب الجرامات بس.</span>';
+  const cp=(label,attr,id,del,cls)=>'<span class="cp '+(cls||'')+'"><button type="button" data-'+attr+'="'+id+'">'+esc(label)+'</button>'+(mmEdit?'<button type="button" class="cpx" data-'+del+'="'+id+'" aria-label="حذف">×</button>':'')+'</span>';
+  const none=!S.meals.length&&!S.adds.length&&!S.snacks.length;
+  $('mmMeals').innerHTML=S.meals.map(m=>cp('⭐ '+m.n,'use',m.id,'delm')).join('')||(none?'<span class="note">احفظ وجباتك المتكررة وإضافاتك (صوصات، منتجات) وسناكاتك ومشروباتك هنا، وتضيفها بضغطة.</span>':'');
+  $('mmAdds').innerHTML=S.adds.length?'<p class="cap">إضافاتي (تكتب الجرامات)</p><div class="chiprow">'+S.adds.map(a=>cp('🧴 '+a.n,'padd',a.id,'dela','add')).join('')+'</div>':'';
+  $('mmSnacks').innerHTML=S.snacks.length?'<p class="cap">سناكاتي ومشروباتي (ضغطة وحدة)</p><div class="chiprow">'+S.snacks.map(s=>cp('🥤 '+s.n+(s.cf?' · '+s.cf+' ملغ':''),'sn',s.id,'delsn','sn')).join('')+'</div>':'';
   $('mmEdit').textContent=mmEdit?'تم':'تعديل القوائم';
+}
+function addSnack(s){
+  const it={n:s.n,q:'',k:s.k||0,p:s.p||0,c:s.c||0,fi:s.fi||0,f:s.f||0,w:s.w||0,cf:s.cf||0};
+  qSay(commit([it],s.slot||'s'),'ok');
 }
 $('myMeals').addEventListener('click',e=>{
   const u=e.target.closest('[data-use]');
   if(u){const m=S.meals.find(x=>String(x.id)===u.dataset.use);if(m)openS2({mode:'use',title:m.n,slot:curMeal,rows:m.parts.map(p=>({n:p.n,b:Object.assign({},p),g:p.g,free:false}))});return}
   const pa=e.target.closest('[data-padd]');
   if(pa){const a=S.adds.find(x=>String(x.id)===pa.dataset.padd);if(a)openS2({mode:'padd',p:a,slot:curMeal,g:0});return}
+  const sn=e.target.closest('[data-sn]');
+  if(sn){const s=S.snacks.find(x=>String(x.id)===sn.dataset.sn);if(s)addSnack(s);return}
   const dm=e.target.closest('[data-delm]');
   if(dm){S.meals=S.meals.filter(x=>String(x.id)!==dm.dataset.delm);save();renderMyMeals();return}
   const da=e.target.closest('[data-dela]');
   if(da){S.adds=S.adds.filter(x=>String(x.id)!==da.dataset.dela);save();renderMyMeals();return}
+  const ds=e.target.closest('[data-delsn]');
+  if(ds){S.snacks=S.snacks.filter(x=>String(x.id)!==ds.dataset.delsn);save();renderMyMeals();renderCaf();return}
   if(e.target.closest('#mmEdit')){mmEdit=!mmEdit;renderMyMeals();return}
-  if(e.target.closest('#prNew')){openS2({mode:'prod'});return}
-  if(e.target.closest('#mmNew'))openS2({mode:'build',name:'',slot:curMeal,text:'',rows:[]});
+  if(e.target.closest('#mmNew'))openS2({mode:'new'});
 });
 function openS2(state){M=state;$('sheet2').hidden=false;renderS2();$('s2body').scrollTop=0}
 function closeS2(){$('sheet2').hidden=true;M=null}
@@ -946,6 +1023,28 @@ function s2msg(t,ok){const m=$('s2msg');if(m){m.textContent=t;m.className='msg '
 const slotSel=()=>'<select id="s2slot" aria-label="الوجبة">'+MEALS.map(m=>'<option value="'+m[0]+'"'+(m[0]===M.slot?' selected':'')+'>'+m[1]+'</option>').join('')+'</select>';
 function prodChips(){return S.adds.length?'<div><p class="note" style="margin-bottom:6px">أضف من إضافاتي (تكتب الجرامات بعدها)</p><div class="chiprow">'+S.adds.map(a=>'<span class="cp add"><button type="button" data-addp="'+a.id+'">+ '+esc(a.n)+'</button></span>').join('')+'</div></div>':''}
 function renderS2(){
+  if(M.mode==='new'){
+    $('s2body').innerHTML='<h2>وش تبي تضيف؟</h2>'+
+      '<button type="button" class="btn soft" data-act="n_meal">⭐ وجبة جديدة (مكونات بالجرامات)</button>'+
+      '<button type="button" class="btn soft" data-act="n_prod">🧴 إضافة أو منتج (صوص، عصير، صوّر الملصق)</button>'+
+      '<button type="button" class="btn soft" data-act="n_snack">🥤 سناك أو مشروب (طاقة، بروتين...)</button>'+
+      '<button type="button" class="btn ghost" data-act="close">إغلاق</button>';return;
+  }
+  if(M.mode==='drink'){
+    const caf=M.from==='caf';
+    $('s2body').innerHTML='<h2>'+(caf?'☕ كافيين يدوي':'🥤 سناك أو مشروب جديد')+'</h2>'+
+      (caf?'<div class="chiprow"><span class="cp"><button type="button" data-qn="قهوة|'+S.cupMl+'">قهوة</button></span><span class="cp"><button type="button" data-qn="مشروب طاقة|250">مشروب طاقة</button></span></div>':'')+
+      '<input id="dn" type="text" placeholder="الاسم، مثال: ريد بول" autocomplete="off" value="'+esc(M.name||'')+'">'+
+      '<button type="button" class="btn soft" data-act="dfill">✨ عبّي الأرقام بـ Gemini</button>'+
+      '<div class="f2"><label>الكافيين (ملغ)<input id="dcf" type="number" inputmode="numeric" min="0"></label><label>السعرات<input id="dk" type="number" inputmode="numeric" min="0"></label>'+
+      '<label>البروتين (جم)<input id="dp" type="number" inputmode="decimal" min="0"></label><label>الكارب (جم)<input id="dc" type="number" inputmode="decimal" min="0"></label>'+
+      '<label>الدهون (جم)<input id="df" type="number" inputmode="decimal" min="0"></label><label>الماء (مل)<input id="dw" type="number" inputmode="numeric" min="0" value="'+(M.w||'')+'"></label></div>'+
+      '<label>تنحسب في وجبة<select id="s2slot">'+MEALS.map(m=>'<option value="'+m[0]+'"'+(m[0]==='s'?' selected':'')+'>'+m[1]+'</option>').join('')+'</select></label>'+
+      (caf?'<label class="chk"><input type="checkbox" id="dsave"> احفظه كاختصار</label>':'')+
+      '<p class="msg err" id="s2msg" aria-live="polite"></p>'+
+      '<button type="button" class="btn big" data-act="'+(caf?'dadd':'dsave')+'">'+(caf?'أضف الحين':'حفظ في سناكاتي')+'</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
+    return;
+  }
   if(M.mode==='prod'){
     $('s2body').innerHTML='<h2>📦 منتج جديد</h2>'+
       '<p class="note">صوّر ملصق القيمة الغذائية، أو اكتب الأرقام بيدك. الأرقام لكل 100 جم (أو 100 مل).</p>'+
@@ -1038,8 +1137,31 @@ $('s2body').addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b||!M)return;
   if(b.dataset.rm!==undefined){M.rows.splice(+b.dataset.rm,1);renderS2();return}
   if(b.dataset.addp){const a=S.adds.find(x=>String(x.id)===b.dataset.addp);if(a){M.rows.push({n:a.n,b:Object.assign({},a,{g:a.g||100}),g:0,free:false});renderS2()}return}
+  if(b.dataset.qn){const q=b.dataset.qn.split('|');$('dn').value=q[0];$('dw').value=q[1];return}
   const act=b.dataset.act;
   if(act==='close'){closeS2();return}
+  if(act==='n_meal'){openS2({mode:'build',name:'',slot:curMeal,text:'',rows:[]});return}
+  if(act==='n_prod'){openS2({mode:'prod'});return}
+  if(act==='n_snack'){openS2({mode:'drink',from:'snack'});return}
+  if(act==='dfill'){
+    const nm=$('dn').value.trim();if(!nm){s2msg('اكتب الاسم أول.');return}
+    if(!S.key){s2msg(ERR.nokey);return}
+    b.disabled=true;b.textContent='جاري الحساب...';
+    try{const it=(await askGemini(nm))[0];if(!M)return;$('dcf').value=it.cf||'';$('dk').value=it.k||'';$('dp').value=it.p||'';$('dc').value=it.c||'';$('df').value=it.f||'';$('dw').value=it.w||'';s2msg('انحسبت. راجع الأرقام وعدّلها لو تبي.',true)}
+    catch(err){s2msg(errText(err))}
+    if(M){b.disabled=false;b.textContent='✨ عبّي الأرقام بـ Gemini'}
+    return;
+  }
+  if(act==='dadd'||act==='dsave'){
+    const n=$('dn').value.trim(),cf=z($('dcf').value),k=z($('dk').value);
+    if(!n){s2msg('اكتب الاسم.');return}
+    if(act==='dadd'&&!(cf>0)&&!(k>0)){s2msg('اكتب الكافيين أو السعرات.');return}
+    const it={n:n,q:'',k:k,p:dec($('dp').value),c:dec($('dc').value),fi:0,f:dec($('df').value),w:z($('dw').value),cf:cf},slot=$('s2slot').value;
+    if(act==='dsave'||($('dsave')&&$('dsave').checked)){S.snacks.push(Object.assign({id:Date.now(),slot:slot},it));save();renderMyMeals()}
+    if(act==='dadd'){const msg=commit([it],slot);closeS2();qSay(msg,'ok')}
+    else{renderCaf();closeS2();toast('تم حفظ «'+n+'» في سناكاتي',false)}
+    return;
+  }
   if(act==='prsave'){
     const n=$('prN').value.trim(),k=Math.round(+$('prK').value);
     if(!n||$('prK').value===''||!(k>=0)){s2msg('اكتب الاسم والسعرات.');return}
@@ -1097,14 +1219,14 @@ $('dNext').addEventListener('click',()=>{sel=dk(addDays(fromKey(sel),1));renderA
 $('dLbl').addEventListener('click',()=>{sel=TK();renderAll()});
 function show(v){
   curView=v;
-  ['Home','Body','Rep','Set'].forEach(n=>{$('v'+n).hidden=(n!==v)});
+  ['Home','Rep','Set'].forEach(n=>{$('v'+n).hidden=(n!==v)});
   document.querySelectorAll('.tabs button').forEach(b=>{if(b.dataset.v===v)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
   renderAll();
   if(v==='Rep')renderReport();if(v==='Set')renderSet();
   window.scrollTo(0,0);
 }
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)show(b.dataset.v)});
-document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)show(g.dataset.go)});
+document.addEventListener('click',e=>{const g=e.target.closest('[data-scroll]');if(g){const t=$(g.dataset.scroll);if(t)t.scrollIntoView({behavior:'smooth',block:'start'})}});
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'&&TK()!==lastTK){if(sel===lastTK)sel=TK();lastTK=TK();renderAll()}
 });
@@ -1157,7 +1279,7 @@ function wtChart(keys){
 }
 function dayStat(k){
   const d=peek(k);
-  return {k:k,d:d,t:sum(d.items),logged:d.items.length>0,water:water(d),cups:d.cups,caf:cafMg(d),sleep:d.sleep,energy:d.energy,train:d.train,mood:d.mood,spend:d.spend,wt:d.wt,note:d.note,
+  return {k:k,d:d,t:sum(d.items),logged:d.items.length>0,water:water(d),cups:d.cups,caf:cafMg(d),sleep:d.sleep,energy:(()=>{const a=enAvg(d);return a==null?null:Math.round(a)})(),train:d.train,mood:d.mood,spend:d.spend,wt:d.wt,note:d.note,
     vits:S.vits.filter(v=>vTaken(d,v)).map(v=>{const i=vInfo(d,v);return{n:v,t:i.t,m:i.m}})};
 }
 const avgOf=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
