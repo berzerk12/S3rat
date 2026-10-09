@@ -455,7 +455,7 @@ section[id]{scroll-margin-top:12px}
     <section class="card"><div class="sh"><h3>🏋️ التمرين</h3><small id="trCnt"></small></div><div class="dots" id="trDots"></div></section>
     <section class="card slim" style="gap:10px">
       <button class="btn big" id="pdfGo" type="button">📄 جهّز تقرير PDF</button>
-      <button class="btn ghost" id="repCopy" type="button">📋 نسخ ملخص نصي للصقه في Gemini</button>
+      <button class="btn ghost" id="repCopy" type="button">📋 نسخ ملخص نصي</button>
       <p class="msg" id="repMsg" aria-live="polite"></p>
     </section>
   </main>
@@ -479,13 +479,10 @@ section[id]{scroll-margin-top:12px}
       <p class="note">يحسب منها مسار وزنك المتوقع (تقدير مو وعد) ويقارنه بوزنك الفعلي في التقارير.</p>
     </section>
     <section class="card">
-      <div class="sh"><div class="ic" style="background:rgba(10,132,255,.14)">✨</div><h3>ربط Gemini</h3></div>
-      <p class="note">المفتاح من aistudio.google.com/apikey (مجاني ومنفصل عن اشتراكك). يتخزن في جوالك فقط، لا ترسل الملف لأحد وهو فيه المفتاح.</p>
-      <label>مفتاح Gemini API<input id="sKey" type="password" autocomplete="off" placeholder="AIza..."></label>
-      <label>اسم الموديل<input id="sModel" type="text" autocomplete="off"></label>
-      <label>مفتاح OpenRouter (اختياري، احتياط لو Gemini تعطل)<input id="sOr" type="password" autocomplete="off" placeholder="sk-or-..."></label>
-      <label>موديل OpenRouter<input id="sOrM" type="text" autocomplete="off" placeholder="openai/gpt-4o-mini"></label>
-      <p class="note">المفتاح من openrouter.ai/keys. يتخزن في جوالك فقط. لو Gemini تعطل أو رد بخطأ، التطبيق يحاول OpenRouter تلقائياً، ولو ما حطيت مفتاح Gemini يستخدم OpenRouter لحاله.</p>
+      <div class="sh"><div class="ic" style="background:rgba(10,132,255,.14)">✨</div><h3>الذكاء الاصطناعي (OpenRouter)</h3></div>
+      <p class="note">مجاني بدون دفع: سجّل في openrouter.ai وسو مفتاح من openrouter.ai/keys بدون ما تشحن. الموديل «openrouter/free» يختار لك موديل مجاني تلقائياً. الحد اليومي صغير (حوالي 50 طلب) والدقة أقل من المدفوع، فراجع الأرقام. المفتاح يتخزن في جوالك فقط.</p>
+      <label>مفتاح OpenRouter<input id="sOr" type="password" autocomplete="off" placeholder="sk-or-..."></label>
+      <label>اسم الموديل (لازم يدعم الصور عشان الملصقات والباركود)<input id="sOrM" type="text" autocomplete="off" placeholder="openrouter/free"></label>
       <label class="chk"><input type="checkbox" id="sUseList"> استخدم أكلي المحفوظ (قائمة الطعام) في الحساب بدل التقدير</label>
       <button class="btn soft" id="sTest" type="button">اختبار الاتصال</button>
       <p class="msg" id="sMsg" aria-live="polite"></p>
@@ -553,7 +550,7 @@ const EN=[[4,'نشيط','⚡'],[3,'عادي','🙂'],[2,'وسط','😐'],[1,'ت�
 const enAvg=d=>{const v=[d.energy,d.en2,d.en3].filter(x=>x!=null);return v.length?avgOf(v):null};
 const MD=[[5,'ممتاز','😄'],[4,'مبسوط','🙂'],[3,'عادي','😐'],[2,'مو زين','🙁'],[1,'زعلان','😢']];
 
-const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
+const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],orKey:'',orModel:'openrouter/free',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
 let S=JSON.parse(JSON.stringify(DEF));
 let mornOpen=null,mornFor='';
 let sel=TK(),curMeal='b',vEdit=false,editId=null,storeOK=true,curView='Home',repOff=0,lastTK=TK();
@@ -561,6 +558,8 @@ try{
   const raw=localStorage.getItem(KEY);
   if(raw){const o=JSON.parse(raw);S=Object.assign({},S,o);S.t=Object.assign({},DEF.t,o.t||{});S.days=o.days||{};S.cache=o.cache||{};S.vits=o.vits||[];S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.pend=o.pend||[];S.reps=o.reps||{};S.prof=Object.assign({},DEF.prof,o.prof||{})}
 }catch(e){storeOK=false}
+if(S.orModel==='openai/gpt-4o-mini')S.orModel='openrouter/free';
+delete S.key;delete S.model;delete S.gem;delete S.noThink;
 S.pend.forEach(p=>{if(p.st==='run')p.st='wait'});
 function fixDays(){Object.keys(S.days).forEach(k=>{const d=S.days[k];if(!d||typeof d!=='object'){delete S.days[k];return}d.items=d.items||[];d.water=d.water||[];d.cups=d.cups||0;d.cupT=d.cupT||[];d.vit=d.vit||{}})}
 fixDays();
@@ -867,55 +866,11 @@ const PROMPT='أنت حاسب تغذية. حلّل النص التالي الذ�
   ' لا تكرر أي صنف، والاسم المركب مثل «بودينق بروتين» أو «شيك بروتين» صنف واحد فقط. وأضف ca: الكالسيوم بالملغ وfe: الحديد بالملغ للصنف كله. ردّ بـ JSON فقط بهذا الشكل بدون أي نص آخر: {"items":[{"n":"اسم الصنف","q":"الكمية","k":0,"p":0,"c":0,"fi":0,"f":0,"w":0,"cf":0,"ca":0,"fe":0,"g":0}]} والأرقام صحيحة.\n\nالنص: ';
 const ASK='احسب لكل صنف (أكل سعودي/عربي): الاسم | سعرات | بروتين | كارب | ألياف | دهون | ماء مل | كافيين ملغ | جرام. رد بسطر لكل صنف فقط بدون شرح، والأرقام صحيحة.\nالأكل: ';
 const LABELP='هذي صورة ملصق القيمة الغذائية (Nutrition Facts) لمنتج غذائي. استخرج القيم لكل 100 جرام (أو 100 مل). إذا كانت القيم مكتوبة لكل حصة فقط، حوّلها لكل 100 جرام باستخدام وزن الحصة المكتوب. n اسم المنتج إن ظهر وإلا اكتب "منتج". k السعرات، p البروتين، c الكربوهيدرات، fi الألياف، f الدهون (بالجرام، ويسمح بكسر عشري). ردّ بـ JSON فقط: {"n":"","k":0,"p":0,"c":0,"fi":0,"f":0}';
-const GBASE='https://generativelanguage.googleapis.com/v1beta/';
-async function gfetch(path,opt){
-  let r;
-  try{r=await fetch(GBASE+path,opt)}catch(e){throw {code:'net'}}
-  if(!r.ok){
-    let m='';
-    try{const j=await r.json();m=(j&&j.error&&j.error.message)||''}catch(e){}
-    throw {code:r.status,detail:m};
-  }
-  return r.json();
-}
-async function pickModel(){
-  const d=await gfetch('models?pageSize=200',{headers:{'x-goog-api-key':S.key}});
-  const ok=(d.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')).map(m=>m.name.replace('models/',''));
-  const bad=/(image|tts|audio|live|embed|vision|robotics|computer|thinking|exp|learnlm|gemma)/;
-  const c=ok.filter(n=>/^gemini-[\d.]+-flash/.test(n)&&!bad.test(n));
-  const ver=n=>parseFloat((n.match(/^gemini-([\d.]+)-flash/)||[0,0])[1]);
-  c.sort((x,y)=>ver(y)-ver(x)||(/preview/.test(x)-/preview/.test(y))||(/lite/.test(x)-/lite/.test(y))||x.length-y.length);
-  if(c.length)return c[0];
-  return ok.find(n=>/flash-latest$/.test(n))||ok.find(n=>/flash/.test(n)&&!bad.test(n))||'';
-}
-const FALLBACK='gemini-flash-lite-latest';
-async function gcall(parts,o){
-  o=o||{};
-  const model=o.model||S.model||'gemini-flash-latest';
-  const cfg={responseMimeType:'application/json'};
-  if(!S.noThink&&!o.nt)cfg.thinkingConfig={thinkingBudget:0};
-  let data;
-  try{
-    data=await gfetch('models/'+encodeURIComponent(model)+':generateContent',{
-      method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.key},
-      body:JSON.stringify({contents:[{parts:parts}],generationConfig:cfg})});
-    if(o.nt&&!S.noThink){S.noThink=true;save()}
-  }catch(e){
-    if(e&&e.code===400&&!S.noThink&&!o.nt)return gcall(parts,Object.assign({},o,{nt:1}));
-    if(e&&e.code===404&&!o.pm&&!o.fb){
-      const m=await pickModel();
-      if(m&&m!==S.model){S.model=m;save();if($('sModel'))$('sModel').value=m;return gcall(parts,Object.assign({},o,{pm:1,model:m}))}
-    }
-    if(e&&(e.code===503||e.code===500||e.code===502||e.code===429)&&!o.fb&&!/lite/.test(model))return gcall(parts,Object.assign({},o,{fb:1,model:FALLBACK}));
-    throw e;
-  }
-  return ((data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts)||[]).map(p=>p.text||'').join('');
-}
-const hasAI=()=>!!(S.key||S.orKey);
+const hasAI=()=>!!S.orKey;
 async function orcall(parts){
   const content=parts.map(p=>p.text!=null?{type:'text',text:p.text}:{type:'image_url',image_url:{url:'data:'+p.inlineData.mimeType+';base64,'+p.inlineData.data}});
   let r;
-  try{r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.orKey,'X-Title':'Sa3rati'},body:JSON.stringify({model:S.orModel||'openai/gpt-4o-mini',messages:[{role:'user',content:content}]})})}catch(e){throw {code:'net'}}
+  try{r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.orKey,'X-Title':'Sa3rati'},body:JSON.stringify({model:S.orModel||'openrouter/free',messages:[{role:'user',content:content}]})})}catch(e){throw {code:'net'}}
   if(!r.ok){let m='';try{const j=await r.json();m=(j&&j.error&&j.error.message)||''}catch(e){}throw {code:r.status,detail:'OpenRouter: '+m}}
   const j=await r.json();
   const t=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
@@ -923,12 +878,8 @@ async function orcall(parts){
   return typeof t==='string'?t:t.map(x=>x.text||'').join('');
 }
 async function aiCall(parts){
-  if(S.key){
-    try{return await gcall(parts)}
-    catch(e){if(S.orKey&&!(e&&e.code==='parse'))return orcall(parts);throw e}
-  }
-  if(S.orKey)return orcall(parts);
-  throw {code:'nokey'};
+  if(!S.orKey)throw {code:'nokey'};
+  return orcall(parts);
 }
 function knownFoods(){
   if(S.useList===false)return'';
@@ -951,7 +902,7 @@ async function askLabel(b64){
   if(!(r.k>0)&&!(r.p||r.c||r.f))throw {code:'parse'};
   return r;
 }
-const ERR={net:'ما قدرت أتصل. تأكد من النت، أو استخدم «بدون مفتاح أو بدون نت».',400:'الطلب انرفض. تأكد من اسم الموديل في الإعدادات.',401:'المفتاح غير صحيح.',403:'المفتاح غير صالح أو ما له صلاحية.',404:'ما لقيت موديل شغال لمفتاحك.',429:'وصلت حد الاستخدام المجاني، جرّب بعد شوي.',parse:'ما فهمت جواب Gemini، جرّب تكتب أوضح.',nokey:'حط مفتاح Gemini في الإعدادات، أو استخدم «بدون مفتاح أو بدون نت».'};
+const ERR={net:'ما قدرت أتصل. تأكد من النت، أو استخدم «إدخال يدوي».',400:'الطلب انرفض. تأكد من اسم الموديل في الإعدادات.',402:'رصيد OpenRouter خلص أو ما فيه رصيد.',401:'المفتاح غير صحيح.',403:'المفتاح غير صالح أو ما له صلاحية.',404:'ما لقيت موديل شغال لمفتاحك.',429:'وصلت حد الاستخدام المجاني، جرّب بعد شوي.',parse:'ما فهمت جواب الذكاء الاصطناعي، جرّب تكتب أوضح.',nokey:'حط مفتاح OpenRouter في الإعدادات، أو استخدم «إدخال يدوي».'};
 function errText(e){
   if(!e)return 'صار خطأ غير متوقع.';
   const base=ERR[e.code]||(e.code>=500?'خدمة Google مشغولة، جرّب بعد شوي.':'ما قدرت أكمل.');
@@ -1221,13 +1172,13 @@ function prodChips(){return S.adds.length?'<div><p class="note" style="margin-bo
 function renderS2(){
   if(M.mode==='review'){
     if(M.loading){
-      $('s2body').innerHTML='<h2>⏳ جاري الحساب...</h2><div class="tot">«'+esc(M.text.slice(0,120))+'»</div><p class="note">ما راح يُضاف شي قبل ما تراجعه. لو Gemini بطيء أو مشغول تقدر تخليه يحسب بالخلفية وتكمل.</p><button type="button" class="btn soft" data-act="rv_bg">احسبه بالخلفية</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';return;
+      $('s2body').innerHTML='<h2>⏳ جاري الحساب...</h2><div class="tot">«'+esc(M.text.slice(0,120))+'»</div><p class="note">ما راح يُضاف شي قبل ما تراجعه. لو الخدمة بطيئة أو مشغولة تقدر تخليه يحسب بالخلفية وتكمل.</p><button type="button" class="btn soft" data-act="rv_bg">احسبه بالخلفية</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';return;
     }
     if(M.err){
       $('s2body').innerHTML='<h2>تعذر الحساب</h2><p class="msg err">'+esc(M.err)+'</p><button type="button" class="btn big" data-act="rv_retry">أعد المحاولة</button><button type="button" class="btn soft" data-act="rv_bg">احسبه بالخلفية (يعيد المحاولة لحاله)</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';return;
     }
     const ff=[['k','السعرات'],['p','البروتين'],['c','الكارب'],['fi','الألياف'],['f','الدهون'],['cf','كافيين ملغ']];
-    $('s2body').innerHTML='<h2>راجع قبل الإضافة</h2><p class="note">'+(M.note||'هذي تقديرات Gemini. عدّل أي رقم فيه خطأ، ولا يُضاف شي قبل ما تضغط «إضافة».')+'</p>'+
+    $('s2body').innerHTML='<h2>راجع قبل الإضافة</h2><p class="note">'+(M.note||'هذي تقديرات الذكاء الاصطناعي. عدّل أي رقم فيه خطأ، ولا يُضاف شي قبل ما تضغط «إضافة».')+'</p>'+
       '<label>تنضاف إلى وجبة'+slotSel()+'</label>'+
       (M.items.length?M.items.map((x,i)=>'<div class="rvcard"><div class="rvh"><input type="text" data-rn="'+i+'" value="'+esc(x.n)+'" aria-label="الاسم"><button type="button" class="vx" data-rrm="'+i+'" aria-label="حذف">×</button></div>'+
         '<div class="pm num" id="rvm'+i+'">'+macroLine(x)+'</div>'+(x.q?'<div class="pm">الكمية: '+esc(x.q)+'</div>':'')+
@@ -1245,8 +1196,8 @@ function renderS2(){
         '<button type="button" class="btn big" data-act="bar_next">راجع وأضف</button><button type="button" class="btn ghost" data-act="bar_back">باركود ثاني</button>';
       barUpd();return;
     }
-    $('s2body').innerHTML='<h2>📷 باركود</h2><p class="note">صوّر الباركود أو اكتب رقمه. المنتجات السعودية قد ما تكون كلها موجودة.</p>'+
-      '<label class="btn soft" style="color:var(--blue);flex-direction:row;justify-content:center;gap:8px;font-size:16px">📷 صوّر الباركود<input id="barFile" type="file" accept="image/*" capture="environment" style="display:none"></label>'+
+    $('s2body').innerHTML='<h2>📷 باركود</h2><p class="note">صوّر الباركود أو اختر صورته من الاستديو، أو اكتب رقمه. الصورة تنقرأ وما تنحفظ، والمنتج ينحفظ في إضافاتي تلقائياً. المنتجات السعودية قد ما تكون كلها موجودة.</p>'+
+      '<label class="btn soft" style="color:var(--blue);flex-direction:row;justify-content:center;gap:8px;font-size:16px">📷 صوّر أو اختر صورة الباركود<input id="barFile" type="file" accept="image/*" style="display:none"></label>'+
       '<input id="barN" type="text" inputmode="numeric" placeholder="رقم الباركود" autocomplete="off" value="'+esc(M.code||'')+'">'+
       '<p class="msg'+(M.err?' err':'')+'" id="s2msg" aria-live="polite">'+esc(M.err||'')+'</p>'+
       '<button type="button" class="btn big" data-act="bar_find">ابحث</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
@@ -1280,7 +1231,7 @@ function renderS2(){
     $('s2body').innerHTML='<h2>'+(caf?'☕ كافيين يدوي':'🥤 سناك أو مشروب جديد')+'</h2>'+
       (caf?'<div class="chiprow"><span class="cp"><button type="button" data-qn="قهوة|'+S.cupMl+'">قهوة</button></span><span class="cp"><button type="button" data-qn="مشروب طاقة|250">مشروب طاقة</button></span></div>':'')+
       '<input id="dn" type="text" placeholder="الاسم، مثال: ريد بول" autocomplete="off" value="'+esc(M.name||'')+'">'+
-      '<button type="button" class="btn soft" data-act="dfill">✨ عبّي الأرقام بـ Gemini</button>'+
+      '<button type="button" class="btn soft" data-act="dfill">✨ عبّي الأرقام بالذكاء الاصطناعي</button>'+
       '<div class="f2"><label>الكافيين (ملغ)<input id="dcf" type="number" inputmode="numeric" min="0"></label><label>السعرات<input id="dk" type="number" inputmode="numeric" min="0"></label>'+
       '<label>البروتين (جم)<input id="dp" type="number" inputmode="decimal" min="0"></label><label>الكارب (جم)<input id="dc" type="number" inputmode="decimal" min="0"></label>'+
       '<label>الدهون (جم)<input id="df" type="number" inputmode="decimal" min="0"></label><label>الماء (مل)<input id="dw" type="number" inputmode="numeric" min="0" value="'+(M.w||'')+'"></label></div>'+
@@ -1324,8 +1275,7 @@ function renderS2(){
   }else{
     h='<h2>⭐ وجبة جديدة</h2>'+nameIn+slotSel()+
       '<textarea id="s2text" placeholder="اكتب المكونات بالجرامات: صدر دجاج مشوي 415 جم، بطاطس مشوية 200 جم">'+esc(M.text||'')+'</textarea>'+
-      '<button type="button" class="btn soft" data-act="calc">احسب بـ Gemini</button>'+
-      '<details><summary>لصق جواب Gemini (بدون مفتاح)</summary><div><button type="button" class="btn ghost" data-act="copyask">نسخ الطلب</button><textarea id="s2paste" placeholder="الصق جواب Gemini هنا"></textarea><button type="button" class="btn ghost" data-act="padd2">إضافة المكونات</button></div></details>'+
+      '<button type="button" class="btn soft" data-act="calc">احسب بالذكاء الاصطناعي</button>'+
       '<details><summary>مكوّن يدوي</summary><div><input id="mn" type="text" placeholder="الاسم" autocomplete="off"><div class="f2">'+
       '<label>الجرامات<input id="mg" type="number" inputmode="decimal" min="0"></label><label>السعرات<input id="mk" type="number" inputmode="numeric" min="0"></label>'+
       '<label>البروتين<input id="mp" type="number" inputmode="decimal" min="0"></label><label>الكارب<input id="mc" type="number" inputmode="decimal" min="0"></label>'+
@@ -1394,7 +1344,9 @@ $('s2body').addEventListener('click',async e=>{
   if(act==='close'){closeS2();return}
   if(act==='bar_find'){barLookup(($('barN').value||'').replace(/\D/g,''));return}
   if(act==='bar_back'){openS2({mode:'bar',slot:M.slot});return}
-  if(act==='bar_next'){const g=parseFloat($('barG').value)||0;if(!(g>0)){s2msg('اكتب الجرامات.');return}const x=barItem(M.p,g);openS2({mode:'review',items:[x],text:M.p.n,slot:M.slot,from:'live',note:'القيم من Open Food Facts حسب الجرامات اللي كتبتها. قارنها بالملصق وعدّل أي رقم فيه خطأ، ولا يُضاف شي قبل ما تضغط «إضافة».'});return}
+  if(act==='bar_next'){const g=parseFloat($('barG').value)||0;if(!(g>0)){s2msg('اكتب الجرامات.');return}const x=barItem(M.p,g);
+    if(M.p.bc&&!S.adds.some(a=>a.bc===M.p.bc)){const q=M.p;S.adds.push({id:Date.now(),bc:q.bc,sq:q.sq||0,n:q.n,g:100,k:q.k,p:q.p,c:q.c,fi:q.fi,f:q.f,w:0,cf:0});save();renderMyMeals()}
+    openS2({mode:'review',items:[x],text:M.p.n,slot:M.slot,from:'live',note:'القيم من Open Food Facts حسب الجرامات اللي كتبتها. قارنها بالملصق وعدّل أي رقم فيه خطأ، ولا يُضاف شي قبل ما تضغط «إضافة».'});return}
   if(act==='pshare'){sharePDF();return}
   if(act==='pback'){M.stage='pick';renderS2();return}
   if(act==='rv_retry'){startReview(M.text);return}
@@ -1424,7 +1376,7 @@ $('s2body').addEventListener('click',async e=>{
     b.disabled=true;b.textContent='جاري الحساب...';
     try{const it=(await askGemini(nm))[0];if(!M)return;$('dcf').value=it.cf||'';$('dk').value=it.k||'';$('dp').value=it.p||'';$('dc').value=it.c||'';$('df').value=it.f||'';$('dw').value=it.w||'';s2msg('انحسبت. راجع الأرقام وعدّلها لو تبي.',true)}
     catch(err){s2msg(errText(err))}
-    if(M){b.disabled=false;b.textContent='✨ عبّي الأرقام بـ Gemini'}
+    if(M){b.disabled=false;b.textContent='✨ عبّي الأرقام بالذكاء الاصطناعي'}
     return;
   }
   if(act==='dadd'||act==='dsave'){
@@ -1469,10 +1421,9 @@ $('s2body').addEventListener('click',async e=>{
       if(!M)return;
       items.forEach(x=>M.rows.push(rowFrom(x,x.g)));
       M.text='';renderS2();
-    }catch(err){if(M){s2msg(errText(err));b.disabled=false;b.textContent='احسب بـ Gemini'}}
+    }catch(err){if(M){s2msg(errText(err));b.disabled=false;b.textContent='احسب بالذكاء الاصطناعي'}}
     return;
   }
-  if(act==='copyask'){const ok=await copyText(ASK+(M.text||'').trim());s2msg(ok?'اننسخ الطلب. الصقه في Gemini.':'ما اننسخ تلقائيًا.',ok);return}
   if(act==='padd2'){
     const items=parseAny($('s2paste').value);
     if(!items.length){s2msg('ما لقيت أصناف بالشكل المطلوب.');return}
@@ -1533,6 +1484,8 @@ async function barLookup(code){
   if(!/^\d{6,14}$/.test(code)){M.code=code;M.err='اكتب رقم الباركود كامل (أرقام فقط).';renderS2();return}
   s2msg('جاري البحث...',true);
   const mine=M;
+  const hit=S.adds.find(a=>a.bc===code);
+  if(hit){M.p={n:hit.n,k:hit.k,p:hit.p,c:hit.c,fi:hit.fi,f:hit.f,saved:1};M.code=code;M.g=hit.sq||100;M.stage='found';M.err='';renderS2();return}
   try{
     const r=await fetch('https://world.openfoodfacts.org/api/v2/product/'+code+'.json?fields=product_name,product_name_ar,brands,nutriments,serving_quantity');
     if(!r.ok)throw {code:'net'};
@@ -1546,7 +1499,7 @@ async function barLookup(code){
     const d1=v=>Math.round((v||0)*10)/10;
     const nm=(pr.product_name_ar||pr.product_name||'منتج').trim().slice(0,60)+(pr.brands?' ('+String(pr.brands).split(',')[0].trim().slice(0,25)+')':'');
     const sq=parseFloat(pr.serving_quantity);
-    M.p={n:nm,k:Math.round(k!=null?k:(P||0)*4+(C||0)*4+(F||0)*9),p:d1(P),c:d1(C),fi:d1(num(n['fiber_100g'])),f:d1(F)};
+    M.p={bc:code,sq:(sq>0&&sq<2000?sq:0),n:nm,k:Math.round(k!=null?k:(P||0)*4+(C||0)*4+(F||0)*9),p:d1(P),c:d1(C),fi:d1(num(n['fiber_100g'])),f:d1(F)};
     M.g=sq>0&&sq<2000?sq:100;M.stage='found';M.err='';renderS2();
   }catch(e){if(M!==mine)return;M.code=code;M.err='ما قدرت أتصل بقاعدة المنتجات. تأكد من النت.';renderS2()}
 }
@@ -1781,7 +1734,7 @@ function textSummary(keys){
 }
 $('repCopy').addEventListener('click',async()=>{
   const ok=await copyText(textSummary(periodKeys(repOff)));
-  $('repMsg').className='msg '+(ok?'ok':'err');$('repMsg').textContent=ok?'اننسخ الملخص. الصقه في Gemini.':'ما اننسخ تلقائيًا.';
+  $('repMsg').className='msg '+(ok?'ok':'err');$('repMsg').textContent=ok?'اننسخ الملخص. الصقه في أي محادثة.':'ما اننسخ تلقائيًا.';
 });
 
 /* ---------- PDF ---------- */
@@ -1938,7 +1891,7 @@ function renderSet(){
   $('tgrid').innerHTML=TG.map(g=>'<label>'+g[1]+'<input data-t="'+g[0]+'" type="number" inputmode="numeric" min="'+g[2]+'" value="'+(g[0]==='cupMg'||g[0]==='cupMl'?S[g[0]]:S.t[g[0]])+'"></label>').join('');
   const mk=S.t.p*4+S.t.c*4+S.t.f*9;
   $('tHint').textContent='الماكروز اللي حطيتها تساوي '+fmt(mk)+' سعرة (بروتين وكارب 4 للجرام، دهون 9).';
-  $('sKey').value=S.key;$('sUseList').checked=S.useList!==false;$('sOr').value=S.orKey||'';$('sOrM').value=S.orModel||'openai/gpt-4o-mini';$('sModel').value=S.model;
+  $('sUseList').checked=S.useList!==false;$('sOr').value=S.orKey||'';$('sOrM').value=S.orModel||'openrouter/free';
   const a=anchor();$('pH').value=S.prof.h;$('pAge').value=S.prof.age;$('pAct').value=String(S.prof.act);
   $('pW0').value=a?a.w:'';$('pD0').value=a?a.d:'';
 }
@@ -1955,15 +1908,12 @@ $('tgrid').addEventListener('change',e=>{
   if(isFinite(v)&&v>=g[2]){if(key==='cupMg'||key==='cupMl')S[key]=v;else S.t[key]=v}
   save();renderSet();
 });
-$('sKey').addEventListener('change',()=>{S.key=$('sKey').value.trim();save()});
-$('sModel').addEventListener('change',()=>{S.model=$('sModel').value.trim()||'gemini-flash-latest';save()});
 $('sUseList').addEventListener('change',()=>{S.useList=$('sUseList').checked;save()});
 $('sOr').addEventListener('change',()=>{S.orKey=$('sOr').value.trim();save()});
-$('sOrM').addEventListener('change',()=>{S.orModel=$('sOrM').value.trim()||'openai/gpt-4o-mini';save()});
+$('sOrM').addEventListener('change',()=>{S.orModel=$('sOrM').value.trim()||'openrouter/free';save()});
 $('sTest').addEventListener('click',async()=>{
-  S.key=$('sKey').value.trim();S.model=$('sModel').value.trim()||'gemini-flash-latest';save();
   const m=$('sMsg');m.className='msg';m.textContent='جاري الاختبار...';
-  S.orKey=$('sOr').value.trim();S.orModel=$('sOrM').value.trim()||'openai/gpt-4o-mini';save();
+  S.orKey=$('sOr').value.trim();S.orModel=$('sOrM').value.trim()||'openrouter/free';save();
   if(!hasAI()){m.className='msg err';m.textContent=ERR.nokey;return}
   try{const it=await askGemini('بيضة مسلوقة');m.className='msg ok';m.textContent='الاتصال شغال: بيضة مسلوقة = '+it[0].k+' سعرة.'}
   catch(e){m.className='msg err';m.textContent=errText(e)}
@@ -1978,7 +1928,7 @@ $('bkOut').addEventListener('click',async()=>{
 $('bkIn').addEventListener('click',()=>{
   try{
     const o=JSON.parse($('bk').value);if(!o||!o.days||!o.t)throw 0;
-    const key=S.key,ork=S.orKey;S=Object.assign({},DEF,o);S.t=Object.assign({},DEF.t,o.t);S.meals=o.meals||[];S.adds=o.adds||[];S.cache=o.cache||{};S.vits=o.vits||[];S.prof=Object.assign({},DEF.prof,o.prof||{});S.key=key||o.key||'';S.orKey=ork||'';fixDays();save();renderSet();renderAll();
+    const key=S.key,ork=S.orKey;S=Object.assign({},DEF,o);S.t=Object.assign({},DEF.t,o.t);S.meals=o.meals||[];S.adds=o.adds||[];S.cache=o.cache||{};S.vits=o.vits||[];S.prof=Object.assign({},DEF.prof,o.prof||{});S.key='';S.orKey=ork||'';fixDays();save();renderSet();renderAll();
     $('bMsg').className='msg ok';$('bMsg').textContent='تم الاستيراد.';
   }catch(e){$('bMsg').className='msg err';$('bMsg').textContent='النسخة غير صالحة.'}
 });
