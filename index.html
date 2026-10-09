@@ -867,7 +867,7 @@ const SPEC='لكل صنف قدّر: k السعرات، p البروتين، c ا
 const PROMPT='أنت حاسب تغذية. حلّل النص التالي الذي يصف أكل وشرب شخص. '+SPEC+
   ' لا تكرر أي صنف، والاسم المركب مثل «بودينق بروتين» أو «شيك بروتين» صنف واحد فقط. وأضف ca: الكالسيوم بالملغ وfe: الحديد بالملغ للصنف كله. ردّ بـ JSON فقط بهذا الشكل بدون أي نص آخر: {"items":[{"n":"اسم الصنف","q":"الكمية","k":0,"p":0,"c":0,"fi":0,"f":0,"w":0,"cf":0,"ca":0,"fe":0,"g":0}]} والأرقام صحيحة.\n\nالنص: ';
 const ASK='احسب لكل صنف (أكل سعودي/عربي): الاسم | سعرات | بروتين | كارب | ألياف | دهون | ماء مل | كافيين ملغ | جرام. رد بسطر لكل صنف فقط بدون شرح، والأرقام صحيحة.\nالأكل: ';
-const LABELP='هذي صورة ملصق القيمة الغذائية (Nutrition Facts) لمنتج غذائي. استخرج القيم لكل 100 جرام (أو 100 مل). إذا كانت القيم مكتوبة لكل حصة فقط، حوّلها لكل 100 جرام باستخدام وزن الحصة المكتوب. n اسم المنتج إن ظهر وإلا اكتب "منتج". k السعرات، p البروتين، c الكربوهيدرات، fi الألياف، f الدهون (بالجرام، ويسمح بكسر عشري). ردّ بـ JSON فقط: {"n":"","k":0,"p":0,"c":0,"fi":0,"f":0}';
+const LABELP='هذي صورة عبوة منتج غذائي وفيها ملصق القيمة الغذائية (Nutrition Facts). اقرأ الأرقام كما هي مكتوبة بالضبط ولا تحوّلها. n اسم المنتج كما هو مكتوب على العبوة (الاسم التجاري، وإذا كان بالعربي والإنجليزي اكتب العربي). إذا ما ظهر الاسم بوضوح اكتب "" فارغ ولا تخمن. bg عدد الجرامات (أو المل) اللي كُتبت الأرقام لأجلها (مثلاً 100 أو 25 إذا كانت لكل حصة 25 جم). sg وزن العبوة أو القطعة الكاملة أو الحصة إن كان مكتوباً (مثلاً 25)، وإلا 0. k السعرات، p البروتين، c الكربوهيدرات، fi الألياف، f الدهون (بالجرام، ويسمح بكسر عشري) كما هي مكتوبة لـ bg. ردّ بـ JSON فقط: {"n":"","bg":100,"sg":0,"k":0,"p":0,"c":0,"fi":0,"f":0}';
 const GBASE='https://generativelanguage.googleapis.com/v1beta/';
 async function gfetch(path,opt){
   let r;
@@ -948,7 +948,9 @@ async function askLabel(b64){
   const txt=await aiCall([{text:LABELP},{inlineData:{mimeType:'image/jpeg',data:b64}}]);
   const m=txt.match(/\{[\s\S]*\}/);if(!m)throw {code:'parse'};
   let o;try{o=JSON.parse(m[0])}catch(e){throw {code:'parse'}}
-  const r={n:String(o.n||'').trim().slice(0,60)||'منتج',k:Math.round(+o.k)||0,p:dec(o.p),c:dec(o.c),fi:dec(o.fi),f:dec(o.f)};
+  let bg=+o.bg;if(!(bg>0))bg=100;
+  const sc=v=>Math.round((+v||0)*100/bg*10)/10;
+  const r={n:String(o.n||'').trim().slice(0,60),k:Math.round(sc(o.k)),p:sc(o.p),c:sc(o.c),fi:sc(o.fi),f:sc(o.f),bg:bg,sg:(+o.sg>0&&+o.sg<5000)?Math.round(+o.sg*10)/10:(bg!==100?bg:0)};
   if(!(r.k>0)&&!(r.p||r.c||r.f))throw {code:'parse'};
   return r;
 }
@@ -1277,19 +1279,20 @@ function renderS2(){
   }
   if(M.mode==='prod'){
     $('s2body').innerHTML='<h2>📦 منتج جديد</h2>'+
-      '<p class="note">صوّر ملصق القيمة الغذائية، أو اكتب الأرقام بيدك. الأرقام لكل 100 جم (أو 100 مل).</p>'+
+      '<p class="note">صوّر ملصق القيمة الغذائية، أو اكتب الأرقام بيدك. الخانات تحت لكل 100 جم (أو 100 مل).</p>'+
       '<label class="btn soft" style="color:var(--blue);flex-direction:row;justify-content:center;gap:8px;font-size:16px">📷 صوّر أو اختر صورة الملصق<input id="prFile" type="file" accept="image/*" style="display:none"></label>'+
       '<p class="msg" id="s2msg" aria-live="polite"></p>'+
-      '<input id="prN" type="text" placeholder="اسم المنتج، مثال: صوص ثوم" autocomplete="off" value="'+esc(M.pn||'')+'">'+
+      '<input id="prN" type="text" placeholder="اسم المنتج (اكتبه إذا ما انقرأ)" autocomplete="off" value="'+esc(M.pn||'')+'">'+
       '<div class="f2"><label>السعرات<input id="prK" type="number" inputmode="decimal" min="0"></label><label>البروتين<input id="prP" type="number" inputmode="decimal" min="0"></label>'+
       '<label>الكارب<input id="prC" type="number" inputmode="decimal" min="0"></label><label>الألياف<input id="prFi" type="number" inputmode="decimal" min="0"></label>'+
       '<label>الدهون<input id="prF" type="number" inputmode="decimal" min="0"></label></div>'+
+      '<div class="tot num" id="prInfo" style="line-height:1.9"></div>'+
       '<button type="button" class="btn big" data-act="prsave">حفظ في إضافاتي</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
     return;
   }
   if(M.mode==='padd'){
     const p=M.p;
-    $('s2body').innerHTML='<h2>'+esc(p.n)+'</h2>'+slotSel()+
+    $('s2body').innerHTML='<h2>'+esc(p.n)+'</h2>'+(p.sg?'<p class="note">وزن العبوة/القطعة: '+p.sg+' جم</p>':'')+slotSel()+
       '<label>كم جرام؟<input id="paG" type="number" inputmode="decimal" min="0" step="any" placeholder="مثال: 7" value="'+(M.g||'')+'"></label>'+
       '<div class="tot num" id="paT">اكتب الجرامات</div><p class="msg err" id="s2msg" aria-live="polite"></p>'+
       '<button type="button" class="btn big" data-act="padd">إضافة للوجبة</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
@@ -1329,6 +1332,7 @@ function paUpd(){
 $('s2body').addEventListener('input',e=>{
   const t=e.target;if(!M)return;
   if(t.id==='paG'){paUpd();return}
+  if(M.mode==='prod'&&/^pr[KPCF]/.test(t.id||'')){prInfo();return}
   if(t.dataset.g!==undefined){
     const i=+t.dataset.g,r=M.rows[i],g=parseFloat(t.value)||0;
     if(M.mode==='save'||r.free)r.b.g=g;
@@ -1350,8 +1354,8 @@ $('s2body').addEventListener('change',async e=>{
       const b64=await readImage(f);
       const r=await askLabel(b64);
       if(!M||M.mode!=='prod')return;
-      $('prN').value=r.n;$('prK').value=r.k;$('prP').value=r.p;$('prC').value=r.c;$('prFi').value=r.fi;$('prF').value=r.f;
-      s2msg('انقرأ الملصق. راجع الأرقام وعدّلها لو فيه خطأ ثم احفظ.',true);
+      if(r.n)$('prN').value=r.n;$('prK').value=r.k;$('prP').value=r.p;$('prC').value=r.c;$('prFi').value=r.fi;$('prF').value=r.f;M.sg=r.sg||0;prInfo();
+      s2msg(r.n?'تأكد من الاسم والأرقام ثم احفظ.':'الاسم ما ظهر، اكتبه بيدك.',!!r.n);if(!r.n)$('prN').focus();
     }catch(err){s2msg(errText(err)+' تقدر تكتب الأرقام بيدك.')}
   }
 });
@@ -1418,8 +1422,8 @@ $('s2body').addEventListener('click',async e=>{
   if(act==='prsave'){
     const n=$('prN').value.trim(),k=Math.round(+$('prK').value);
     if(!n||$('prK').value===''||!(k>=0)){s2msg('اكتب الاسم والسعرات.');return}
-    const na={id:Date.now(),n:n,g:100,k:k,p:dec($('prP').value),c:dec($('prC').value),fi:dec($('prFi').value),f:dec($('prF').value),w:0,cf:0};S.adds.push(na);
-    save();renderMyMeals();const dr=M.direct,sl=M.slot;if(dr){openS2({mode:'padd',p:na,slot:sl||curMeal});toast('انحفظ «'+n+'» في إضافاتي. اكتب الجرامات وأضفه',false)}else{closeS2();toast('تم حفظ «'+n+'» في إضافاتي',false)}return;
+    const na={id:Date.now(),sg:M.sg||0,n:n,g:100,k:k,p:dec($('prP').value),c:dec($('prC').value),fi:dec($('prFi').value),f:dec($('prF').value),w:0,cf:0};S.adds.push(na);
+    save();renderMyMeals();const dr=M.direct,sl=M.slot;if(dr){openS2({mode:'padd',p:na,slot:sl||curMeal,g:na.sg||0});toast('انحفظ «'+n+'» في إضافاتي. اكتب الجرامات وأضفه',false)}else{closeS2();toast('تم حفظ «'+n+'» في إضافاتي',false)}return;
   }
   if(act==='padd'){
     if(!(M.g>0)){s2msg('اكتب الجرامات.');return}
@@ -1494,6 +1498,15 @@ async function genPDF(o){
 }
 
 $('barBtn').addEventListener('click',()=>openS2({mode:'prod',slot:curMeal,direct:1}));
+
+function prInfo(){
+  const el=$('prInfo');if(!el||!M||M.mode!=='prod')return;
+  const v=id=>+($(id)||{}).value||0,m1=x=>Math.round(x*10)/10;
+  const k=v('prK'),p=v('prP'),c=v('prC'),fi=v('prFi'),f=v('prF');
+  if(!(k>0||p||c||f)){el.innerHTML='';return}
+  const line=(x)=>'<b>'+fmt(Math.round(k*x))+'</b> سعرة · '+m1(p*x)+' بروتين · '+m1(c*x)+' كارب · '+m1(fi*x)+' ألياف · '+m1(f*x)+' دهون';
+  el.innerHTML=(M.sg>0?'العبوة/القطعة ('+M.sg+' جم):<br>'+line(M.sg/100)+'<br><br>':'')+'كل 100 جم منها:<br>'+line(1);
+}
 
 /* ---------- days / tabs ---------- */
 $('dPrev').addEventListener('click',()=>{sel=dk(addDays(fromKey(sel),-1));renderAll()});
