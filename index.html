@@ -1250,7 +1250,7 @@ function renderS2(){
       '<label class="btn soft" style="color:var(--blue);flex-direction:row;justify-content:center;gap:8px;font-size:16px">📷 صوّر أو اختر صورة الباركود<input id="barFile" type="file" accept="image/*" style="display:none"></label>'+
       '<input id="barN" type="text" inputmode="numeric" placeholder="رقم الباركود" autocomplete="off" value="'+esc(M.code||'')+'">'+
       '<p class="msg'+(M.err?' err':'')+'" id="s2msg" aria-live="polite">'+esc(M.err||'')+'</p>'+
-      '<button type="button" class="btn big" data-act="bar_find">ابحث</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
+      '<button type="button" class="btn big" data-act="bar_find">ابحث</button>'+(M.canProd?'<button type="button" class="btn soft" data-act="bar_prod">📦 سجّله من ملصق المنتج</button>':'')+'<button type="button" class="btn ghost" data-act="close">إغلاق</button>';
     return;
   }
   if(M.mode==='pdf'){
@@ -1296,7 +1296,7 @@ function renderS2(){
       '<p class="note">صوّر ملصق القيمة الغذائية، أو اكتب الأرقام بيدك. الأرقام لكل 100 جم (أو 100 مل).</p>'+
       '<label class="btn soft" style="color:var(--blue);flex-direction:row;justify-content:center;gap:8px;font-size:16px">📷 صوّر أو اختر صورة الملصق<input id="prFile" type="file" accept="image/*" style="display:none"></label>'+
       '<p class="msg" id="s2msg" aria-live="polite"></p>'+
-      '<input id="prN" type="text" placeholder="اسم المنتج، مثال: صوص ثوم" autocomplete="off">'+
+      '<input id="prN" type="text" placeholder="اسم المنتج، مثال: صوص ثوم" autocomplete="off" value="'+esc(M.pn||'')+'">'+
       '<div class="f2"><label>السعرات<input id="prK" type="number" inputmode="decimal" min="0"></label><label>البروتين<input id="prP" type="number" inputmode="decimal" min="0"></label>'+
       '<label>الكارب<input id="prC" type="number" inputmode="decimal" min="0"></label><label>الألياف<input id="prFi" type="number" inputmode="decimal" min="0"></label>'+
       '<label>الدهون<input id="prF" type="number" inputmode="decimal" min="0"></label></div>'+
@@ -1393,6 +1393,7 @@ $('s2body').addEventListener('click',async e=>{
   const act=b.dataset.act;
   if(act==='close'){closeS2();return}
   if(act==='bar_find'){barLookup(($('barN').value||'').replace(/\D/g,''));return}
+  if(act==='bar_prod'){openS2({mode:'prod',bc:M.code,pn:M.pn||''});return}
   if(act==='bar_back'){openS2({mode:'bar',slot:M.slot});return}
   if(act==='bar_next'){const g=parseFloat($('barG').value)||0;if(!(g>0)){s2msg('اكتب الجرامات.');return}const x=barItem(M.p,g);
     if(M.p.bc&&!S.adds.some(a=>a.bc===M.p.bc)){const q=M.p;S.adds.push({id:Date.now(),bc:q.bc,sq:q.sq||0,n:q.n,g:100,k:q.k,p:q.p,c:q.c,fi:q.fi,f:q.f,w:0,cf:0});save();renderMyMeals()}
@@ -1442,7 +1443,7 @@ $('s2body').addEventListener('click',async e=>{
   if(act==='prsave'){
     const n=$('prN').value.trim(),k=Math.round(+$('prK').value);
     if(!n||$('prK').value===''||!(k>=0)){s2msg('اكتب الاسم والسعرات.');return}
-    S.adds.push({id:Date.now(),n:n,g:100,k:k,p:dec($('prP').value),c:dec($('prC').value),fi:dec($('prFi').value),f:dec($('prF').value),w:0,cf:0});
+    S.adds.push({id:Date.now(),bc:M.bc||undefined,n:n,g:100,k:k,p:dec($('prP').value),c:dec($('prC').value),fi:dec($('prFi').value),f:dec($('prF').value),w:0,cf:0});
     save();renderMyMeals();closeS2();toast('تم حفظ «'+n+'» في إضافاتي',false);return;
   }
   if(act==='padd'){
@@ -1541,11 +1542,11 @@ async function barLookup(code){
     if(!r.ok)throw {code:'net'};
     const j=await r.json();
     if(M!==mine)return;
-    if(!j||j.status!==1||!j.product){M.code=code;M.err='ما لقيت هذا الباركود في القاعدة. جرّب «منتج جديد» وصوّر الملصق.';renderS2();return}
+    if(!j||j.status!==1||!j.product){M.code=code;M.canProd=1;M.pn='';M.err='ما لقيت هذا الباركود في القاعدة. تقدر تسجّله من ملصق المنتج وبعدها ينحفظ بباركوده.';renderS2();return}
     const pr=j.product,n=pr.nutriments||{},num=v=>{v=parseFloat(v);return isFinite(v)?v:null};
     let k=num(n['energy-kcal_100g']);if(k==null){const kj=num(n['energy_100g']);if(kj!=null)k=kj/4.184}
     const P=num(n['proteins_100g']),C=num(n['carbohydrates_100g']),F=num(n['fat_100g']);
-    if(k==null&&P==null&&C==null&&F==null){M.code=code;M.err='المنتج موجود لكن بدون قيم غذائية. استخدم «منتج جديد» وصوّر الملصق.';renderS2();return}
+    if(k==null&&P==null&&C==null&&F==null){M.code=code;M.canProd=1;M.pn=(pr.product_name_ar||pr.product_name||'').trim().slice(0,60);M.err='المنتج موجود لكن بدون قيم غذائية. سجّله من ملصق المنتج وبعدها ينحفظ بباركوده.';renderS2();return}
     const d1=v=>Math.round((v||0)*10)/10;
     const nm=(pr.product_name_ar||pr.product_name||'منتج').trim().slice(0,60)+(pr.brands?' ('+String(pr.brands).split(',')[0].trim().slice(0,25)+')':'');
     const sq=parseFloat(pr.serving_quantity);
