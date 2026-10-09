@@ -207,6 +207,58 @@ section[id]{scroll-margin-top:12px}
 .cp.sn button{color:var(--ink)}
 .chk{flex-direction:row;align-items:center;gap:10px;font-size:15px;color:var(--ink)}
 .chk input{width:22px;height:22px;flex:none}
+
+/* ---- v8 day page ---- */
+.link:disabled{opacity:.4}
+.sec{font-size:13px;color:var(--muted);font-weight:700;margin:10px 6px -4px}
+.card.slim{padding:14px 16px;gap:10px;border-radius:18px}
+.rowsp{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.rowsp>div{min-width:0}
+.cap{font-size:12px;color:var(--muted);font-weight:500;margin:0}
+.hr{border:0;border-top:1px solid var(--line);margin:2px 0;width:100%}
+.trs{width:100%;display:flex;flex-direction:column}
+.tr{display:grid;grid-template-columns:1fr 1fr 1fr;font-size:13.5px;color:var(--ink);border-top:1px solid var(--line)}
+.tr button{border:0;background:none;padding:8px 2px;text-align:start;font-size:13.5px;color:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr button:nth-child(2){text-align:center}.tr button:nth-child(3){text-align:end}
+.tr .ok{color:var(--ok)}.tr .warn{color:var(--warn)}
+.stp{display:flex;align-items:center;gap:6px}
+.stp b{font-size:26px;min-width:34px;text-align:center}
+.stp .rb{width:40px;height:40px;border-radius:50%;border:0;background:var(--fill);font-size:22px;color:var(--blue)}
+.chp{display:flex;gap:6px}
+.chp button{border:0;background:var(--fill);border-radius:999px;padding:8px 12px;font-size:14px;font-weight:700}
+.btns2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn.sm{padding:10px;font-size:15px;border-radius:12px}
+.seg2{display:grid;grid-template-columns:1fr 1fr;background:var(--fill);border-radius:11px;padding:3px;gap:2px;flex:1;max-width:210px}
+.seg2 button{border:0;background:none;border-radius:9px;padding:8px;font-weight:700;font-size:14px;color:var(--muted)}
+.seg2 button[aria-pressed="true"].y{background:var(--green);color:#fff}
+.seg2 button[aria-pressed="true"].n{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.opts.sm{gap:5px}
+.opts.sm button{padding:6px 0;border-radius:10px;font-size:11px}
+.opts.sm button span{font-size:18px}
+.lbl2{display:flex;align-items:center;gap:7px;font-weight:700;font-size:14px;color:var(--muted)}
+.lbl2 i{width:9px;height:9px;border-radius:50%;display:inline-block}
+#shortBox .recent button{white-space:nowrap}
+.mrw{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.mrw:first-child{border-top:0}
+.mrw .bk{width:4px;border-radius:4px;flex:none}
+.mrw .bd{flex:1;min-width:0}
+.mrw .tt{display:flex;justify-content:space-between;font-weight:700;gap:8px}
+.mrw .tt span:last-child{color:var(--muted);font-weight:600;font-size:14px}
+.mrw .item{border:0;padding:3px 0;font-size:14px;justify-content:space-between;gap:10px}
+.mrw .item .nm{font-weight:500}
+.mrw .item .kk{font-weight:500;color:var(--muted);font-size:14px}
+.mrw .ft{font-size:12px;color:var(--muted)}
+.mrw .svm{border:0;background:none;color:var(--blue);font-size:12px;font-weight:600;padding:0}
+.vnote{border:0;border-radius:12px;padding:9px 11px;margin-top:6px;gap:6px}
+.vnote h4{font-size:13px}
+.lrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.lrow .nm{font-size:15px}.lrow .nm small{display:block;font-size:12px;color:var(--muted)}
+.lrow button.add{border:0;border-radius:999px;background:var(--tint);color:var(--blue);padding:6px 12px;font-size:13px;font-weight:700;white-space:nowrap}
+.lrow button.add.done{background:rgba(52,199,89,.16);color:var(--ok)}
+.lrow button.dx{border:0;background:none;color:var(--red);font-size:22px;padding:0 8px}
+.tagb{font-size:11px;font-weight:700;border-radius:7px;padding:2px 8px;background:rgba(255,149,0,.15);color:var(--warn);margin-inline-start:6px}
+.vrow.done .t{color:var(--muted)}
+#vSum .vsum{font-size:13px;padding:9px 12px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -221,120 +273,108 @@ section[id]{scroll-margin-top:12px}
     </div>
   </header>
 
-  <!-- اليوم (كل شي في صفحة وحدة بترتيب اليوم) -->
+  <!-- اليوم -->
   <main id="vHome">
-    <section class="card hero" aria-label="سعرات اليوم">
+    <section class="card hero" aria-label="بطاقة اليوم" id="secDay">
       <div class="ringwrap">
         <div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="var(--fill2)" stroke-width="12"/><circle id="rArc" cx="60" cy="60" r="50" fill="none" stroke="var(--kcal)" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 314"/></svg>
           <div class="mid"><b class="num" id="rBig">0</b><span id="rSub">باقي</span></div></div>
         <div class="mini" id="macros"></div>
       </div>
-      <div class="pills">
-        <button type="button" class="pill" data-scroll="secWater">💧 الماء<b class="num" id="pW"></b></button>
-        <button type="button" class="pill" data-scroll="secCaf">☕ الكافيين<b class="num" id="pC"></b></button>
-        <button type="button" class="pill" data-scroll="secVit">💊 الفيتامينات<b class="num" id="pV"></b></button>
+      <div class="trs" id="dsum"></div>
+    </section>
+
+    <div class="sec">الصباح</div>
+    <section class="card slim" id="secMorning" aria-label="صباحك">
+      <div id="mornSum" hidden class="rowsp"><div><b>☀️ صباحك مسجّل</b><div class="cap num" id="mornTxt"></div></div><button type="button" class="link" id="mornEdit">تعديل</button></div>
+      <div id="mornForm">
+        <div class="sh"><h3 style="font-size:16px">😴 كم نمت؟</h3></div>
+        <div class="step"><button type="button" id="slM" aria-label="أنقص نص ساعة">−</button><div class="v num" id="slV">—</div><button type="button" id="slP" aria-label="زد نص ساعة">+</button></div>
+        <div class="seg" id="slQ"><button type="button" data-h="5">5</button><button type="button" data-h="6">6</button><button type="button" data-h="7">7</button><button type="button" data-h="8">8</button><button type="button" data-h="9">9</button></div>
+        <div class="sh" style="margin-top:6px"><h3 style="font-size:16px">⚡ نشاطك الحين</h3></div>
+        <div class="opts sm" id="enOpts"></div>
+        <div class="sh" style="margin-top:6px"><h3 style="font-size:16px">⚖️ وزنك <small>(اختياري)</small></h3><input id="wt" type="number" inputmode="decimal" min="0" placeholder="كجم" style="width:110px;text-align:center"></div>
+        <button type="button" class="btn sm" id="mornDone" hidden>تم ✓</button>
       </div>
     </section>
 
-    <section class="card" id="secMorning" aria-label="صباحك">
-      <div class="sh"><div class="ic" style="background:rgba(88,86,214,.18)">😴</div><h3>صباحك <small>كم نمت؟</small></h3></div>
-      <div class="step"><button type="button" id="slM" aria-label="أنقص نص ساعة">−</button><div class="v num" id="slV">—</div><button type="button" id="slP" aria-label="زد نص ساعة">+</button></div>
-      <div class="seg" id="slQ"><button type="button" data-h="5">5</button><button type="button" data-h="6">6</button><button type="button" data-h="7">7</button><button type="button" data-h="8">8</button><button type="button" data-h="9">9</button></div>
-      <div class="sh" style="margin-top:4px"><div class="ic" style="background:rgba(255,204,0,.2)">⚡</div><h3>نشاطك الصباح</h3></div>
-      <div class="opts" id="enOpts"></div>
+    <div class="sec">الكافيين · الماء</div>
+    <section class="card slim" id="secCaf" aria-label="الكافيين">
+      <div class="rowsp"><div><b>☕ الكافيين</b><div class="cap num" id="cSmall"></div></div>
+        <div class="stp"><button class="rb" type="button" id="cMinus" aria-label="نقص كوب">−</button><b class="num" id="cCups">0</b><button class="rb" type="button" id="cPlus" aria-label="زيادة كوب">+</button></div></div>
+      <div class="bar"><i id="cBar" style="background:var(--caf);width:0"></i></div>
+      <div id="cQuick"></div>
+      <div class="rowsp cap"><span id="cLog"></span><span class="rowsp" style="gap:12px"><button class="link" id="cUndo" type="button">↩︎ تراجع</button><button class="link" id="cManual" type="button">+ كافيين يدوي</button></span></div>
+    </section>
+    <section class="card slim" id="secWater" aria-label="الماء">
+      <div class="rowsp"><div><b>💧 الماء</b><div class="cap num" id="wSmall"></div></div>
+        <div class="chp"><button type="button" data-w="250">+250</button><button type="button" data-w="500">+500</button><button type="button" data-w="1000">+1 ل</button></div></div>
+      <div class="bar"><i id="wBar" style="background:var(--water);width:0"></i></div>
+      <div class="rowsp cap"><span id="wLast"></span><span class="rowsp" style="gap:12px"><button class="link" id="wUndo" type="button">↩︎ تراجع</button><button class="link" id="wOther" type="button">+ كمية أخرى</button></span></div>
     </section>
 
-    <section class="card" id="secFood" aria-label="أضف أكلك">
-      <div class="sh"><div class="ic" style="background:rgba(255,149,0,.16)">✍️</div><h3>وش أكلت؟</h3></div>
+    <div class="sec">الأكل</div>
+    <section class="card slim" id="secFood" aria-label="أضف أكلك">
       <div class="seg" id="mchips" role="group" aria-label="الوجبة"></div>
-      <textarea id="qText" placeholder="اكتب اللي أكلته أو شربته، مثال: بيضتين وخبز بر ونص كوب شوفان بحليب وقهوة"></textarea>
-      <button class="btn big" id="qGo" type="button">احسب وأضف</button>
+      <textarea id="qText" placeholder="وش أكلت؟ اكتب هنا، مثال: صدر دجاج مشوي وبطاطس وسلطة"></textarea>
+      <div class="btns2"><button class="btn sm" id="qGo" type="button">احسب وأضف</button><button class="btn sm soft" id="askG" type="button">اسأل Gemini</button></div>
       <p class="msg" id="qMsg" aria-live="polite"></p>
       <div id="pend" style="display:flex;flex-direction:column;gap:8px"></div>
-      <div id="recentBox"><p class="note" style="margin-bottom:8px">الأكثر استخدامًا، اضغط للإضافة مباشرة</p><div class="recent" id="recent"></div></div>
-      <details id="paste">
-        <summary>اسأل Gemini</summary>
-        <div>
-          <p class="note">لو طلع ضغط أو خطأ: انسخ الطلب، افتح Gemini والصقه، ثم انسخ جوابه كله والصقه هنا.</p>
-          <div class="btns"><button class="btn soft" id="copyAsk" type="button">نسخ الطلب</button><a class="btn soft" id="openG" href="https://gemini.google.com/app" target="_blank" rel="noopener">فتح Gemini</a></div>
-          <textarea id="gPaste" placeholder="الصق جواب Gemini هنا"></textarea>
-          <button class="btn" id="gAdd" type="button">إضافة للوجبة المحددة</button>
-        </div>
-      </details>
+      <div id="pasteBox" hidden>
+        <p class="note">انسخنا الطلب وفتحنا Gemini. الصقه هناك، ثم انسخ جوابه كله ورجّع هنا والصقه:</p>
+        <textarea id="gPaste" placeholder="الصق جواب Gemini هنا"></textarea>
+        <button class="btn sm" id="gAdd" type="button" style="margin-top:8px">إضافة للوجبة المحددة</button>
+      </div>
+      <a id="openG" href="https://gemini.google.com/app" target="_blank" rel="noopener" hidden>Gemini</a>
+      <div id="shortBox"><p class="cap">اختصاراتي (وجبات، أكل، مشروبات، سناكات)</p><div class="recent" id="shorts"></div></div>
+      <div id="recentBox" hidden><div class="recent" id="recent"></div></div>
+      <hr class="hr">
+      <p class="cap" style="margin:0">وجبات اليوم</p>
+      <div id="meals"></div>
       <button class="link" id="manual" type="button" style="align-self:flex-start">+ إدخال يدوي</button>
     </section>
 
-    <section class="card" id="myMeals" aria-label="وجباتي">
-      <div class="sh"><div class="ic" style="background:rgba(52,199,89,.16)">⭐</div><h3>وجباتي</h3><button type="button" class="link" id="mmNew">+ جديد</button></div>
-      <div class="chiprow" id="mmMeals"></div>
-      <div id="mmAdds"></div>
-      <div id="mmSnacks"></div>
-      <button type="button" class="link" id="mmEdit" style="align-self:flex-start">تعديل القوائم</button>
+    <div class="sec">قائمة الطعام</div>
+    <section class="card slim" id="myMeals" aria-label="قائمة الطعام">
+      <div class="rowsp"><div><b>⭐ قائمة الطعام</b><div class="cap" id="mmCount"></div></div><button type="button" class="link" id="mmToggle">فتح</button></div>
+      <div id="mmBody" hidden>
+        <input id="mmSearch" type="search" placeholder="🔍 ابحث في اختصاراتك..." autocomplete="off">
+        <div class="seg" id="mmFilter"><button type="button" data-f="all" aria-pressed="true">الكل</button><button type="button" data-f="meal" aria-pressed="false">وجبات</button><button type="button" data-f="drink" aria-pressed="false">مشروبات</button><button type="button" data-f="add" aria-pressed="false">إضافات</button></div>
+        <div id="mmList"></div>
+        <div class="rowsp"><button type="button" class="link" id="mmNew">+ جديد</button><button type="button" class="link" id="mmEdit">تعديل</button></div>
+      </div>
     </section>
 
-    <div id="meals" style="display:flex;flex-direction:column;gap:14px"></div>
-
-    <section class="card" id="secWater" aria-label="الماء">
-      <div class="sh"><div class="ic" style="background:rgba(50,173,230,.18)">💧</div><h3>الماء <small id="wSmall"></small></h3></div>
-      <div class="big num" id="wBig"></div>
-      <div class="bar" style="height:10px"><i id="wBar" style="background:var(--water);width:0"></i></div>
-      <p class="note num" id="wSplit"></p>
-      <div class="q3">
-        <button type="button" data-w="250">+ 250<small>مل</small></button><button type="button" data-w="500">+ 500<small>مل</small></button><button type="button" data-w="1000">+ 1<small>لتر</small></button>
-      </div>
-      <div class="wcustom">
-        <input id="wVal" type="number" inputmode="decimal" min="0" placeholder="كمية أخرى">
-        <select id="wUnit" aria-label="الوحدة"><option value="1">مل</option><option value="1000">لتر</option></select>
-        <button type="button" id="wAdd">إضافة</button>
-      </div>
-      <div class="log" id="wLog"></div>
-      <button class="undo" id="wUndo" type="button">↩︎ تراجع عن آخر ماء</button>
+    <div class="sec">نشاطك نص اليوم</div>
+    <section class="card slim" aria-label="نشاط نص اليوم">
+      <div class="rowsp"><b style="font-size:14px">⚡ كيف نشاطك الحين؟</b><span class="cap">منتصف اليوم</span></div>
+      <div class="opts sm" id="en2Opts"></div>
     </section>
 
-    <section class="card" id="secCaf" aria-label="الكافيين">
-      <div class="sh"><div class="ic" style="background:rgba(162,132,94,.2)">☕</div><h3>الكافيين <small id="cSmall"></small></h3></div>
-      <div class="cups">
-        <button class="rb" type="button" id="cMinus" aria-label="نقص كوب">−</button>
-        <div class="cnt"><b class="num" id="cCups">0</b>كوب قهوة (البيت)</div>
-        <button class="rb" type="button" id="cPlus" aria-label="زيادة كوب">+</button>
-      </div>
-      <div class="bar" style="height:10px"><i id="cBar" style="background:var(--caf);width:0"></i></div>
-      <p class="note num" id="cTxt"></p>
-      <div class="log" id="cLog"></div>
-      <div class="btns"><button class="btn soft" id="cPot" type="button">+ إبريق (كوبين)</button><button class="undo" id="cUndo" type="button">↩︎ تراجع</button></div>
-      <div id="cQuick"></div>
-      <button class="btn soft" id="cManual" type="button">+ كافيين يدوي (قهوة أو مشروب طاقة)</button>
+    <div class="sec">التمرين</div>
+    <section class="card slim" aria-label="التمرين">
+      <div class="rowsp" style="gap:12px"><b style="font-size:14px">🏋️ تمرنت اليوم؟</b><div class="seg2" id="trOpts"><button type="button" class="y" data-t="1">نعم ✓</button><button type="button" class="n" data-t="0">لا</button></div></div>
     </section>
 
-    <section class="card" id="secVit" aria-label="الفيتامينات">
-      <div class="sh"><div class="ic" style="background:rgba(175,82,222,.16)">💊</div><h3>الفيتامينات <small id="vSmall"></small></h3></div>
+    <div class="sec">الفيتامينات</div>
+    <section class="card slim" id="secVit" aria-label="الفيتامينات">
       <div id="vSum"></div>
       <div id="vList"></div>
       <div class="vadd" id="vAddRow" hidden><input id="vNew" type="text" placeholder="اسم فيتامين أو مكمل" autocomplete="off"><button type="button" id="vAdd">إضافة</button></div>
       <button class="link" id="vEdit" type="button" style="align-self:flex-start">تعديل القائمة</button>
+      <small id="vSmall" hidden></small>
     </section>
 
-    <section class="card" aria-label="نشاط نص اليوم">
-      <div class="sh"><div class="ic" style="background:rgba(255,204,0,.2)">⚡</div><h3>نشاطك نص اليوم</h3></div>
-      <div class="opts" id="en2Opts"></div>
-    </section>
-
-    <section class="card" aria-label="التمرين">
-      <div class="sh"><div class="ic" style="background:rgba(255,59,48,.14)">🏋️</div><h3>التمرين</h3></div>
-      <div class="tog" id="trOpts"><button type="button" class="y" data-t="1">تمرنت اليوم ✓</button><button type="button" class="n" data-t="0">ما تمرنت</button></div>
-    </section>
-
-    <section class="card" aria-label="ختام اليوم">
-      <div class="sh"><div class="ic" style="background:rgba(255,45,85,.14)">🌙</div><h3>ختام يومك</h3></div>
-      <div class="sh" style="margin-top:2px"><h3 style="font-size:15px">نشاطك آخر اليوم</h3></div>
-      <div class="opts" id="en3Opts"></div>
-      <div class="sh" style="margin-top:4px"><h3 style="font-size:15px">مبسوط اليوم؟</h3></div>
-      <div class="opts" id="mdOpts"></div>
-      <div class="f2">
-        <label>💸 مصروف اليوم (ريال)<input id="spend" type="number" inputmode="decimal" min="0" placeholder="0"></label>
-        <label>⚖️ الوزن (كجم) اختياري<input id="wt" type="number" inputmode="decimal" min="0" placeholder="—"></label>
-      </div>
-      <label>ملاحظة اليوم (اختياري)<input id="dnote" type="text" autocomplete="off" placeholder="أي شي تبي تتذكره"></label>
+    <div class="sec">ختام اليوم</div>
+    <section class="card slim" aria-label="ختام اليوم" id="secEnd">
+      <div class="lbl2"><i style="background:#9CB8E8"></i>نشاطك آخر اليوم</div>
+      <div class="opts sm" id="en3Opts"></div>
+      <hr class="hr">
+      <div class="lbl2"><i style="background:#E8A3B4"></i>مبسوط اليوم؟</div>
+      <div class="opts sm" id="mdOpts"></div>
+      <hr class="hr">
+      <div class="rowsp"><div class="lbl2" style="margin:0"><i style="background:#9ED3AE"></i>مصروف اليوم (ريال)</div><input id="spend" type="number" inputmode="decimal" min="0" placeholder="0" style="width:100px;text-align:center"></div>
+      <input id="dnote" type="text" autocomplete="off" placeholder="ملاحظة اليوم (اختياري)">
     </section>
     <p class="note" style="text-align:center;padding:4px 0 8px">✓ خلصت يومك</p>
   </main>
@@ -399,7 +439,7 @@ section[id]{scroll-margin-top:12px}
 <div class="toast" id="toast" hidden><span id="toastT"></span><button type="button" id="toastU">تراجع</button></div>
 
 <nav class="tabs" aria-label="التنقل">
-  <button type="button" data-v="Home" aria-current="page"><span class="e">🍽️</span>اليوم</button>
+  <button type="button" data-v="Home" aria-current="page"><span class="e">🥗</span>اليوم</button>
   <button type="button" data-v="Rep"><span class="e">📊</span>التقارير</button>
   <button type="button" data-v="Set"><span class="e">⚙️</span>الإعدادات</button>
 </nav>
@@ -450,6 +490,7 @@ const MD=[[5,'ممتاز','😄'],[4,'مبسوط','🙂'],[3,'عادي','😐'],
 
 const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
 let S=JSON.parse(JSON.stringify(DEF));
+let mornOpen=null,mornFor='';
 let sel=TK(),curMeal='b',vEdit=false,editId=null,storeOK=true,curView='Home',repOff=0,lastTK=TK();
 try{
   const raw=localStorage.getItem(KEY);
@@ -578,9 +619,7 @@ function vitSummary(d){
   const rem=S.vits.filter(v=>!vTaken(d,v)),took=n-rem.length,lines=[];let cls='';
   const hr=new Date().getHours(),today=sel===TK();
   const mgRem=rem.find(v=>vType(v)==='mg');
-  if(!rem.length){lines.push('🎉 كملت كل فيتاميناتك اليوم ('+n+' من '+n+')');cls='good'}
-  else{
-    lines.push('أخذت '+took+' من '+n+(rem.length?'، المتبقي: '+rem.map(esc).join('، '):''));
+  if(rem.length){
     if(mgRem&&today&&hr>=17){lines.push('⭐ <b>'+esc(mgRem)+' أولوية الحين</b>، خذه قبل النوم'+(hr>=21?' (قرب الوقت)':''));if(hr>=21)cls='alert'}
   }
   const ev=cafEvents(d);
@@ -590,7 +629,7 @@ function vitSummary(d){
     if(ty==='zn'||ty==='fe'){const near=ev.filter(e=>Math.abs(e-i.t)<120);if(near.length)lines.push('⚠️ '+esc(v)+' أخذته قريب من القهوة، يقلل الامتصاص')}
     if((ty==='vd'||ty==='om')&&i.m){const c=mealCtx(d,i.m);if(c.xs.length&&c.fat<10)lines.push('⚠️ '+esc(v)+' أخذته مع وجبة قليلة الدهون')}
   });
-  return '<div class="vsum '+cls+'">'+lines.join('<br>')+'</div>';
+  return lines.length?'<div class="vsum '+cls+'">'+lines.join('<br>')+'</div>':'';
 }
 
 /* ---------- render ---------- */
@@ -612,36 +651,42 @@ function renderRing(){
   const pct=Math.min(t.k/kt,1);
   $('rArc').setAttribute('stroke-dasharray',(pct*314.16).toFixed(1)+' 314.16');
   $('rArc').setAttribute('stroke',left<0?'var(--red)':'var(--kcal)');
-  $('macros').innerHTML=MAC.map(m=>{
+  $('macros').innerHTML=MAC.slice(0,3).map(m=>{
     const v=t[m[0]],tg=S.t[m[0]],pc=tg>0?Math.min(v/tg*100,100):0,ov=v>tg&&m[0]!=='fi';
     return '<div class="mrow"><div class="t"><span>'+m[1]+'</span><span class="num">'+v+' / '+tg+'</span></div><div class="bar'+(ov?' over':'')+'"><i style="width:'+pc+'%;background:var('+m[2]+')"></i></div></div>';
   }).join('');
-  const w=water(d);
-  $('pW').textContent=lit(w);
-  $('pC').textContent=cafMg(d)+' ملغ';
-  const n=S.vits.length;$('pV').textContent=n?S.vits.filter(v=>vTaken(d,v)).length+' من '+n:'—';
+  renderSum(d);
 }
+function renderSum(d){
+  const en=enAvg(d),enL=en==null?'—':(EN.find(o=>o[0]===Math.round(en))||[0,'—'])[1];
+  const mdo=MD.find(o=>o[0]===d.mood),mdL=mdo?mdo[2]+' '+mdo[1]:'🙂 —';
+  const w=Math.round(water(d)/100)/10,wt=Math.round(S.t.w/100)/10,mg=cafMg(d),n=S.vits.length,vd=S.vits.filter(v=>vTaken(d,v)).length;
+  const tr=d.train===true?['🏋️ تمرنت','ok']:d.train===false?['🏋️ ما تمرنت','']:['🏋️ —',''];
+  const row=a=>'<div class="tr num">'+a.map(x=>'<button type="button" data-scroll="'+x[0]+'"'+(x[2]?' class="'+x[2]+'"':'')+'>'+x[1]+'</button>').join('')+'</div>';
+  $('dsum').innerHTML=
+    row([['secMorning','😴 '+(d.sleep?d.sleep+' س':'—')],['secMorning','⚡ '+enL],['secMorning','⚖️ '+(d.wt?d.wt+' كجم':'—')]])+
+    row([['secWater','💧 '+w+' من '+wt+' ل',w>=wt?'ok':''],['secCaf','☕ '+mg+' ملغ'],['secVit','💊 '+(n?vd+' من '+n:'—'),n&&vd<n?'warn':(n?'ok':'')]])+
+    row([['secTrain',tr[0],tr[1]],['secEnd',mdL],['secEnd','💸 '+(d.spend!=null?d.spend+' ر':'—')]]);
+}
+const MCOL={b:'var(--orange)',l:'var(--green)',s:'var(--purple)',d:'var(--blue)'};
 function renderMeals(){
-  const d=peek(sel);let cum=[],h='';
+  const d=peek(sel);let h='';
   MEALS.forEach(m=>{
     const xs=d.items.filter(x=>x.m===m[0]);if(!xs.length)return;
-    cum=cum.concat(xs);const ct=sum(cum),mt=sum(xs);
-    h+='<section class="mealcard"><div class="mh"><b>'+m[1]+'</b><span class="kc num">'+mt.k+' سعرة</span><button type="button" class="link" data-savemeal="'+m[0]+'">⭐ حفظ</button></div>'+
-      '<div class="note num" style="padding:0 16px 10px">'+mt.p+' بروتين · '+mt.c+' كارب · '+mt.f+' دهون · '+mt.fi+' ألياف</div>'+
-      xs.map(x=>'<button type="button" class="item" data-id="'+x.id+'"><div class="tx"><div class="nm">'+esc(x.n)+(x.q?' <span class="muted" style="font-weight:400">· '+esc(x.q)+'</span>':'')+'</div>'+
-        '<div class="sub num">'+x.p+' بروتين · '+x.c+' كارب · '+x.fi+' ألياف · '+x.f+' دهون'+(x.t!=null?' · '+tStr(x.t):'')+'</div></div><div class="kk num">'+x.k+'</div></button>').join('')+
-      '<div class="run num">مجموع اليوم لحد هنا: <b>'+fmt(ct.k)+'</b> سعرة · '+ct.p+' بروتين · '+ct.c+' كارب · '+ct.fi+' ألياف · '+ct.f+' دهون</div>'+
-      mealNote(d,m[0])+'</section>';
+    const mt=sum(xs),ts=xs.map(x=>x.t).filter(t=>t!=null);
+    h+='<div class="mrw"><div class="bk" style="background:'+MCOL[m[0]]+'"></div><div class="bd"><div class="tt"><span>'+m[1]+'</span><span class="num">'+mt.k+' سعرة</span></div>'+
+      xs.map(x=>'<button type="button" class="item" data-id="'+x.id+'"><span class="nm">'+esc(x.n)+(x.q?' <span class="muted">· '+esc(x.q)+'</span>':'')+'</span><span class="kk num">'+x.k+'</span></button>').join('')+
+      '<div class="ft num">'+(ts.length?tStr(Math.min.apply(null,ts))+' · ':'')+mt.p+' بروتين · '+mt.c+' كارب · '+mt.f+' دهون · <button type="button" class="svm" data-savemeal="'+m[0]+'">⭐ احفظها كوجبة</button></div>'+
+      mealNote(d,m[0])+'</div></div>';
   });
-  $('meals').innerHTML=h||'<div class="card empty">ما سجلت شيء بهذا اليوم.<br>اكتب أكلك فوق واضغط «احسب وأضف».</div>';
+  $('meals').innerHTML=h||'<p class="cap" style="padding:6px 0">ما سجلت شيء بهذا اليوم. اكتب أكلك فوق واضغط «احسب وأضف».</p>';
 }
 function renderWater(){
   const d=peek(sel),dr=d.water.reduce((a,x)=>a+x.ml,0),fd=foodWater(d),tot=dr+fd,tg=S.t.w;
-  $('wBig').textContent=lit(tot)+' / '+lit(tg);
+  $('wSmall').textContent=lit(tot)+' / '+lit(tg)+(tot>=tg?' ✓':'');
   $('wBar').style.width=Math.min(tot/tg*100,100)+'%';
-  $('wSmall').textContent=tot>=tg?'كملت هدفك ✓':'باقي '+lit(tg-tot);
-  $('wSplit').textContent='ماء مسجل '+lit(dr)+' + من الأكل والمشروبات والقهوة '+lit(fd);
-  $('wLog').innerHTML=d.water.map((x,i)=>'<div class="lr"><span>💧 '+x.ml+' مل</span><span class="muted num">'+tStr(x.t)+'</span><button type="button" data-wd="'+i+'" aria-label="حذف">×</button></div>').join('');
+  const l=d.water[d.water.length-1];
+  $('wLast').textContent=l?'آخر إضافة '+l.ml+' مل'+(l.t!=null?' · '+tStr(l.t):''):'ما سجلت ماء مباشر'+(fd?' (من الأكل '+lit(fd)+')':'');
   $('wUndo').disabled=!d.water.length;
 }
 function renderCaf(){
@@ -649,15 +694,15 @@ function renderCaf(){
   $('cCups').textContent=d.cups;
   $('cBar').style.width=Math.min(mg/lim*100,100)+'%';
   $('cBar').style.background=mg>lim?'var(--red)':'var(--caf)';
-  const left=Math.floor((lim-mg)/S.cupMg);
-  $('cSmall').textContent=mg+' / '+lim+' ملغ';
-  $('cTxt').textContent=mg>lim?'وصلت حد الكافيين اليومي ('+lim+' ملغ).':'تقدر تشرب '+Math.max(left,0)+' كوب كمان (كوبك تقريبًا '+S.cupMg+' ملغ).';
-  let h=(d.cupT||[]).map((t,i)=>'<div class="lr"><span>☕ كوب</span><span class="muted num">'+tStr(t)+'</span><button type="button" data-cd="'+i+'" aria-label="حذف">×</button></div>').join('');
-  const extra=d.cups-(d.cupT||[]).length;if(extra>0)h+='<div class="lr"><span class="muted">+ '+extra+' كوب بدون وقت</span></div>';
-  h+=d.items.filter(x=>x.cf>0).map(x=>'<div class="lr"><span>🥤 '+esc(x.n)+' <span class="muted num">· '+x.cf+' ملغ</span></span><span class="muted num">'+tStr(x.t)+'</span><button type="button" data-ci="'+x.id+'" aria-label="حذف">×</button></div>').join('');
-  $('cLog').innerHTML=h;
+  $('cSmall').textContent=mg+' / '+lim+' ملغ'+(mg>lim?' · تعدّيت الحد':'');
+  const ev=[];
+  (d.cupT||[]).forEach(t=>ev.push([t==null?-1:t,'☕ '+tStr(t)]));
+  const extra=d.cups-(d.cupT||[]).length;if(extra>0)ev.push([-1,'☕ +'+extra]);
+  d.items.filter(x=>x.cf>0).forEach(x=>ev.push([x.t==null?-1:x.t,'🥤 '+esc(x.n)+(x.t!=null?' '+tStr(x.t):'')]));
+  ev.sort((a,b)=>a[0]-b[0]);
+  $('cLog').textContent='';$('cLog').innerHTML=ev.length?ev.map(e=>e[1]).join(' · '):'ما سجلت كافيين';
   const qs=S.snacks.filter(s=>s.cf>0);
-  $('cQuick').innerHTML=qs.length?'<p class="cap">اختصاراتك (اضغط للإضافة)</p><div class="chiprow">'+qs.map(s=>'<span class="cp sn"><button type="button" data-cq="'+s.id+'">🥤 '+esc(s.n)+' · '+s.cf+'</button></span>').join('')+'</div>':'';
+  $('cQuick').innerHTML=qs.length?'<div class="recent">'+qs.map(s=>'<button type="button" data-cq="'+s.id+'">🥤 '+esc(s.n)+' · '+s.cf+'</button>').join('')+'</div>':'';
   $('cUndo').disabled=d.cups<=0;
 }
 function renderVit(){
@@ -670,12 +715,12 @@ function renderVit(){
   $('vList').innerHTML=n?order.map(o=>{
     const v=o.v,ty=vType(v),i=vInfo(d,v);
     let sub='';
-    if(o.taken){sub='<small class="st ok">أخذته'+(i.t!=null?' '+tStr(i.t):'')+(i.m?' مع '+MEALS.find(m=>m[0]===i.m)[1]:'')+'</small>'}
+    if(o.taken){sub='<small>تم أخذه'+(i.m?' مع '+MEALS.find(m=>m[0]===i.m)[1]:'')+(i.t!=null?' · '+tStr(i.t):'')+'</small>'}
     else{
       const st=nowStatus(ty,d);
       sub='<small>'+(VH[ty]||'')+'</small>'+(st?'<small class="st '+st.s+'">'+SI[st.s]+' '+esc(st.w)+'</small>':'');
     }
-    return '<div class="vrow"><button type="button" class="vchk" data-v="'+o.i+'" aria-pressed="'+o.taken+'"><span class="box"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tw"><span class="t">'+esc(v)+(eve&&o.mg&&!o.taken?'<span class="pr">أولوية</span>':'')+'</span>'+sub+'</span></button>'+
+    return '<div class="vrow'+(o.taken?' done':'')+'"><button type="button" class="vchk" data-v="'+o.i+'" aria-pressed="'+o.taken+'"><span class="box"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tw"><span class="t">'+esc(v)+(eve&&o.mg&&!o.taken?'<span class="pr">أولوية</span>':'')+(!o.taken?'<span class="tagb">باقي</span>':'')+'</span>'+sub+'</span></button>'+
       (vEdit?'<button type="button" class="vx" data-vx="'+o.i+'" aria-label="حذف">×</button>':'')+'</div>';
   }).join(''):'<p class="note">ما أضفت فيتامينات. اضغط «تعديل القائمة» وأضف فيتاميناتك مرة وحدة.</p>';
   $('vAddRow').hidden=!vEdit;
@@ -683,6 +728,11 @@ function renderVit(){
 }
 function renderBody(){
   const d=peek(sel);
+  if(mornFor!==sel){mornFor=sel;mornOpen=null}
+  const mdone=!!(d.sleep&&d.energy!=null),mopen=mornOpen!==null?mornOpen:!mdone;
+  $('mornSum').hidden=mopen;$('mornForm').hidden=!mopen;$('mornDone').hidden=!mdone;
+  const eo=EN.find(o=>o[0]===d.energy);
+  $('mornTxt').textContent=(d.sleep?'نوم '+d.sleep+' ساعات':'')+(eo?' · نشاط '+eo[1]:'')+(d.wt?' · وزن '+d.wt+' كجم':'');
   $('slV').innerHTML=d.sleep?'<span class="num">'+d.sleep+'</span> <small>ساعة</small>':'—';
   document.querySelectorAll('#slQ button').forEach(b=>b.setAttribute('aria-pressed',String(d.sleep===+b.dataset.h)));
   [['enOpts','energy'],['en2Opts','en2'],['en3Opts','en3']].forEach(e=>{$(e[0]).innerHTML=EN.map(o=>'<button type="button" data-e="'+o[0]+'" data-ek="'+e[1]+'" aria-pressed="'+(d[e[1]]===o[0])+'"><span>'+o[2]+'</span>'+o[1]+'</button>').join('')});
@@ -696,12 +746,12 @@ function renderRecent(){
   const m={};
   Object.keys(S.days).forEach(k=>S.days[k].items.forEach(x=>{const key=x.n.trim().toLowerCase();const e=m[key]||(m[key]={x:x,c:0});e.c++;if(x.id>e.x.id)e.x=x}));
   const out=Object.values(m).sort((a,b)=>b.c-a.c||b.x.id-a.x.id).slice(0,12).map(e=>e.x);
-  $('recentBox').hidden=!out.length;
+  $('recentBox').hidden=!out.length||(S.meals.length+S.snacks.length>0);
   $('recent').innerHTML=out.map((x,i)=>'<button type="button" data-i="'+i+'">'+esc(x.n)+'</button>').join('');
   $('recent')._items=out;
 }
 function renderAll(){
-  renderTop();renderRing();renderMeals();renderMyMeals();renderRecent();renderWater();renderCaf();renderVit();renderBody();renderPend();
+  renderTop();renderRing();renderMeals();renderMyMeals();renderShorts();renderRecent();renderWater();renderCaf();renderVit();renderBody();renderPend();
 }
 
 /* ---------- adding food ---------- */
@@ -749,8 +799,7 @@ const SPEC='لكل صنف قدّر: k السعرات، p البروتين، c ا
   'استخدم الكمية المكتوبة، وإذا لم تُكتب فافترض حصة عادية واكتبها في q. اعتبر الأكل مطبوخًا ما لم يُذكر غير ذلك، وانتبه أن الأكل غالبًا سعودي أو عربي. افصل كل صنف في عنصر مستقل. وأضف g: الكمية بالجرام أو المل كرقم صحيح للصنف كله (للحبات قدّر وزنها).';
 const PROMPT='أنت حاسب تغذية. حلّل النص التالي الذي يصف أكل وشرب شخص. '+SPEC+
   ' ردّ بـ JSON فقط بهذا الشكل بدون أي نص آخر: {"items":[{"n":"اسم الصنف","q":"الكمية","k":0,"p":0,"c":0,"fi":0,"f":0,"w":0,"cf":0,"g":0}]} والأرقام صحيحة.\n\nالنص: ';
-const ASK='حلّل أكلي وشربي التالي. '+SPEC+
-  ' ردّ فقط بسطر لكل صنف بهذا الشكل بدون أي كلام ثاني: الاسم | السعرات | البروتين | الكارب | الألياف | الدهون | الماء مل | الكافيين ملغ | الكمية جم. الأرقام صحيحة.\nأكلي: ';
+const ASK='احسب لكل صنف (أكل سعودي/عربي): الاسم | سعرات | بروتين | كارب | ألياف | دهون | ماء مل | كافيين ملغ | جرام. رد بسطر لكل صنف فقط بدون شرح، والأرقام صحيحة.\nالأكل: ';
 const LABELP='هذي صورة ملصق القيمة الغذائية (Nutrition Facts) لمنتج غذائي. استخرج القيم لكل 100 جرام (أو 100 مل). إذا كانت القيم مكتوبة لكل حصة فقط، حوّلها لكل 100 جرام باستخدام وزن الحصة المكتوب. n اسم المنتج إن ظهر وإلا اكتب "منتج". k السعرات، p البروتين، c الكربوهيدرات، fi الألياف، f الدهون (بالجرام، ويسمح بكسر عشري). ردّ بـ JSON فقط: {"n":"","k":0,"p":0,"c":0,"fi":0,"f":0}';
 const GBASE='https://generativelanguage.googleapis.com/v1beta/';
 async function gfetch(path,opt){
@@ -821,7 +870,7 @@ $('qGo').addEventListener('click',()=>{
   const text=$('qText').value.trim();if(!text)return;
   const ck=text.toLowerCase();
   if(S.cache[ck]){qSay(commit(S.cache[ck],curMeal)+' (من المحفوظات)','ok');$('qText').value='';return}
-  if(!S.key){qSay(ERR.nokey,'err');$('paste').open=true;return}
+  if(!S.key){qSay(ERR.nokey,'err');showPaste();return}
   qSay('');
   S.pend.push({id:Date.now(),text:text,meal:curMeal,day:sel,t:stamp(),st:'wait',tries:0,next:0,err:''});
   $('qText').value='';save();renderPend();toast('تمت إضافته لقائمة الحساب، تقدر تكمل',false);runPend();
@@ -860,7 +909,7 @@ $('pend').addEventListener('click',async e=>{
   const r=e.target.closest('[data-pr]'),x=e.target.closest('[data-px]'),a=e.target.closest('[data-pa]');
   if(r){const p=S.pend.find(v=>String(v.id)===r.dataset.pr);if(p){p.st='wait';p.next=0;save();renderPend();runPend()}return}
   if(x){S.pend=S.pend.filter(v=>String(v.id)!==x.dataset.px);save();renderPend();return}
-  if(a){const p=S.pend.find(v=>String(v.id)===a.dataset.pa);if(p){const ok=await copyText(ASK+p.text);$('paste').open=true;qSay(ok?'اننسخ الطلب. الصقه في Gemini، ثم الصق جوابه في «اسأل Gemini» تحت.':'ما اننسخ تلقائيًا، انسخ النص بيدك.',ok?'ok':'err');$('paste').scrollIntoView({behavior:'smooth',block:'center'})}}
+  if(a){const p=S.pend.find(v=>String(v.id)===a.dataset.pa);if(p)askGeminiManual(p.text)}
 });
 setInterval(()=>{if(S.pend.some(p=>p.st==='wait'&&p.next<=Date.now()))runPend();else if(S.pend.some(p=>p.st==='wait'))renderPend()},15000);
 window.addEventListener('online',()=>{S.pend.forEach(p=>{if(p.st==='wait')p.next=0});runPend()});
@@ -878,14 +927,27 @@ async function copyText(t){
   try{ok=document.execCommand('copy')}catch(e){}
   a.remove();return ok;
 }
-$('copyAsk').addEventListener('click',async()=>{
-  const ok=await copyText(ASK+$('qText').value.trim());
-  qSay(ok?'اننسخ الطلب. الصقه في Gemini.':'ما اننسخ تلقائيًا.',ok?'ok':'err');
+function copySync(t){
+  let ok=false;
+  try{const a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0;font-size:16px';document.body.appendChild(a);a.select();a.setSelectionRange(0,t.length);ok=document.execCommand('copy');a.remove()}catch(e){}
+  try{if(navigator.clipboard)navigator.clipboard.writeText(t).catch(()=>{})}catch(e){}
+  return ok;
+}
+function showPaste(){$('pasteBox').hidden=false}
+function askGeminiManual(text){
+  copySync(ASK+text);showPaste();
+  qSay('اننسخ الطلب. الصقه في Gemini، ثم انسخ جوابه ورجّع والصقه تحت.','ok');
+  try{window.open($('openG').href,'_blank')}catch(e){}
+}
+$('askG').addEventListener('click',()=>{
+  const text=$('qText').value.trim();
+  if(!text){qSay('اكتب أكلك أول، وبعدها اضغط «اسأل Gemini».','err');$('qText').focus();return}
+  askGeminiManual(text);
 });
 $('gAdd').addEventListener('click',()=>{
   const items=parseAny($('gPaste').value);
-  if(!items.length){qSay('ما لقيت أصناف بالشكل المطلوب.','err');return}
-  qSay(commit(items,curMeal),'ok');$('gPaste').value='';$('paste').open=false;
+  if(!items.length){qSay('ما لقيت أصناف بالشكل المطلوب. انسخ جواب Gemini كامل.','err');return}
+  qSay(commit(items,curMeal),'ok');$('gPaste').value='';$('qText').value='';$('pasteBox').hidden=true;
 });
 
 /* ---------- edit sheet ---------- */
@@ -918,12 +980,10 @@ $('fDel').addEventListener('click',()=>{snap();day(sel).items=day(sel).items.fil
 /* ---------- water / caffeine / vitamins ---------- */
 function addWater(ml){if(!(ml>0))return;snap();day(sel).water.push({id:Date.now(),ml:Math.round(ml),t:stamp()});save();renderAll();toast('+ '+Math.round(ml)+' مل ماء',true)}
 $('secWater').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b)addWater(+b.dataset.w)});
-$('wAdd').addEventListener('click',()=>{addWater((+$('wVal').value)*(+$('wUnit').value));$('wVal').value=''});
 $('wUndo').addEventListener('click',()=>{const d=day(sel);if(!d.water.length)return;snap();d.water.pop();save();renderAll();toast('تم التراجع عن آخر ماء',true)});
-$('wLog').addEventListener('click',e=>{const b=e.target.closest('[data-wd]');if(!b)return;snap();day(sel).water.splice(+b.dataset.wd,1);save();renderAll();toast('تم الحذف',true)});
+$('wOther').addEventListener('click',()=>openS2({mode:'water'}));
 function addCups(n){snap();const d=day(sel),t=stamp();for(let i=0;i<n;i++){d.cups++;d.cupT.push(t)}save();renderAll();toast('+ '+n+' كوب قهوة'+(t!=null?' ('+tStr(t)+')':''),true)}
 $('cPlus').addEventListener('click',()=>addCups(1));
-$('cPot').addEventListener('click',()=>addCups(2));
 function dropCup(i){const d=day(sel);if(d.cups<=0)return;snap();d.cups--;if(i==null||i>=d.cupT.length){if(d.cupT.length>d.cups)d.cupT.pop()}else d.cupT.splice(i,1);save();renderAll();toast('تم نقص كوب',true)}
 $('cMinus').addEventListener('click',()=>dropCup());
 $('cUndo').addEventListener('click',()=>dropCup());
@@ -968,14 +1028,16 @@ $('vNew').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();
 
 /* ---------- body log ---------- */
 function setDay(fn){const d=day(sel);fn(d);save();renderBody();renderRing()}
-$('slP').addEventListener('click',()=>setDay(d=>{d.sleep=Math.min(14,r1((d.sleep||0)+.5))}));
-$('slM').addEventListener('click',()=>setDay(d=>{const v=r1((d.sleep||0)-.5);if(v<=0)delete d.sleep;else d.sleep=v}));
-$('slQ').addEventListener('click',e=>{const b=e.target.closest('[data-h]');if(b)setDay(d=>{d.sleep=+b.dataset.h})});
-document.addEventListener('click',e=>{const b=e.target.closest('[data-ek]');if(!b)return;const v=+b.dataset.e,k=b.dataset.ek;setDay(d=>{if(d[k]===v)delete d[k];else d[k]=v})});
+$('slP').addEventListener('click',()=>{mornOpen=true;setDay(d=>{d.sleep=Math.min(14,r1((d.sleep||0)+.5))})});
+$('slM').addEventListener('click',()=>{mornOpen=true;setDay(d=>{const v=r1((d.sleep||0)-.5);if(v<=0)delete d.sleep;else d.sleep=v})});
+$('slQ').addEventListener('click',e=>{const b=e.target.closest('[data-h]');if(b){mornOpen=true;setDay(d=>{d.sleep=+b.dataset.h})}});
+$('mornEdit').addEventListener('click',()=>{mornOpen=true;renderBody()});
+$('mornDone').addEventListener('click',()=>{mornOpen=false;renderBody();$('secMorning').scrollIntoView({behavior:'smooth',block:'nearest'})});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-ek]');if(!b)return;const v=+b.dataset.e,k=b.dataset.ek;if(k==='energy')mornOpen=true;setDay(d=>{if(d[k]===v)delete d[k];else d[k]=v})});
 $('mdOpts').addEventListener('click',e=>{const b=e.target.closest('[data-md]');if(!b)return;const v=+b.dataset.md;setDay(d=>{if(d.mood===v)delete d.mood;else d.mood=v})});
 $('trOpts').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;const v=b.dataset.t==='1';setDay(d=>{if(d.train===v)delete d.train;else d.train=v})});
 $('spend').addEventListener('change',()=>{const v=dec($('spend').value);setDay(d=>{if($('spend').value==='')delete d.spend;else d.spend=v})});
-$('wt').addEventListener('change',()=>{const v=dec($('wt').value);setDay(d=>{if(!v)delete d.wt;else d.wt=v});if(v&&!S.prof.w0){S.prof.w0=v;S.prof.d0=sel;save()}});
+$('wt').addEventListener('change',()=>{const v=dec($('wt').value);mornOpen=true;setDay(d=>{if(!v)delete d.wt;else d.wt=v});if(v&&!S.prof.w0){S.prof.w0=v;S.prof.d0=sel;save()}});
 $('dnote').addEventListener('change',()=>{const v=$('dnote').value.trim().slice(0,200);setDay(d=>{if(!v)delete d.note;else d.note=v})});
 
 /* ---------- saved meals + products ---------- */
@@ -988,31 +1050,76 @@ function scaleRow(r){
 function rowFrom(x,g){const b={g:g||0};KEYS.forEach(k=>b[k]=x[k]||0);return {n:x.n,b:b,g:g||0,free:!(g>0)}}
 const macroLine=s=>s.k+' سعرة · '+s.p+' بروتين · '+s.c+' كارب · '+s.fi+' ألياف · '+s.f+' دهون';
 const totalsOf=rows=>sum(rows.filter(r=>r.g>0).map(scaleRow));
+let mmOpen=false,mmF='all',mmQ='',flash={};
+const lam=k=>{const n=slotName(k);return n.startsWith('ال')?'لل'+n.slice(2):'لل'+n};
+const slotName=k=>(MEALS.find(m=>m[0]===k)||['','الوجبة'])[1];
+const isDrink=x=>(x.cf>0)||(x.w>=150&&!(x.k>=120));
+function listEntries(){
+  const out=[];
+  S.meals.forEach(m=>out.push({key:'m'+m.id,t:'meal',kind:'meal',id:m.id,n:m.n,e:'⭐',slot:m.slot||curMeal,sub:'وجبة · '+slotName(m.slot||curMeal)}));
+  S.snacks.forEach(x=>{const dr=isDrink(x);out.push({key:'s'+x.id,t:'sn',kind:dr?'drink':'meal',id:x.id,n:x.n,e:dr?'🥤':'🥜',slot:x.slot||'s',sub:(dr?'مشروب':'سناك')+' · '+slotName(x.slot||'s')+(x.cf?' · '+x.cf+' ملغ':'')});});
+  S.adds.forEach(a=>out.push({key:'a'+a.id,t:'add',kind:'add',id:a.id,n:a.n,e:'🧴',slot:curMeal,sub:'إضافة · تكتب الجرامات'}));
+  return out;
+}
 function renderMyMeals(){
-  const cp=(label,attr,id,del,cls)=>'<span class="cp '+(cls||'')+'"><button type="button" data-'+attr+'="'+id+'">'+esc(label)+'</button>'+(mmEdit?'<button type="button" class="cpx" data-'+del+'="'+id+'" aria-label="حذف">×</button>':'')+'</span>';
-  const none=!S.meals.length&&!S.adds.length&&!S.snacks.length;
-  $('mmMeals').innerHTML=S.meals.map(m=>cp('⭐ '+m.n,'use',m.id,'delm')).join('')||(none?'<span class="note">احفظ وجباتك المتكررة وإضافاتك (صوصات، منتجات) وسناكاتك ومشروباتك هنا، وتضيفها بضغطة.</span>':'');
-  $('mmAdds').innerHTML=S.adds.length?'<p class="cap">إضافاتي (تكتب الجرامات)</p><div class="chiprow">'+S.adds.map(a=>cp('🧴 '+a.n,'padd',a.id,'dela','add')).join('')+'</div>':'';
-  $('mmSnacks').innerHTML=S.snacks.length?'<p class="cap">سناكاتي ومشروباتي (ضغطة وحدة)</p><div class="chiprow">'+S.snacks.map(s=>cp('🥤 '+s.n+(s.cf?' · '+s.cf+' ملغ':''),'sn',s.id,'delsn','sn')).join('')+'</div>':'';
-  $('mmEdit').textContent=mmEdit?'تم':'تعديل القوائم';
+  const all=listEntries(),nm=S.meals.length,na=S.adds.length;
+  $('mmCount').textContent=all.length?(all.length-na)+' اختصارات · '+na+' إضافات':'ما فيه اختصارات بعد';
+  $('mmToggle').textContent=mmOpen?'إغلاق':'فتح';
+  $('mmBody').hidden=!mmOpen;
+  document.querySelectorAll('#mmFilter button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.f===mmF)));
+  $('mmEdit').textContent=mmEdit?'تم':'تعديل';
+  if(!mmOpen)return;
+  const q=mmQ.trim().toLowerCase();
+  const list=all.filter(x=>(mmF==='all'||x.kind===mmF)&&(!q||x.n.toLowerCase().includes(q)));
+  $('mmList').innerHTML=list.length?list.map(x=>{
+    const fl=flash[x.key]&&Date.now()-flash[x.key]<3500;
+    const btn=mmEdit?'<button type="button" class="dx" data-del="'+x.t+':'+x.id+'" aria-label="حذف">×</button>':
+      '<button type="button" class="add'+(fl?' done':'')+'" data-add="'+x.t+':'+x.id+'">'+(fl?'✓ أضيف '+lam(x.slot):'+ '+lam(x.slot))+'</button>';
+    return '<div class="lrow"><div class="nm">'+x.e+' '+esc(x.n)+'<small>'+esc(x.sub)+'</small></div>'+btn+'</div>';
+  }).join(''):'<p class="cap" style="padding:8px 0">'+(all.length?'ما لقيت شي بهذا البحث.':'احفظ وجباتك المتكررة وإضافاتك (صوصات، منتجات) وسناكاتك ومشروباتك هنا، وتضيفها بضغطة. اضغط «+ جديد».')+'</p>';
+}
+function renderShorts(){
+  const sh=[];
+  S.meals.forEach(m=>sh.push({a:'m:'+m.id,l:'⭐ '+m.n}));
+  S.snacks.forEach(x=>sh.push({a:'s:'+x.id,l:(isDrink(x)?'🥤 ':'🥜 ')+x.n+(x.cf?' · '+x.cf:'')}));
+  $('shortBox').hidden=!sh.length;
+  $('shorts').innerHTML=sh.map(x=>'<button type="button" data-sc="'+x.a+'">'+esc(x.l)+'</button>').join('');
+}
+function addMealDirect(m,slot){
+  const items=m.parts.map(p=>Object.assign({n:p.n,q:p.g+' جم',g:p.g},scaleRow({b:p,g:p.g})));
+  qSay(commit(items,slot),'ok');
 }
 function addSnack(s){
   const it={n:s.n,q:'',k:s.k||0,p:s.p||0,c:s.c||0,fi:s.fi||0,f:s.f||0,w:s.w||0,cf:s.cf||0};
   qSay(commit([it],s.slot||'s'),'ok');
 }
+function flashKey(k){flash[k]=Date.now();renderMyMeals();setTimeout(renderMyMeals,3600)}
+$('shorts').addEventListener('click',e=>{
+  const b=e.target.closest('[data-sc]');if(!b)return;
+  const [t,id]=b.dataset.sc.split(':');
+  if(t==='m'){const m=S.meals.find(x=>String(x.id)===id);if(m)addMealDirect(m,m.slot||curMeal)}
+  else{const x=S.snacks.find(v=>String(v.id)===id);if(x)addSnack(x)}
+});
+$('mmToggle').addEventListener('click',()=>{mmOpen=!mmOpen;if(!mmOpen)mmEdit=false;renderMyMeals()});
+$('mmSearch').addEventListener('input',e=>{mmQ=e.target.value;renderMyMeals()});
+$('mmFilter').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(b){mmF=b.dataset.f;renderMyMeals()}});
 $('myMeals').addEventListener('click',e=>{
-  const u=e.target.closest('[data-use]');
-  if(u){const m=S.meals.find(x=>String(x.id)===u.dataset.use);if(m)openS2({mode:'use',title:m.n,slot:curMeal,rows:m.parts.map(p=>({n:p.n,b:Object.assign({},p),g:p.g,free:false}))});return}
-  const pa=e.target.closest('[data-padd]');
-  if(pa){const a=S.adds.find(x=>String(x.id)===pa.dataset.padd);if(a)openS2({mode:'padd',p:a,slot:curMeal,g:0});return}
-  const sn=e.target.closest('[data-sn]');
-  if(sn){const s=S.snacks.find(x=>String(x.id)===sn.dataset.sn);if(s)addSnack(s);return}
-  const dm=e.target.closest('[data-delm]');
-  if(dm){S.meals=S.meals.filter(x=>String(x.id)!==dm.dataset.delm);save();renderMyMeals();return}
-  const da=e.target.closest('[data-dela]');
-  if(da){S.adds=S.adds.filter(x=>String(x.id)!==da.dataset.dela);save();renderMyMeals();return}
-  const ds=e.target.closest('[data-delsn]');
-  if(ds){S.snacks=S.snacks.filter(x=>String(x.id)!==ds.dataset.delsn);save();renderMyMeals();renderCaf();return}
+  const ad=e.target.closest('[data-add]');
+  if(ad){
+    const [t,id]=ad.dataset.add.split(':');
+    if(t==='meal'){const m=S.meals.find(x=>String(x.id)===id);if(m){addMealDirect(m,m.slot||curMeal);flashKey('m'+id)}}
+    else if(t==='sn'){const x=S.snacks.find(v=>String(v.id)===id);if(x){addSnack(x);flashKey('s'+id)}}
+    else{const a=S.adds.find(v=>String(v.id)===id);if(a)openS2({mode:'padd',p:a,slot:curMeal,g:0})}
+    return;
+  }
+  const dl=e.target.closest('[data-del]');
+  if(dl){
+    const [t,id]=dl.dataset.del.split(':');
+    if(t==='meal')S.meals=S.meals.filter(x=>String(x.id)!==id);
+    else if(t==='sn')S.snacks=S.snacks.filter(x=>String(x.id)!==id);
+    else S.adds=S.adds.filter(x=>String(x.id)!==id);
+    save();renderMyMeals();renderShorts();renderCaf();return;
+  }
   if(e.target.closest('#mmEdit')){mmEdit=!mmEdit;renderMyMeals();return}
   if(e.target.closest('#mmNew'))openS2({mode:'new'});
 });
@@ -1029,6 +1136,10 @@ function renderS2(){
       '<button type="button" class="btn soft" data-act="n_prod">🧴 إضافة أو منتج (صوص، عصير، صوّر الملصق)</button>'+
       '<button type="button" class="btn soft" data-act="n_snack">🥤 سناك أو مشروب (طاقة، بروتين...)</button>'+
       '<button type="button" class="btn ghost" data-act="close">إغلاق</button>';return;
+  }
+  if(M.mode==='water'){
+    $('s2body').innerHTML='<h2>💧 كمية ماء أخرى</h2><div class="f2"><input id="wv" type="number" inputmode="decimal" min="0" placeholder="الكمية"><select id="wu" aria-label="الوحدة"><option value="1">مل</option><option value="1000">لتر</option></select></div><p class="msg err" id="s2msg" aria-live="polite"></p><button type="button" class="btn big" data-act="wadd">إضافة</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
+    setTimeout(()=>{const g=$('wv');if(g)g.focus()},60);return;
   }
   if(M.mode==='drink'){
     const caf=M.from==='caf';
@@ -1140,6 +1251,7 @@ $('s2body').addEventListener('click',async e=>{
   if(b.dataset.qn){const q=b.dataset.qn.split('|');$('dn').value=q[0];$('dw').value=q[1];return}
   const act=b.dataset.act;
   if(act==='close'){closeS2();return}
+  if(act==='wadd'){const ml=(+$('wv').value)*(+$('wu').value);if(!(ml>0)){s2msg('اكتب الكمية.');return}addWater(ml);closeS2();return}
   if(act==='n_meal'){openS2({mode:'build',name:'',slot:curMeal,text:'',rows:[]});return}
   if(act==='n_prod'){openS2({mode:'prod'});return}
   if(act==='n_snack'){openS2({mode:'drink',from:'snack'});return}
