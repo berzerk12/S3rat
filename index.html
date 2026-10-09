@@ -333,6 +333,7 @@ section[id]{scroll-margin-top:12px}
 
   <!-- اليوم -->
   <main id="vHome">
+    <div class="pcard" id="bkBar" hidden><span>💾</span><div class="tx"><b id="bkBarT"></b><span>احفظ نسخة في ملفاتك عشان ما تضيع بياناتك.</span></div><button type="button" id="bkBarGo">احفظ</button><button type="button" class="x" id="bkBarLater" aria-label="لاحقاً">×</button></div>
     <section class="card hero" aria-label="بطاقة اليوم" id="secDay">
       <div class="ringwrap">
         <div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="var(--fill2)" stroke-width="12"/><circle id="rArc" cx="60" cy="60" r="50" fill="none" stroke="var(--kcal)" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 314"/></svg>
@@ -492,9 +493,11 @@ section[id]{scroll-margin-top:12px}
     </section>
     <section class="card">
       <div class="sh"><div class="ic" style="background:rgba(52,199,89,.16)">💾</div><h3>نسخة احتياطية</h3></div>
-      <p class="note">البيانات محفوظة في متصفح جوالك فقط. صدّر نسخة بين فترة وفترة وخزنها في ملاحظاتك.</p>
+      <p class="note">البيانات محفوظة في متصفح جوالك فقط. صدّر نسخة كل 28 يوم وخزنها في ملفات iCloud. التطبيق يذكرك. قبل أي استيراد ينحفظ نسخ من بياناتك الحالية تقدر ترجعه.</p>
       <textarea id="bk" placeholder="هنا تظهر النسخة، أو الصق نسخة قديمة عشان تستوردها"></textarea>
+      <button class="btn" id="bkFile" type="button">💾 حفظ نسخة كملف</button>
       <div class="btns"><button class="btn soft" id="bkOut" type="button">تصدير ونسخ</button><button class="btn soft" id="bkIn" type="button">استيراد</button></div>
+      <button class="btn ghost" id="bkUndo" type="button" hidden>↩︎ استرجاع بياناتي قبل آخر استيراد</button>
       <button class="btn danger" id="wipe" type="button">مسح كل البيانات</button>
       <p class="msg" id="bMsg" aria-live="polite"></p>
     </section>
@@ -553,7 +556,7 @@ const EN=[[4,'نشيط','⚡'],[3,'عادي','🙂'],[2,'وسط','😐'],[1,'ت�
 const enAvg=d=>{const v=[d.energy,d.en2,d.en3].filter(x=>x!=null);return v.length?avgOf(v):null};
 const MD=[[5,'ممتاز','😄'],[4,'مبسوط','🙂'],[3,'عادي','😐'],[2,'مو زين','🙁'],[1,'زعلان','😢']];
 
-const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
+const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},lastBk:0,bkSnooze:0,prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
 let S=JSON.parse(JSON.stringify(DEF));
 let mornOpen=null,mornFor='';
 let sel=TK(),curMeal='b',vEdit=false,editId=null,storeOK=true,curView='Home',repOff=0,lastTK=TK();
@@ -1901,25 +1904,75 @@ $('sTest').addEventListener('click',async()=>{
   try{const it=await askGemini('بيضة مسلوقة');m.className='msg ok';m.textContent='الاتصال شغال: بيضة مسلوقة = '+it[0].k+' سعرة.'}
   catch(e){m.className='msg err';m.textContent=errText(e)}
 });
-$('bkOut').addEventListener('click',async()=>{
-  const copy=Object.assign({},S,{key:'',orKey:''});
-  $('bk').value=JSON.stringify(copy);
-  const ok=await copyText($('bk').value);
-  $('bMsg').className='msg'+(ok?' ok':' err');
-  $('bMsg').textContent=ok?'اننسخت النسخة (بدون المفتاح). الصقها في ملاحظاتك.':'ما اننسخت تلقائيًا، حدد النص وانسخه.';
-});
-$('bkIn').addEventListener('click',()=>{
+const PREVKEY='sa3rati-prev';
+function bkData(){return Object.assign({},S,{key:'',orKey:'',cache:{},pend:[],bkv:2,bkAt:Date.now()})}
+function bkMark(){S.lastBk=Date.now();S.bkSnooze=0;save();bkBar()}
+function bkDays(o){return Object.keys(o.days||{}).filter(k=>o.days[k]&&((o.days[k].items||[]).length||o.days[k].wt)).length}
+function bkMsg(t,ok){$('bMsg').className='msg'+(ok?' ok':' err');$('bMsg').textContent=t}
+async function bkSaveFile(){
+  const js=JSON.stringify(bkData()),d=new Date(),nm='sa3rati-backup-'+dk(d)+'.json';
+  $('bk').value=js;
   try{
-    const o=JSON.parse($('bk').value);if(!o||!o.days||!o.t)throw 0;
-    const key=S.key,ork=S.orKey;S=Object.assign({},DEF,o);S.t=Object.assign({},DEF.t,o.t);S.meals=o.meals||[];S.adds=o.adds||[];S.cache=o.cache||{};S.vits=o.vits||[];S.prof=Object.assign({},DEF.prof,o.prof||{});S.key='';S.orKey=ork||'';fixDays();save();renderSet();renderAll();
-    $('bMsg').className='msg ok';$('bMsg').textContent='تم الاستيراد.';
-  }catch(e){$('bMsg').className='msg err';$('bMsg').textContent='النسخة غير صالحة.'}
+    const f=new File([js],nm,{type:'application/json'});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:nm});bkMark();bkMsg('تم. اختر «حفظ في الملفات».',true);return true}
+  }catch(e){if(e&&e.name==='AbortError'){bkMsg('انلغى الحفظ.');return false}}
+  try{const u=URL.createObjectURL(new Blob([js],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=nm;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);bkMark();bkMsg('انحفظ الملف '+nm,true);return true}catch(e){}
+  const ok=await copyText(js);if(ok)bkMark();bkMsg(ok?'اننسخت النسخة. الصقها في ملاحظاتك.':'ما قدرت أحفظ تلقائياً، حدد النص في الخانة وانسخه.',ok);return ok;
+}
+$('bkFile').addEventListener('click',bkSaveFile);
+$('bkOut').addEventListener('click',async()=>{
+  $('bk').value=JSON.stringify(bkData());
+  const ok=await copyText($('bk').value);
+  if(ok)bkMark();
+  bkMsg(ok?'اننسخت النسخة (بدون المفتاح). الصقها في ملاحظاتك.':'ما اننسخت تلقائيًا، حدد النص وانسخه.',ok);
 });
+function prevSnap(){try{return JSON.parse(localStorage.getItem(PREVKEY)||'null')}catch(e){return null}}
+function renderUndo(){const p=prevSnap();$('bkUndo').hidden=!p;if(p)$('bkUndo').textContent='↩︎ استرجاع بياناتي قبل آخر استيراد ('+bkDays(p)+' يوم)'}
+function snapNow(){try{localStorage.setItem(PREVKEY,JSON.stringify(Object.assign({},S,{key:'',orKey:''})));return true}catch(e){return false}}
+function applyData(o){
+  const key=S.key,ork=S.orKey,lb=S.lastBk||0;
+  S=Object.assign({},DEF,o);S.t=Object.assign({},DEF.t,o.t);S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.cache=o.cache||{};S.pend=[];S.vits=o.vits||[];S.prof=Object.assign({},DEF.prof,o.prof||{});
+  S.key=key||'';S.orKey=ork||'';S.lastBk=Math.max(lb,+o.lastBk||0);delete S.bkv;delete S.bkAt;
+  fixDays();save();renderSet();renderAll();
+}
+let impT=null;
+$('bkIn').addEventListener('click',()=>{
+  let o;
+  try{o=JSON.parse($('bk').value);if(!o||typeof o.days!=='object'||!o.t)throw 0}catch(e){bkMsg('النسخة غير صالحة. ما تغيّر شي في بياناتك.');return}
+  if(!impT){
+    const n=bkDays(o),keys=Object.keys(o.days).sort(),cur=bkDays(S);
+    bkMsg('النسخة فيها '+n+' يوم مسجل (من '+(keys[0]||'-')+' إلى '+(keys[keys.length-1]||'-')+') وبياناتك الحالية '+cur+' يوم. اضغط «استيراد» مرة ثانية للاستبدال. تنحفظ نسخة من بياناتك الحالية قبل الاستبدال.',true);
+    $('bkIn').textContent='تأكيد الاستيراد';
+    impT=setTimeout(()=>{impT=null;$('bkIn').textContent='استيراد'},10000);return;
+  }
+  clearTimeout(impT);impT=null;$('bkIn').textContent='استيراد';
+  if(!snapNow()){bkMsg('ما قدرت أحفظ نسخة أمان من بياناتك الحالية، فألغيت الاستيراد حمايةً لها.');return}
+  try{applyData(o);renderUndo();bkMsg('تم الاستيراد ('+bkDays(S)+' يوم). تقدر ترجع لبياناتك السابقة بزر الاسترجاع.',true)}
+  catch(e){const p=prevSnap();if(p){try{applyData(p)}catch(x){}}bkMsg('فشل الاستيراد ورجعت بياناتك السابقة.')}
+});
+$('bkUndo').addEventListener('click',()=>{
+  const p=prevSnap();if(!p)return;
+  const cur=Object.assign({},S,{key:'',orKey:''});
+  try{applyData(p);localStorage.setItem(PREVKEY,JSON.stringify(cur));renderUndo();bkMsg('رجعت بياناتك السابقة ('+bkDays(S)+' يوم).',true)}catch(e){bkMsg('ما قدرت أسترجع.')}
+});
+const BK_DAYS=28,DAY=864e5;
+function bkBar(){
+  const bar=$('bkBar');if(!bar)return;
+  const now=Date.now(),has=bkDays(S)>=1,due=!S.lastBk||now-S.lastBk>=BK_DAYS*DAY;
+  if(!has||!due||now<(S.bkSnooze||0)){bar.hidden=true;return}
+  const d=S.lastBk?Math.floor((now-S.lastBk)/DAY):0;
+  $('bkBarT').textContent=S.lastBk?'مرّ '+d+' يوم على آخر نسخة احتياطية':'ما سويت نسخة احتياطية للحين';
+  bar.hidden=false;
+}
+$('bkBarGo').addEventListener('click',async()=>{const ok=await bkSaveFile();if(ok)toast('تم حفظ النسخة',false)});
+$('bkBarLater').addEventListener('click',()=>{S.bkSnooze=Date.now()+3*DAY;save();bkBar()});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')bkBar()});
+bkBar();renderUndo();
 let wipeT=null;
 $('wipe').addEventListener('click',()=>{
   if(!wipeT){$('wipe').textContent='اضغط مرة ثانية للتأكيد';wipeT=setTimeout(()=>{wipeT=null;$('wipe').textContent='مسح كل البيانات'},4000);return}
   clearTimeout(wipeT);wipeT=null;$('wipe').textContent='مسح كل البيانات';
-  S.days={};S.cache={};save();renderAll();$('bMsg').className='msg ok';$('bMsg').textContent='تم المسح.';
+  snapNow();S.days={};S.cache={};save();renderAll();renderUndo();$('bMsg').className='msg ok';$('bMsg').textContent='تم المسح. تقدر ترجع بياناتك بزر الاسترجاع.';
 });
 
 {const h=new Date().getHours();curMeal=h<11?'b':h<16?'l':h<18?'s':'d'}
