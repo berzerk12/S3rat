@@ -369,21 +369,15 @@ section[id]{scroll-margin-top:12px}
     <section class="card slim" id="secFood" aria-label="أضف أكلك">
       <div class="seg" id="mchips" role="group" aria-label="الوجبة"></div>
       <textarea id="qText" placeholder="وش أكلت؟ اكتب هنا، مثال: صدر دجاج مشوي وبطاطس وسلطة"></textarea>
-      <div class="btns2"><button class="btn sm" id="qGo" type="button">احسب وأضف</button><button class="btn sm soft" id="askG" type="button">اسأل Gemini</button></div>
+      <div class="btns2"><button class="btn sm" id="qGo" type="button">احسب وأضف</button><button class="btn sm soft" id="barBtn" type="button">📷 باركود</button></div>
       <p class="msg" id="qMsg" aria-live="polite"></p>
       <div id="pend" style="display:flex;flex-direction:column;gap:8px"></div>
-      <div id="pasteBox" hidden>
-        <p class="note">انسخنا الطلب وفتحنا Gemini. الصقه هناك، ثم انسخ جوابه كله ورجّع هنا والصقه:</p>
-        <textarea id="gPaste" placeholder="الصق جواب Gemini هنا"></textarea>
-        <div class="btns2" style="margin-top:8px"><button class="btn sm" id="gAdd" type="button">راجع وأضف</button><button class="btn sm soft" id="copyAgain" type="button">📋 نسخ الطلب مرة ثانية</button></div>
-      </div>
-      <a id="openG" href="https://gemini.google.com/app" rel="noopener" hidden>Gemini</a>
       <div id="shortBox"><p class="cap">اختصاراتي (وجبات، أكل، مشروبات، سناكات)</p><div class="recent" id="shorts"></div></div>
       <div id="recentBox" hidden><div class="recent" id="recent"></div></div>
       <hr class="hr">
       <p class="cap" style="margin:0">وجبات اليوم</p>
       <div id="meals"></div>
-      <div class="rowsp"><button class="link" id="manual" type="button">+ إدخال يدوي</button><button class="link" id="barBtn" type="button">📷 باركود</button></div>
+      <button class="link" id="manual" type="button" style="align-self:flex-start">+ إدخال يدوي</button>
     </section>
 
     <div class="sec">قائمة الطعام</div>
@@ -492,7 +486,6 @@ section[id]{scroll-margin-top:12px}
       <label>مفتاح OpenRouter (اختياري، احتياط لو Gemini تعطل)<input id="sOr" type="password" autocomplete="off" placeholder="sk-or-..."></label>
       <label>موديل OpenRouter<input id="sOrM" type="text" autocomplete="off" placeholder="openai/gpt-4o-mini"></label>
       <p class="note">المفتاح من openrouter.ai/keys. يتخزن في جوالك فقط. لو Gemini تعطل أو رد بخطأ، التطبيق يحاول OpenRouter تلقائياً، ولو ما حطيت مفتاح Gemini يستخدم OpenRouter لحاله.</p>
-      <label>رابط الـ Gem حقك (اختياري)<input id="sGem" type="url" autocomplete="off" placeholder="https://gemini.google.com/gem/..."></label>
       <label class="chk"><input type="checkbox" id="sUseList"> استخدم أكلي المحفوظ (قائمة الطعام) في الحساب بدل التقدير</label>
       <button class="btn soft" id="sTest" type="button">اختبار الاتصال</button>
       <p class="msg" id="sMsg" aria-live="polite"></p>
@@ -982,7 +975,7 @@ $('qGo').addEventListener('click',()=>{
   const text=$('qText').value.trim();if(!text)return;
   const ck=text.toLowerCase();
   if(S.cache[ck]){openS2({mode:'review',items:JSON.parse(JSON.stringify(S.cache[ck])),text:text,slot:curMeal,from:'live'});return}
-  if(!hasAI()){qSay(ERR.nokey,'err');showPaste();return}
+  if(!hasAI()){qSay(ERR.nokey,'err');return}
   qSay('');
   openS2({mode:'review',items:[],text:text,slot:curMeal,from:'live'});
   startReview(text);
@@ -1014,15 +1007,14 @@ function renderPend(){
   $('pend').innerHTML=S.pend.map(p=>{
     const m=MEALS.find(x=>x[0]===p.meal),sub=p.st==='ready'?'جاهز للمراجعة':p.st==='run'?'جاري الحساب...':p.st==='wait'?(p.tries?'بانتظار إعادة المحاولة تلقائيًا ('+esc(p.err)+')':'بانتظار الحساب...'):'تعذر: '+esc(p.err);
     return '<div class="pcard'+(p.st==='fail'?' fail':'')+'"><span>'+(p.st==='fail'?'⚠️':p.st==='ready'?'✅':'⏳')+'</span><div class="tx"><b>'+esc(p.text.slice(0,70))+'</b><span>'+(m?m[1]+' · ':'')+sub+(p.t!=null?' · '+tStr(p.t):'')+'</span></div>'+
-      (p.st==='ready'?'<button type="button" data-pv="'+p.id+'">راجع وأضف</button>':'')+(p.st!=='run'&&p.st!=='ready'?'<button type="button" data-pr="'+p.id+'">إعادة</button>':'')+(p.st==='fail'?'<button type="button" data-pa="'+p.id+'">اسأل Gemini</button>':'')+'<button type="button" class="x" data-px="'+p.id+'" aria-label="حذف">×</button></div>';
+      (p.st==='ready'?'<button type="button" data-pv="'+p.id+'">راجع وأضف</button>':'')+(p.st!=='run'&&p.st!=='ready'?'<button type="button" data-pr="'+p.id+'">إعادة</button>':'')+'<button type="button" class="x" data-px="'+p.id+'" aria-label="حذف">×</button></div>';
   }).join('');
 }
 $('pend').addEventListener('click',async e=>{
-  const r=e.target.closest('[data-pr]'),x=e.target.closest('[data-px]'),a=e.target.closest('[data-pa]'),pv=e.target.closest('[data-pv]');
+  const r=e.target.closest('[data-pr]'),x=e.target.closest('[data-px]'),pv=e.target.closest('[data-pv]');
   if(pv){const p=S.pend.find(v=>String(v.id)===pv.dataset.pv);if(p)openS2({mode:'review',items:JSON.parse(JSON.stringify(p.items||[])),text:p.text,slot:p.meal,from:'pend',pid:p.id});return}
   if(r){const p=S.pend.find(v=>String(v.id)===r.dataset.pr);if(p){p.st='wait';p.next=0;save();renderPend();runPend()}return}
   if(x){S.pend=S.pend.filter(v=>String(v.id)!==x.dataset.px);save();renderPend();return}
-  if(a){const p=S.pend.find(v=>String(v.id)===a.dataset.pa);if(p)askGeminiManual(p.text)}
 });
 setInterval(()=>{if(S.pend.some(p=>p.st==='wait'&&p.next<=Date.now()))runPend();else if(S.pend.some(p=>p.st==='wait'))renderPend()},15000);
 window.addEventListener('online',()=>{S.pend.forEach(p=>{if(p.st==='wait')p.next=0});runPend()});
@@ -1046,28 +1038,6 @@ function copySync(t){
   try{if(navigator.clipboard)navigator.clipboard.writeText(t).catch(()=>{})}catch(e){}
   return ok;
 }
-function showPaste(){$('pasteBox').hidden=false}
-function askGeminiManual(text){
-  copySync(ASK+text);showPaste();
-  qSay('اننسخ الطلب. الصقه في Gemini، ثم انسخ جوابه ورجّع والصقه تحت.','ok');
-  try{const a=document.createElement('a');a.href=$('openG').href;a.rel='noopener';a.style.display='none';document.body.appendChild(a);a.click();a.remove()}catch(e){}
-}
-$('askG').addEventListener('click',()=>{
-  const text=$('qText').value.trim();
-  if(!text){qSay('اكتب أكلك أول، وبعدها اضغط «اسأل Gemini».','err');$('qText').focus();return}
-  askGeminiManual(text);
-});
-$('gAdd').addEventListener('click',()=>{
-  const items=parseAny($('gPaste').value);
-  if(!items.length){qSay('ما لقيت أصناف بالشكل المطلوب. انسخ جواب Gemini كامل.','err');return}
-  $('gPaste').value='';$('pasteBox').hidden=true;
-  openS2({mode:'review',items:items,text:$('qText').value.trim(),slot:curMeal,from:'live'});
-});
-$('copyAgain').addEventListener('click',async()=>{
-  const t=$('qText').value.trim();
-  const ok=await copyText(ASK+t);qSay(ok?'اننسخ الطلب. الصقه في Gemini.':'ما اننسخ تلقائيًا.',ok?'ok':'err');
-});
-
 /* ---------- edit sheet ---------- */
 const FIELDS=[['fk','k'],['fp','p'],['fc','c'],['ffi','fi'],['ff','f'],['fw','w'],['fcf','cf']];
 function openSheet(id){
@@ -1968,7 +1938,7 @@ function renderSet(){
   $('tgrid').innerHTML=TG.map(g=>'<label>'+g[1]+'<input data-t="'+g[0]+'" type="number" inputmode="numeric" min="'+g[2]+'" value="'+(g[0]==='cupMg'||g[0]==='cupMl'?S[g[0]]:S.t[g[0]])+'"></label>').join('');
   const mk=S.t.p*4+S.t.c*4+S.t.f*9;
   $('tHint').textContent='الماكروز اللي حطيتها تساوي '+fmt(mk)+' سعرة (بروتين وكارب 4 للجرام، دهون 9).';
-  $('sKey').value=S.key;$('sUseList').checked=S.useList!==false;$('sOr').value=S.orKey||'';$('sOrM').value=S.orModel||'openai/gpt-4o-mini';$('sModel').value=S.model;$('sGem').value=S.gem;
+  $('sKey').value=S.key;$('sUseList').checked=S.useList!==false;$('sOr').value=S.orKey||'';$('sOrM').value=S.orModel||'openai/gpt-4o-mini';$('sModel').value=S.model;
   const a=anchor();$('pH').value=S.prof.h;$('pAge').value=S.prof.age;$('pAct').value=String(S.prof.act);
   $('pW0').value=a?a.w:'';$('pD0').value=a?a.d:'';
 }
@@ -1985,13 +1955,11 @@ $('tgrid').addEventListener('change',e=>{
   if(isFinite(v)&&v>=g[2]){if(key==='cupMg'||key==='cupMl')S[key]=v;else S.t[key]=v}
   save();renderSet();
 });
-function applyGem(){$('openG').href=S.gem||'https://gemini.google.com/app'}
 $('sKey').addEventListener('change',()=>{S.key=$('sKey').value.trim();save()});
 $('sModel').addEventListener('change',()=>{S.model=$('sModel').value.trim()||'gemini-flash-latest';save()});
 $('sUseList').addEventListener('change',()=>{S.useList=$('sUseList').checked;save()});
 $('sOr').addEventListener('change',()=>{S.orKey=$('sOr').value.trim();save()});
 $('sOrM').addEventListener('change',()=>{S.orModel=$('sOrM').value.trim()||'openai/gpt-4o-mini';save()});
-$('sGem').addEventListener('change',()=>{S.gem=$('sGem').value.trim();save();applyGem()});
 $('sTest').addEventListener('click',async()=>{
   S.key=$('sKey').value.trim();S.model=$('sModel').value.trim()||'gemini-flash-latest';save();
   const m=$('sMsg');m.className='msg';m.textContent='جاري الاختبار...';
@@ -2022,7 +1990,6 @@ $('wipe').addEventListener('click',()=>{
 });
 
 {const h=new Date().getHours();curMeal=h<11?'b':h<16?'l':h<18?'s':'d'}
-applyGem();
 show('Home');
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
