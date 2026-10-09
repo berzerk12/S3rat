@@ -489,7 +489,11 @@ section[id]{scroll-margin-top:12px}
       <p class="note">المفتاح من aistudio.google.com/apikey (مجاني ومنفصل عن اشتراكك). يتخزن في جوالك فقط، لا ترسل الملف لأحد وهو فيه المفتاح.</p>
       <label>مفتاح Gemini API<input id="sKey" type="password" autocomplete="off" placeholder="AIza..."></label>
       <label>اسم الموديل<input id="sModel" type="text" autocomplete="off"></label>
+      <label>مفتاح OpenRouter (اختياري، احتياط لو Gemini تعطل)<input id="sOr" type="password" autocomplete="off" placeholder="sk-or-..."></label>
+      <label>موديل OpenRouter<input id="sOrM" type="text" autocomplete="off" placeholder="openai/gpt-4o-mini"></label>
+      <p class="note">المفتاح من openrouter.ai/keys. يتخزن في جوالك فقط. لو Gemini تعطل أو رد بخطأ، التطبيق يحاول OpenRouter تلقائياً، ولو ما حطيت مفتاح Gemini يستخدم OpenRouter لحاله.</p>
       <label>رابط الـ Gem حقك (اختياري)<input id="sGem" type="url" autocomplete="off" placeholder="https://gemini.google.com/gem/..."></label>
+      <label class="chk"><input type="checkbox" id="sUseList"> استخدم أكلي المحفوظ (قائمة الطعام) في الحساب بدل التقدير</label>
       <button class="btn soft" id="sTest" type="button">اختبار الاتصال</button>
       <p class="msg" id="sMsg" aria-live="polite"></p>
     </section>
@@ -556,7 +560,7 @@ const EN=[[4,'نشيط','⚡'],[3,'عادي','🙂'],[2,'وسط','😐'],[1,'ت�
 const enAvg=d=>{const v=[d.energy,d.en2,d.en3].filter(x=>x!=null);return v.length?avgOf(v):null};
 const MD=[[5,'ممتاز','😄'],[4,'مبسوط','🙂'],[3,'عادي','😐'],[2,'مو زين','🙁'],[1,'زعلان','😢']];
 
-const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
+const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
 let S=JSON.parse(JSON.stringify(DEF));
 let mornOpen=null,mornFor='';
 let sel=TK(),curMeal='b',vEdit=false,editId=null,storeOK=true,curView='Home',repOff=0,lastTK=TK();
@@ -914,13 +918,40 @@ async function gcall(parts,o){
   }
   return ((data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts)||[]).map(p=>p.text||'').join('');
 }
+const hasAI=()=>!!(S.key||S.orKey);
+async function orcall(parts){
+  const content=parts.map(p=>p.text!=null?{type:'text',text:p.text}:{type:'image_url',image_url:{url:'data:'+p.inlineData.mimeType+';base64,'+p.inlineData.data}});
+  let r;
+  try{r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.orKey,'X-Title':'Sa3rati'},body:JSON.stringify({model:S.orModel||'openai/gpt-4o-mini',messages:[{role:'user',content:content}]})})}catch(e){throw {code:'net'}}
+  if(!r.ok){let m='';try{const j=await r.json();m=(j&&j.error&&j.error.message)||''}catch(e){}throw {code:r.status,detail:'OpenRouter: '+m}}
+  const j=await r.json();
+  const t=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
+  if(!t)throw {code:'parse'};
+  return typeof t==='string'?t:t.map(x=>x.text||'').join('');
+}
+async function aiCall(parts){
+  if(S.key){
+    try{return await gcall(parts)}
+    catch(e){if(S.orKey&&!(e&&e.code==='parse'))return orcall(parts);throw e}
+  }
+  if(S.orKey)return orcall(parts);
+  throw {code:'nokey'};
+}
+function knownFoods(){
+  if(S.useList===false)return'';
+  const L=[],m1=v=>Math.round(v*10)/10;
+  S.adds.slice(0,25).forEach(a=>{const b=a.g||100;L.push('- '+a.n+' (منتج، القيم لكل '+b+' جم): '+a.k+' سعرة، '+a.p+' بروتين، '+a.c+' كارب، '+a.fi+' ألياف، '+a.f+' دهون')});
+  S.meals.slice(0,20).forEach(m=>{const t=sum(m.parts);L.push('- '+m.n+' (وجبة كاملة بالكمية المحفوظة): '+t.k+' سعرة، '+t.p+' بروتين، '+t.c+' كارب، '+t.fi+' ألياف، '+t.f+' دهون')});
+  S.snacks.slice(0,25).forEach(x=>{L.push('- '+x.n+' (للحبة أو العبوة): '+x.k+' سعرة، '+x.p+' بروتين، '+x.c+' كارب، '+x.f+' دهون'+(x.cf?'، كافيين '+x.cf+' ملغ':''))});
+  return L.length?'\n\nأكلي المحفوظ بأرقامي الحقيقية. إذا ذكر النص أحدها بالاسم أو ما يشبهه فاستخدم أرقامه بدل التقدير (واضرب القيم لكل 100 جم بالكمية المذكورة):\n'+L.join('\n'):'';
+}
 async function askGemini(text){
-  const items=parseAny(await gcall([{text:PROMPT+text}]));
+  const items=parseAny(await aiCall([{text:PROMPT+text+knownFoods()}]));
   if(!items.length)throw {code:'parse'};
   const seen={};return items.filter(x=>{const k=x.n+'|'+x.k;if(seen[k])return false;seen[k]=1;return true});
 }
 async function askLabel(b64){
-  const txt=await gcall([{text:LABELP},{inlineData:{mimeType:'image/jpeg',data:b64}}]);
+  const txt=await aiCall([{text:LABELP},{inlineData:{mimeType:'image/jpeg',data:b64}}]);
   const m=txt.match(/\{[\s\S]*\}/);if(!m)throw {code:'parse'};
   let o;try{o=JSON.parse(m[0])}catch(e){throw {code:'parse'}}
   const r={n:String(o.n||'').trim().slice(0,60)||'منتج',k:Math.round(+o.k)||0,p:dec(o.p),c:dec(o.c),fi:dec(o.fi),f:dec(o.f)};
@@ -951,7 +982,7 @@ $('qGo').addEventListener('click',()=>{
   const text=$('qText').value.trim();if(!text)return;
   const ck=text.toLowerCase();
   if(S.cache[ck]){openS2({mode:'review',items:JSON.parse(JSON.stringify(S.cache[ck])),text:text,slot:curMeal,from:'live'});return}
-  if(!S.key){qSay(ERR.nokey,'err');showPaste();return}
+  if(!hasAI()){qSay(ERR.nokey,'err');showPaste();return}
   qSay('');
   openS2({mode:'review',items:[],text:text,slot:curMeal,from:'live'});
   startReview(text);
@@ -1343,7 +1374,7 @@ $('s2body').addEventListener('change',async e=>{
   if(e.target.id==='s2slot'){M.slot=e.target.value;return}
   if(e.target.id==='prFile'&&e.target.files&&e.target.files[0]){
     const f=e.target.files[0];
-    if(!S.key){s2msg(ERR.nokey);return}
+    if(!hasAI()){s2msg(ERR.nokey);return}
     s2msg('جاري قراءة الصورة...',true);
     try{
       const b64=await readImage(f);
@@ -1397,7 +1428,7 @@ $('s2body').addEventListener('click',async e=>{
   if(act==='n_snack'){openS2({mode:'drink',from:'snack'});return}
   if(act==='dfill'){
     const nm=$('dn').value.trim();if(!nm){s2msg('اكتب الاسم أول.');return}
-    if(!S.key){s2msg(ERR.nokey);return}
+    if(!hasAI()){s2msg(ERR.nokey);return}
     b.disabled=true;b.textContent='جاري الحساب...';
     try{const it=(await askGemini(nm))[0];if(!M)return;$('dcf').value=it.cf||'';$('dk').value=it.k||'';$('dp').value=it.p||'';$('dc').value=it.c||'';$('df').value=it.f||'';$('dw').value=it.w||'';s2msg('انحسبت. راجع الأرقام وعدّلها لو تبي.',true)}
     catch(err){s2msg(errText(err))}
@@ -1439,7 +1470,7 @@ $('s2body').addEventListener('click',async e=>{
   if(act==='calc'){
     const text=(M.text||'').trim();
     if(!text){s2msg('اكتب المكونات أول.');return}
-    if(!S.key){s2msg(ERR.nokey);return}
+    if(!hasAI()){s2msg(ERR.nokey);return}
     b.disabled=true;b.textContent='جاري الحساب...';
     try{
       const items=await askGemini(text);
@@ -1856,7 +1887,7 @@ function renderSet(){
   $('tgrid').innerHTML=TG.map(g=>'<label>'+g[1]+'<input data-t="'+g[0]+'" type="number" inputmode="numeric" min="'+g[2]+'" value="'+(g[0]==='cupMg'||g[0]==='cupMl'?S[g[0]]:S.t[g[0]])+'"></label>').join('');
   const mk=S.t.p*4+S.t.c*4+S.t.f*9;
   $('tHint').textContent='الماكروز اللي حطيتها تساوي '+fmt(mk)+' سعرة (بروتين وكارب 4 للجرام، دهون 9).';
-  $('sKey').value=S.key;$('sModel').value=S.model;$('sGem').value=S.gem;
+  $('sKey').value=S.key;$('sUseList').checked=S.useList!==false;$('sOr').value=S.orKey||'';$('sOrM').value=S.orModel||'openai/gpt-4o-mini';$('sModel').value=S.model;$('sGem').value=S.gem;
   const a=anchor();$('pH').value=S.prof.h;$('pAge').value=S.prof.age;$('pAct').value=String(S.prof.act);
   $('pW0').value=a?a.w:'';$('pD0').value=a?a.d:'';
 }
@@ -1876,16 +1907,20 @@ $('tgrid').addEventListener('change',e=>{
 function applyGem(){$('openG').href=S.gem||'https://gemini.google.com/app'}
 $('sKey').addEventListener('change',()=>{S.key=$('sKey').value.trim();save()});
 $('sModel').addEventListener('change',()=>{S.model=$('sModel').value.trim()||'gemini-flash-latest';save()});
+$('sUseList').addEventListener('change',()=>{S.useList=$('sUseList').checked;save()});
+$('sOr').addEventListener('change',()=>{S.orKey=$('sOr').value.trim();save()});
+$('sOrM').addEventListener('change',()=>{S.orModel=$('sOrM').value.trim()||'openai/gpt-4o-mini';save()});
 $('sGem').addEventListener('change',()=>{S.gem=$('sGem').value.trim();save();applyGem()});
 $('sTest').addEventListener('click',async()=>{
   S.key=$('sKey').value.trim();S.model=$('sModel').value.trim()||'gemini-flash-latest';save();
   const m=$('sMsg');m.className='msg';m.textContent='جاري الاختبار...';
-  if(!S.key){m.className='msg err';m.textContent=ERR.nokey;return}
+  S.orKey=$('sOr').value.trim();S.orModel=$('sOrM').value.trim()||'openai/gpt-4o-mini';save();
+  if(!hasAI()){m.className='msg err';m.textContent=ERR.nokey;return}
   try{const it=await askGemini('بيضة مسلوقة');m.className='msg ok';m.textContent='الاتصال شغال: بيضة مسلوقة = '+it[0].k+' سعرة.'}
   catch(e){m.className='msg err';m.textContent=errText(e)}
 });
 $('bkOut').addEventListener('click',async()=>{
-  const copy=Object.assign({},S,{key:''});
+  const copy=Object.assign({},S,{key:'',orKey:''});
   $('bk').value=JSON.stringify(copy);
   const ok=await copyText($('bk').value);
   $('bMsg').className='msg'+(ok?' ok':' err');
@@ -1894,7 +1929,7 @@ $('bkOut').addEventListener('click',async()=>{
 $('bkIn').addEventListener('click',()=>{
   try{
     const o=JSON.parse($('bk').value);if(!o||!o.days||!o.t)throw 0;
-    const key=S.key;S=Object.assign({},DEF,o);S.t=Object.assign({},DEF.t,o.t);S.meals=o.meals||[];S.adds=o.adds||[];S.cache=o.cache||{};S.vits=o.vits||[];S.prof=Object.assign({},DEF.prof,o.prof||{});S.key=key||o.key||'';fixDays();save();renderSet();renderAll();
+    const key=S.key,ork=S.orKey;S=Object.assign({},DEF,o);S.t=Object.assign({},DEF.t,o.t);S.meals=o.meals||[];S.adds=o.adds||[];S.cache=o.cache||{};S.vits=o.vits||[];S.prof=Object.assign({},DEF.prof,o.prof||{});S.key=key||o.key||'';S.orKey=ork||'';fixDays();save();renderSet();renderAll();
     $('bMsg').className='msg ok';$('bMsg').textContent='تم الاستيراد.';
   }catch(e){$('bMsg').className='msg err';$('bMsg').textContent='النسخة غير صالحة.'}
 });
