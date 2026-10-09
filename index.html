@@ -14,7 +14,7 @@
 :root{
   --bg:#F2F2F7;--card:#FFFFFF;--fill:#F2F2F7;--fill2:#E5E5EA;--ink:#111114;--muted:#6C6C70;--line:rgba(60,60,67,.14);
   --blue:#0A84FF;--green:#34C759;--red:#FF3B30;--orange:#FF9500;--purple:#AF52DE;--teal:#32ADE6;--brown:#A2845E;--pink:#FF2D55;
-  --kcal:#FF9500;--prot:#FF3B30;--carb:#0A84FF;--fat:#34C759;--fib:#AF52DE;--water:#32ADE6;--caf:#A2845E;
+  --kcal:#F0993A;--prot:#E4675E;--carb:#4F8FE0;--fat:#4FB67C;--fib:#9B7BD4;--water:#32ADE6;--caf:#A2845E;
   --tint:rgba(10,132,255,.12);--ok:#1E9E48;--warn:#C77700;--no:#D70015;
   --font:-apple-system,BlinkMacSystemFont,'SF Arabic','SF Pro Text',system-ui,'Segoe UI',Tahoma,'Noto Sans Arabic',sans-serif;
   --bar:rgba(249,249,251,.86);--shadow:0 1px 2px rgba(0,0,0,.04),0 6px 18px rgba(0,0,0,.05);color-scheme:light;
@@ -22,7 +22,7 @@
 @media (prefers-color-scheme: dark){:root{
   --bg:#000000;--card:#1C1C1E;--fill:#2C2C2E;--fill2:#3A3A3C;--ink:#F5F5F7;--muted:#98989F;--line:rgba(235,235,245,.14);
   --blue:#0A84FF;--green:#30D158;--red:#FF453A;--orange:#FF9F0A;--purple:#BF5AF2;--teal:#64D2FF;--brown:#C4A57B;--pink:#FF375F;
-  --kcal:#FF9F0A;--prot:#FF453A;--carb:#0A84FF;--fat:#30D158;--fib:#BF5AF2;--water:#64D2FF;--caf:#C4A57B;
+  --kcal:#F2A24B;--prot:#E8766E;--carb:#5D9BE6;--fat:#5CC18A;--fib:#A98BDC;--water:#64D2FF;--caf:#C4A57B;
   --tint:rgba(10,132,255,.22);--ok:#32D74B;--warn:#FFB340;--no:#FF6961;--bar:rgba(28,28,30,.86);--shadow:none;color-scheme:dark}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
@@ -313,29 +313,10 @@ section[id]{scroll-margin-top:12px}
 .dots i.y{background:var(--green)}.dots i.no{background:rgba(162,59,59,.45)}
 .pkb{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;border:0;background:var(--card);border-radius:14px;padding:13px 14px;box-shadow:inset 0 0 0 1px var(--line);font-size:15px;font-weight:600;text-align:start}
 .pkb small{color:var(--muted);font-weight:500;font-size:12px}
-/* ---- tints ---- */
-.ring{border-radius:50%;background:rgba(255,149,0,.16)}.mini{gap:7px}.mrow{border-radius:12px;padding:7px 10px}
-.mrow:nth-child(1){background:rgba(255,59,48,.14)}.mrow:nth-child(2){background:rgba(10,132,255,.14)}.mrow:nth-child(3){background:rgba(52,199,89,.16)}.mrow:nth-child(4){background:rgba(175,82,222,.14)}
-#secMorning{background-image:linear-gradient(rgba(88,86,214,0.12),rgba(88,86,214,0.12))}
-#secCaf{background-image:linear-gradient(rgba(162,132,94,0.12),rgba(162,132,94,0.12))}
-#secFood{background-image:linear-gradient(rgba(255,149,0,0.12),rgba(255,149,0,0.12))}
-#myMeals{background-image:linear-gradient(rgba(52,199,89,0.12),rgba(52,199,89,0.12))}
-section[aria-label="نشاط نص اليوم"]{background-image:linear-gradient(rgba(255,204,0,0.12),rgba(255,204,0,0.12))}
-#secTrain{background-image:linear-gradient(rgba(10,132,255,0.12),rgba(10,132,255,0.12))}
-#secWater{background-image:linear-gradient(rgba(50,173,230,0.12),rgba(50,173,230,0.12))}
-#secVit{background-image:linear-gradient(rgba(175,82,222,0.12),rgba(175,82,222,0.12))}
-#secEnd{background-image:linear-gradient(rgba(255,45,85,0.12),rgba(255,45,85,0.12))}
-@media (prefers-color-scheme: dark){
-#secMorning{background-image:linear-gradient(rgba(88,86,214,0.09),rgba(88,86,214,0.09))}
-#secCaf{background-image:linear-gradient(rgba(162,132,94,0.09),rgba(162,132,94,0.09))}
-#secFood{background-image:linear-gradient(rgba(255,149,0,0.09),rgba(255,149,0,0.09))}
-#myMeals{background-image:linear-gradient(rgba(52,199,89,0.09),rgba(52,199,89,0.09))}
-section[aria-label="نشاط نص اليوم"]{background-image:linear-gradient(rgba(255,204,0,0.09),rgba(255,204,0,0.09))}
-#secTrain{background-image:linear-gradient(rgba(10,132,255,0.09),rgba(10,132,255,0.09))}
-#secWater{background-image:linear-gradient(rgba(50,173,230,0.09),rgba(50,173,230,0.09))}
-#secVit{background-image:linear-gradient(rgba(175,82,222,0.09),rgba(175,82,222,0.09))}
-#secEnd{background-image:linear-gradient(rgba(255,45,85,0.09),rgba(255,45,85,0.09))}
-.ring{background:rgba(255,159,10,.11)}.mrow:nth-child(1){background:rgba(255,69,58,.11)}.mrow:nth-child(2){background:rgba(10,132,255,.12)}.mrow:nth-child(3){background:rgba(48,209,88,.10)}.mrow:nth-child(4){background:rgba(191,90,242,.10)}}
+/* ---- palette A ---- */
+#secCaf{border-inline-start:4px solid rgba(162,132,94,.55)}
+#secWater{border-inline-start:4px solid rgba(50,173,230,.55)}
+#secVit{border-inline-start:4px solid rgba(175,82,222,.5)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
