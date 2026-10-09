@@ -479,10 +479,13 @@ section[id]{scroll-margin-top:12px}
       <p class="note">يحسب منها مسار وزنك المتوقع (تقدير مو وعد) ويقارنه بوزنك الفعلي في التقارير.</p>
     </section>
     <section class="card">
-      <div class="sh"><div class="ic" style="background:rgba(10,132,255,.14)">✨</div><h3>الذكاء الاصطناعي (OpenRouter)</h3></div>
-      <p class="note">مجاني بدون دفع: سجّل في openrouter.ai وسو مفتاح من openrouter.ai/keys بدون ما تشحن. الموديل «openrouter/free» يختار لك موديل مجاني تلقائياً. الحد اليومي صغير (حوالي 50 طلب) والدقة أقل من المدفوع، فراجع الأرقام. المفتاح يتخزن في جوالك فقط.</p>
+      <div class="sh"><div class="ic" style="background:rgba(10,132,255,.14)">✨</div><h3>الذكاء الاصطناعي (Gemini API)</h3></div>
+      <p class="note">المفتاح من aistudio.google.com/apikey: مجاني بدون بطاقة، ومنفصل عن تطبيق Gemini وما يفتح محادثات فيه. يتخزن في جوالك فقط، لا ترسل الملف لأحد وهو فيه المفتاح.</p>
+      <label>مفتاح Gemini API<input id="sKey" type="password" autocomplete="off" placeholder="AIza..."></label>
+      <label>اسم الموديل<input id="sModel" type="text" autocomplete="off"></label>
+      <details><summary>احتياط اختياري: OpenRouter</summary><div>
       <label>مفتاح OpenRouter<input id="sOr" type="password" autocomplete="off" placeholder="sk-or-..."></label>
-      <label>اسم الموديل (لازم يدعم الصور عشان الملصقات والباركود)<input id="sOrM" type="text" autocomplete="off" placeholder="openrouter/free"></label>
+      <label>موديل OpenRouter<input id="sOrM" type="text" autocomplete="off" placeholder="openai/gpt-4o-mini"></label></div></details>
       <label class="chk"><input type="checkbox" id="sUseList"> استخدم أكلي المحفوظ (قائمة الطعام) في الحساب بدل التقدير</label>
       <button class="btn soft" id="sTest" type="button">اختبار الاتصال</button>
       <p class="msg" id="sMsg" aria-live="polite"></p>
@@ -550,7 +553,7 @@ const EN=[[4,'نشيط','⚡'],[3,'عادي','🙂'],[2,'وسط','😐'],[1,'ت�
 const enAvg=d=>{const v=[d.energy,d.en2,d.en3].filter(x=>x!=null);return v.length?avgOf(v):null};
 const MD=[[5,'ممتاز','😄'],[4,'مبسوط','🙂'],[3,'عادي','😐'],[2,'مو زين','🙁'],[1,'زعلان','😢']];
 
-const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],orKey:'',orModel:'openrouter/free',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
+const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
 let S=JSON.parse(JSON.stringify(DEF));
 let mornOpen=null,mornFor='';
 let sel=TK(),curMeal='b',vEdit=false,editId=null,storeOK=true,curView='Home',repOff=0,lastTK=TK();
@@ -558,8 +561,7 @@ try{
   const raw=localStorage.getItem(KEY);
   if(raw){const o=JSON.parse(raw);S=Object.assign({},S,o);S.t=Object.assign({},DEF.t,o.t||{});S.days=o.days||{};S.cache=o.cache||{};S.vits=o.vits||[];S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.pend=o.pend||[];S.reps=o.reps||{};S.prof=Object.assign({},DEF.prof,o.prof||{})}
 }catch(e){storeOK=false}
-if(S.orModel==='openai/gpt-4o-mini')S.orModel='openrouter/free';
-delete S.key;delete S.model;delete S.gem;delete S.noThink;
+delete S.gem;
 S.pend.forEach(p=>{if(p.st==='run')p.st='wait'});
 function fixDays(){Object.keys(S.days).forEach(k=>{const d=S.days[k];if(!d||typeof d!=='object'){delete S.days[k];return}d.items=d.items||[];d.water=d.water||[];d.cups=d.cups||0;d.cupT=d.cupT||[];d.vit=d.vit||{}})}
 fixDays();
@@ -866,7 +868,51 @@ const PROMPT='أنت حاسب تغذية. حلّل النص التالي الذ�
   ' لا تكرر أي صنف، والاسم المركب مثل «بودينق بروتين» أو «شيك بروتين» صنف واحد فقط. وأضف ca: الكالسيوم بالملغ وfe: الحديد بالملغ للصنف كله. ردّ بـ JSON فقط بهذا الشكل بدون أي نص آخر: {"items":[{"n":"اسم الصنف","q":"الكمية","k":0,"p":0,"c":0,"fi":0,"f":0,"w":0,"cf":0,"ca":0,"fe":0,"g":0}]} والأرقام صحيحة.\n\nالنص: ';
 const ASK='احسب لكل صنف (أكل سعودي/عربي): الاسم | سعرات | بروتين | كارب | ألياف | دهون | ماء مل | كافيين ملغ | جرام. رد بسطر لكل صنف فقط بدون شرح، والأرقام صحيحة.\nالأكل: ';
 const LABELP='هذي صورة ملصق القيمة الغذائية (Nutrition Facts) لمنتج غذائي. استخرج القيم لكل 100 جرام (أو 100 مل). إذا كانت القيم مكتوبة لكل حصة فقط، حوّلها لكل 100 جرام باستخدام وزن الحصة المكتوب. n اسم المنتج إن ظهر وإلا اكتب "منتج". k السعرات، p البروتين، c الكربوهيدرات، fi الألياف، f الدهون (بالجرام، ويسمح بكسر عشري). ردّ بـ JSON فقط: {"n":"","k":0,"p":0,"c":0,"fi":0,"f":0}';
-const hasAI=()=>!!S.orKey;
+const GBASE='https://generativelanguage.googleapis.com/v1beta/';
+async function gfetch(path,opt){
+  let r;
+  try{r=await fetch(GBASE+path,opt)}catch(e){throw {code:'net'}}
+  if(!r.ok){
+    let m='';
+    try{const j=await r.json();m=(j&&j.error&&j.error.message)||''}catch(e){}
+    throw {code:r.status,detail:m};
+  }
+  return r.json();
+}
+async function pickModel(){
+  const d=await gfetch('models?pageSize=200',{headers:{'x-goog-api-key':S.key}});
+  const ok=(d.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')).map(m=>m.name.replace('models/',''));
+  const bad=/(image|tts|audio|live|embed|vision|robotics|computer|thinking|exp|learnlm|gemma)/;
+  const c=ok.filter(n=>/^gemini-[\d.]+-flash/.test(n)&&!bad.test(n));
+  const ver=n=>parseFloat((n.match(/^gemini-([\d.]+)-flash/)||[0,0])[1]);
+  c.sort((x,y)=>ver(y)-ver(x)||(/preview/.test(x)-/preview/.test(y))||(/lite/.test(x)-/lite/.test(y))||x.length-y.length);
+  if(c.length)return c[0];
+  return ok.find(n=>/flash-latest$/.test(n))||ok.find(n=>/flash/.test(n)&&!bad.test(n))||'';
+}
+const FALLBACK='gemini-flash-lite-latest';
+async function gcall(parts,o){
+  o=o||{};
+  const model=o.model||S.model||'gemini-flash-latest';
+  const cfg={responseMimeType:'application/json'};
+  if(!S.noThink&&!o.nt)cfg.thinkingConfig={thinkingBudget:0};
+  let data;
+  try{
+    data=await gfetch('models/'+encodeURIComponent(model)+':generateContent',{
+      method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.key},
+      body:JSON.stringify({contents:[{parts:parts}],generationConfig:cfg})});
+    if(o.nt&&!S.noThink){S.noThink=true;save()}
+  }catch(e){
+    if(e&&e.code===400&&!S.noThink&&!o.nt)return gcall(parts,Object.assign({},o,{nt:1}));
+    if(e&&e.code===404&&!o.pm&&!o.fb){
+      const m=await pickModel();
+      if(m&&m!==S.model){S.model=m;save();if($('sModel'))$('sModel').value=m;return gcall(parts,Object.assign({},o,{pm:1,model:m}))}
+    }
+    if(e&&(e.code===503||e.code===500||e.code===502||e.code===429)&&!o.fb&&!/lite/.test(model))return gcall(parts,Object.assign({},o,{fb:1,model:FALLBACK}));
+    throw e;
+  }
+  return ((data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts)||[]).map(p=>p.text||'').join('');
+}
+const hasAI=()=>!!(S.key||S.orKey);
 async function orcall(parts){
   const content=parts.map(p=>p.text!=null?{type:'text',text:p.text}:{type:'image_url',image_url:{url:'data:'+p.inlineData.mimeType+';base64,'+p.inlineData.data}});
   let r;
@@ -878,8 +924,12 @@ async function orcall(parts){
   return typeof t==='string'?t:t.map(x=>x.text||'').join('');
 }
 async function aiCall(parts){
-  if(!S.orKey)throw {code:'nokey'};
-  return orcall(parts);
+  if(S.key){
+    try{return await gcall(parts)}
+    catch(e){if(S.orKey&&!(e&&e.code==='parse'))return orcall(parts);throw e}
+  }
+  if(S.orKey)return orcall(parts);
+  throw {code:'nokey'};
 }
 function knownFoods(){
   if(S.useList===false)return'';
@@ -902,7 +952,7 @@ async function askLabel(b64){
   if(!(r.k>0)&&!(r.p||r.c||r.f))throw {code:'parse'};
   return r;
 }
-const ERR={net:'ما قدرت أتصل. تأكد من النت، أو استخدم «إدخال يدوي».',400:'الطلب انرفض. تأكد من اسم الموديل في الإعدادات.',402:'رصيد OpenRouter خلص أو ما فيه رصيد.',401:'المفتاح غير صحيح.',403:'المفتاح غير صالح أو ما له صلاحية.',404:'ما لقيت موديل شغال لمفتاحك.',429:'وصلت حد الاستخدام المجاني، جرّب بعد شوي.',parse:'ما فهمت جواب الذكاء الاصطناعي، جرّب تكتب أوضح.',nokey:'حط مفتاح OpenRouter في الإعدادات، أو استخدم «إدخال يدوي».'};
+const ERR={net:'ما قدرت أتصل. تأكد من النت، أو استخدم «إدخال يدوي».',400:'الطلب انرفض. تأكد من اسم الموديل في الإعدادات.',402:'رصيد OpenRouter خلص أو ما فيه رصيد.',401:'المفتاح غير صحيح.',403:'المفتاح غير صالح أو ما له صلاحية.',404:'ما لقيت موديل شغال لمفتاحك.',429:'وصلت حد الاستخدام المجاني، جرّب بعد شوي.',parse:'ما فهمت جواب الذكاء الاصطناعي، جرّب تكتب أوضح.',nokey:'حط مفتاح Gemini في الإعدادات، أو استخدم «إدخال يدوي».'};
 function errText(e){
   if(!e)return 'صار خطأ غير متوقع.';
   const base=ERR[e.code]||(e.code>=500?'خدمة Google مشغولة، جرّب بعد شوي.':'ما قدرت أكمل.');
@@ -1891,7 +1941,7 @@ function renderSet(){
   $('tgrid').innerHTML=TG.map(g=>'<label>'+g[1]+'<input data-t="'+g[0]+'" type="number" inputmode="numeric" min="'+g[2]+'" value="'+(g[0]==='cupMg'||g[0]==='cupMl'?S[g[0]]:S.t[g[0]])+'"></label>').join('');
   const mk=S.t.p*4+S.t.c*4+S.t.f*9;
   $('tHint').textContent='الماكروز اللي حطيتها تساوي '+fmt(mk)+' سعرة (بروتين وكارب 4 للجرام، دهون 9).';
-  $('sUseList').checked=S.useList!==false;$('sOr').value=S.orKey||'';$('sOrM').value=S.orModel||'openrouter/free';
+  $('sKey').value=S.key;$('sUseList').checked=S.useList!==false;$('sOr').value=S.orKey||'';$('sOrM').value=S.orModel||'openai/gpt-4o-mini';$('sModel').value=S.model;
   const a=anchor();$('pH').value=S.prof.h;$('pAge').value=S.prof.age;$('pAct').value=String(S.prof.act);
   $('pW0').value=a?a.w:'';$('pD0').value=a?a.d:'';
 }
@@ -1908,12 +1958,15 @@ $('tgrid').addEventListener('change',e=>{
   if(isFinite(v)&&v>=g[2]){if(key==='cupMg'||key==='cupMl')S[key]=v;else S.t[key]=v}
   save();renderSet();
 });
+$('sKey').addEventListener('change',()=>{S.key=$('sKey').value.trim();save()});
+$('sModel').addEventListener('change',()=>{S.model=$('sModel').value.trim()||'gemini-flash-latest';save()});
 $('sUseList').addEventListener('change',()=>{S.useList=$('sUseList').checked;save()});
 $('sOr').addEventListener('change',()=>{S.orKey=$('sOr').value.trim();save()});
-$('sOrM').addEventListener('change',()=>{S.orModel=$('sOrM').value.trim()||'openrouter/free';save()});
+$('sOrM').addEventListener('change',()=>{S.orModel=$('sOrM').value.trim()||'openai/gpt-4o-mini';save()});
 $('sTest').addEventListener('click',async()=>{
+  S.key=$('sKey').value.trim();S.model=$('sModel').value.trim()||'gemini-flash-latest';save();
   const m=$('sMsg');m.className='msg';m.textContent='جاري الاختبار...';
-  S.orKey=$('sOr').value.trim();S.orModel=$('sOrM').value.trim()||'openrouter/free';save();
+  S.orKey=$('sOr').value.trim();S.orModel=$('sOrM').value.trim()||'openai/gpt-4o-mini';save();
   if(!hasAI()){m.className='msg err';m.textContent=ERR.nokey;return}
   try{const it=await askGemini('بيضة مسلوقة');m.className='msg ok';m.textContent='الاتصال شغال: بيضة مسلوقة = '+it[0].k+' سعرة.'}
   catch(e){m.className='msg err';m.textContent=errText(e)}
