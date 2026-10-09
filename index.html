@@ -651,7 +651,7 @@ function renderRing(){
   const pct=Math.min(t.k/kt,1);
   $('rArc').setAttribute('stroke-dasharray',(pct*314.16).toFixed(1)+' 314.16');
   $('rArc').setAttribute('stroke',left<0?'var(--red)':'var(--kcal)');
-  $('macros').innerHTML=MAC.slice(0,3).map(m=>{
+  $('macros').innerHTML=MAC.map(m=>{
     const v=t[m[0]],tg=S.t[m[0]],pc=tg>0?Math.min(v/tg*100,100):0,ov=v>tg&&m[0]!=='fi';
     return '<div class="mrow"><div class="t"><span>'+m[1]+'</span><span class="num">'+v+' / '+tg+'</span></div><div class="bar'+(ov?' over':'')+'"><i style="width:'+pc+'%;background:var('+m[2]+')"></i></div></div>';
   }).join('');
