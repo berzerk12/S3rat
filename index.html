@@ -377,7 +377,7 @@ section[id]{scroll-margin-top:12px}
         <textarea id="gPaste" placeholder="الصق جواب Gemini هنا"></textarea>
         <div class="btns2" style="margin-top:8px"><button class="btn sm" id="gAdd" type="button">راجع وأضف</button><button class="btn sm soft" id="copyAgain" type="button">📋 نسخ الطلب مرة ثانية</button></div>
       </div>
-      <a id="openG" href="https://gemini.google.com/app" target="_blank" rel="noopener" hidden>Gemini</a>
+      <a id="openG" href="https://gemini.google.com/app" rel="noopener" hidden>Gemini</a>
       <div id="shortBox"><p class="cap">اختصاراتي (وجبات، أكل، مشروبات، سناكات)</p><div class="recent" id="shorts"></div></div>
       <div id="recentBox" hidden><div class="recent" id="recent"></div></div>
       <hr class="hr">
@@ -1019,7 +1019,7 @@ function showPaste(){$('pasteBox').hidden=false}
 function askGeminiManual(text){
   copySync(ASK+text);showPaste();
   qSay('اننسخ الطلب. الصقه في Gemini، ثم انسخ جوابه ورجّع والصقه تحت.','ok');
-  try{window.open($('openG').href,'_blank')}catch(e){}
+  try{const a=document.createElement('a');a.href=$('openG').href;a.rel='noopener';a.style.display='none';document.body.appendChild(a);a.click();a.remove()}catch(e){}
 }
 $('askG').addEventListener('click',()=>{
   const text=$('qText').value.trim();
