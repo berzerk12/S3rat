@@ -383,7 +383,7 @@ section[id]{scroll-margin-top:12px}
       <hr class="hr">
       <p class="cap" style="margin:0">وجبات اليوم</p>
       <div id="meals"></div>
-      <button class="link" id="manual" type="button" style="align-self:flex-start">+ إدخال يدوي</button>
+      <div class="rowsp"><button class="link" id="manual" type="button">+ إدخال يدوي</button><button class="link" id="barBtn" type="button">📷 باركود</button></div>
     </section>
 
     <div class="sec">قائمة الطعام</div>
@@ -1257,7 +1257,7 @@ function renderS2(){
       $('s2body').innerHTML='<h2>تعذر الحساب</h2><p class="msg err">'+esc(M.err)+'</p><button type="button" class="btn big" data-act="rv_retry">أعد المحاولة</button><button type="button" class="btn soft" data-act="rv_bg">احسبه بالخلفية (يعيد المحاولة لحاله)</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';return;
     }
     const ff=[['k','السعرات'],['p','البروتين'],['c','الكارب'],['fi','الألياف'],['f','الدهون'],['cf','كافيين ملغ']];
-    $('s2body').innerHTML='<h2>راجع قبل الإضافة</h2><p class="note">هذي تقديرات Gemini. عدّل أي رقم فيه خطأ، ولا يُضاف شي قبل ما تضغط «إضافة».</p>'+
+    $('s2body').innerHTML='<h2>راجع قبل الإضافة</h2><p class="note">'+(M.note||'هذي تقديرات Gemini. عدّل أي رقم فيه خطأ، ولا يُضاف شي قبل ما تضغط «إضافة».')+'</p>'+
       '<label>تنضاف إلى وجبة'+slotSel()+'</label>'+
       (M.items.length?M.items.map((x,i)=>'<div class="rvcard"><div class="rvh"><input type="text" data-rn="'+i+'" value="'+esc(x.n)+'" aria-label="الاسم"><button type="button" class="vx" data-rrm="'+i+'" aria-label="حذف">×</button></div>'+
         '<div class="pm num" id="rvm'+i+'">'+macroLine(x)+'</div>'+(x.q?'<div class="pm">الكمية: '+esc(x.q)+'</div>':'')+
@@ -1265,6 +1265,22 @@ function renderS2(){
       '<div class="tot num" id="s2tot"></div><p class="msg err" id="s2msg" aria-live="polite"></p>'+
       '<button type="button" class="btn big" data-act="rvadd">إضافة</button><button type="button" class="btn ghost" data-act="close">إغلاق بدون إضافة</button>';
     updateTot();return;
+  }
+  if(M.mode==='bar'){
+    if(M.stage==='found'){
+      const p=M.p;
+      $('s2body').innerHTML='<h2>'+esc(p.n)+'</h2><p class="note">من قاعدة Open Food Facts (قيم لكل 100 جم: '+p.k+' سعرة · '+p.p+' بروتين · '+p.c+' كارب · '+p.fi+' ألياف · '+p.f+' دهون). قارنها بالملصق قبل لا تعتمد عليها.</p>'+
+        '<label>كم جرام أكلت؟<input id="barG" type="number" inputmode="decimal" min="0" step="any" value="'+(M.g||100)+'"></label>'+
+        '<div class="tot num" id="barT"></div><p class="msg err" id="s2msg" aria-live="polite"></p>'+
+        '<button type="button" class="btn big" data-act="bar_next">راجع وأضف</button><button type="button" class="btn ghost" data-act="bar_back">باركود ثاني</button>';
+      barUpd();return;
+    }
+    $('s2body').innerHTML='<h2>📷 باركود</h2><p class="note">صوّر الباركود أو اكتب رقمه. المنتجات السعودية قد ما تكون كلها موجودة.</p>'+
+      '<label class="btn soft" style="color:var(--blue);flex-direction:row;justify-content:center;gap:8px;font-size:16px">📷 صوّر الباركود<input id="barFile" type="file" accept="image/*" capture="environment" style="display:none"></label>'+
+      '<input id="barN" type="text" inputmode="numeric" placeholder="رقم الباركود" autocomplete="off" value="'+esc(M.code||'')+'">'+
+      '<p class="msg'+(M.err?' err':'')+'" id="s2msg" aria-live="polite">'+esc(M.err||'')+'</p>'+
+      '<button type="button" class="btn big" data-act="bar_find">ابحث</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
+    return;
   }
   if(M.mode==='pdf'){
     if(M.stage==='work'){$('s2body').innerHTML='<h2>جاري تجهيز التقرير...</h2><p class="note">ثواني، لا تقفل الصفحة.</p>';return}
@@ -1359,6 +1375,8 @@ function paUpd(){
 $('s2body').addEventListener('input',e=>{
   const t=e.target;if(!M)return;
   if(t.id==='paG'){paUpd();return}
+  if(t.id==='barG'){M.g=parseFloat(t.value)||0;barUpd();return}
+  if(t.id==='barN'){M.code=t.value;return}
   if(t.dataset.g!==undefined){
     const i=+t.dataset.g,r=M.rows[i],g=parseFloat(t.value)||0;
     if(M.mode==='save'||r.free)r.b.g=g;
@@ -1372,6 +1390,7 @@ $('s2body').addEventListener('input',e=>{
 $('s2body').addEventListener('change',async e=>{
   if(!M)return;
   if(e.target.id==='s2slot'){M.slot=e.target.value;return}
+  if(e.target.id==='barFile'&&e.target.files&&e.target.files[0]){barPhoto(e.target.files[0]);e.target.value='';return}
   if(e.target.id==='prFile'&&e.target.files&&e.target.files[0]){
     const f=e.target.files[0];
     if(!hasAI()){s2msg(ERR.nokey);return}
@@ -1403,6 +1422,9 @@ $('s2body').addEventListener('click',async e=>{
   if(b.dataset.qn){const q=b.dataset.qn.split('|');$('dn').value=q[0];$('dw').value=q[1];return}
   const act=b.dataset.act;
   if(act==='close'){closeS2();return}
+  if(act==='bar_find'){barLookup(($('barN').value||'').replace(/\D/g,''));return}
+  if(act==='bar_back'){openS2({mode:'bar',slot:M.slot});return}
+  if(act==='bar_next'){const g=parseFloat($('barG').value)||0;if(!(g>0)){s2msg('اكتب الجرامات.');return}const x=barItem(M.p,g);openS2({mode:'review',items:[x],text:M.p.n,slot:M.slot,from:'live',note:'القيم من Open Food Facts حسب الجرامات اللي كتبتها. قارنها بالملصق وعدّل أي رقم فيه خطأ، ولا يُضاف شي قبل ما تضغط «إضافة».'});return}
   if(act==='pshare'){sharePDF();return}
   if(act==='pback'){M.stage='pick';renderS2();return}
   if(act==='rv_retry'){startReview(M.text);return}
@@ -1523,6 +1545,65 @@ async function genPDF(o){
   }catch(e){M.stage='pick';M.err='ما قدرت أجهز التقرير: '+(e&&e.message||e)}
   renderS2();
 }
+
+/* ---------- barcode ---------- */
+const BARP='في الصورة باركود منتج. اقرأ الأرقام اللي تحته (8 إلى 14 رقم) وارجع JSON فقط بهذا الشكل: {"code":"الأرقام"}. إذا ما قدرت تقرأها بوضوح ارجع {"code":""}.';
+function barItem(p,g){
+  const r=v=>Math.round(v*g/100*10)/10;
+  return {n:p.n,q:g+' جم',k:Math.round(p.k*g/100),p:r(p.p),c:r(p.c),fi:r(p.fi),f:r(p.f),w:0,cf:0,g:g};
+}
+function barUpd(){
+  const el=$('barT');if(!el||!M||M.mode!=='bar')return;
+  const g=M.g||0;
+  if(!(g>0)){el.textContent='اكتب الجرامات';return}
+  const x=barItem(M.p,g);
+  el.innerHTML='<b>'+fmt(x.k)+'</b> سعرة · '+x.p+' بروتين · '+x.c+' كارب · '+x.fi+' ألياف · '+x.f+' دهون';
+}
+async function barLookup(code){
+  if(!/^\d{6,14}$/.test(code)){M.code=code;M.err='اكتب رقم الباركود كامل (أرقام فقط).';renderS2();return}
+  s2msg('جاري البحث...',true);
+  const mine=M;
+  try{
+    const r=await fetch('https://world.openfoodfacts.org/api/v2/product/'+code+'.json?fields=product_name,product_name_ar,brands,nutriments,serving_quantity');
+    if(!r.ok)throw {code:'net'};
+    const j=await r.json();
+    if(M!==mine)return;
+    if(!j||j.status!==1||!j.product){M.code=code;M.err='ما لقيت هذا الباركود في القاعدة. جرّب «منتج جديد» وصوّر الملصق.';renderS2();return}
+    const pr=j.product,n=pr.nutriments||{},num=v=>{v=parseFloat(v);return isFinite(v)?v:null};
+    let k=num(n['energy-kcal_100g']);if(k==null){const kj=num(n['energy_100g']);if(kj!=null)k=kj/4.184}
+    const P=num(n['proteins_100g']),C=num(n['carbohydrates_100g']),F=num(n['fat_100g']);
+    if(k==null&&P==null&&C==null&&F==null){M.code=code;M.err='المنتج موجود لكن بدون قيم غذائية. استخدم «منتج جديد» وصوّر الملصق.';renderS2();return}
+    const d1=v=>Math.round((v||0)*10)/10;
+    const nm=(pr.product_name_ar||pr.product_name||'منتج').trim().slice(0,60)+(pr.brands?' ('+String(pr.brands).split(',')[0].trim().slice(0,25)+')':'');
+    const sq=parseFloat(pr.serving_quantity);
+    M.p={n:nm,k:Math.round(k!=null?k:(P||0)*4+(C||0)*4+(F||0)*9),p:d1(P),c:d1(C),fi:d1(num(n['fiber_100g'])),f:d1(F)};
+    M.g=sq>0&&sq<2000?sq:100;M.stage='found';M.err='';renderS2();
+  }catch(e){if(M!==mine)return;M.code=code;M.err='ما قدرت أتصل بقاعدة المنتجات. تأكد من النت.';renderS2()}
+}
+async function barPhoto(file){
+  const mine=M;
+  s2msg('جاري قراءة الباركود...',true);
+  let code='';
+  try{
+    if('BarcodeDetector' in window){
+      const bm=await createImageBitmap(file);
+      const res=await new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e']}).detect(bm);
+      if(res&&res[0])code=res[0].rawValue;
+    }
+  }catch(e){}
+  if(!code){
+    if(!hasAI()){if(M===mine){M.err='جوالك ما يقرأ الباركود من الصورة، اكتب الرقم بيدك.';renderS2()}return}
+    try{
+      const b64=await readImage(file);
+      const txt=await aiCall([{text:BARP},{inlineData:{mimeType:'image/jpeg',data:b64}}]);
+      const m=String(txt).match(/\d{8,14}/);if(m)code=m[0];
+    }catch(e){}
+  }
+  if(M!==mine)return;
+  if(!code){M.err='ما قدرت أقرأ الباركود. قرّب الصورة أو اكتب الرقم بيدك.';renderS2();return}
+  M.code=code;barLookup(code);
+}
+$('barBtn').addEventListener('click',()=>openS2({mode:'bar',slot:curMeal}));
 
 /* ---------- days / tabs ---------- */
 $('dPrev').addEventListener('click',()=>{sel=dk(addDays(fromKey(sel),-1));renderAll()});
