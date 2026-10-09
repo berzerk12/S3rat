@@ -363,6 +363,20 @@ details.mk-vit>div{display:block;margin-top:6px}
 .tgb{font-size:12px;color:var(--muted);background:var(--fill);border-radius:8px;padding:3px 8px;display:inline-block}
 .sgrun{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--fill);border-radius:12px;padding:10px 12px;font-size:14px;font-weight:600}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.vt2{background:var(--fill);border-radius:10px;padding:6px 8px;margin-bottom:8px}
+.vc2{display:flex;gap:5px;align-items:center;flex-wrap:wrap;font-size:12px}
+.vc{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:12.5px;background:transparent;color:var(--text,inherit);font-family:inherit}
+.vc i{width:14px;height:14px;border-radius:4px;border:1.5px solid var(--muted);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:10px;color:#fff}
+.vc.on{color:var(--muted);text-decoration:line-through}.vc.on i{background:#30d158;border-color:#30d158}
+.vc.no{opacity:.55}.vc.no i{border:0;width:auto;font-size:11px}
+.vn2{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+
+.ai3{background:rgba(175,82,222,.12);border:1px solid rgba(175,82,222,.35);border-radius:14px;padding:10px;margin:8px 0 10px}
+.ai3 .lb{font-weight:700;font-size:14px;margin-bottom:6px}
+.airs{background:var(--card);border-radius:12px;padding:10px;margin-top:8px;box-shadow:inset 0 0 0 1px var(--line)}
+.airs .h{display:flex;justify-content:space-between;gap:8px}
+.lrow .dx.ed{color:var(--blue)}
 </style>
 </head>
 <body>
@@ -570,6 +584,7 @@ details.mk-vit>div{display:block;margin-top:6px}
     <h2 id="shTitle">إدخال يدوي</h2>
     <select id="fMeal" aria-label="الوجبة"></select>
     <input id="fName" type="text" placeholder="اسم الأكلة والكمية" autocomplete="off">
+    <button type="button" class="btn soft" id="fAi">✨ عبّي الأرقام بالوصف (AI)</button>
     <div class="f2">
       <label>السعرات<input id="fk" type="number" inputmode="numeric" min="0"></label>
       <label>البروتين (جم)<input id="fp" type="number" inputmode="decimal" min="0"></label>
@@ -716,14 +731,17 @@ const SI={ok:'✅',weak:'⚠️',no:'⛔'};
 function mealNote(d,slot){
   if(sel!==TK())return'';
   const c=mealCtx(d,slot);if(c.t==null)return'';
-  const rows=[];
+  const ch=[],hn=[];
   S.vits.forEach(v=>{
-    if(vTaken(d,v))return;const ty=vType(v);if(!ty)return;
+    const ty=vType(v);if(!ty)return;
+    const tk=d.vit&&d.vit[v];
+    if(tk){if(tk.m===slot)ch.push('<button type="button" class="vc on" data-vtake="'+esc(v)+'" data-slot="'+slot+'"><i>✓</i>'+esc(v)+'</button>');return}
     const r=evalVit(ty,c,d);if(!r)return;if(ty==='mg'&&r.s==='weak')return;
-    rows.push('<div class="vn '+r.s+'"><span>'+SI[r.s]+'</span><div class="tx"><b>'+esc(v)+'</b><span>'+esc(r.w)+'</span></div>'+
-      (r.s!=='no'?'<button type="button" data-vtake="'+esc(v)+'" data-slot="'+slot+'">أخذته</button>':'')+'</div>');
+    if(r.s==='no')ch.push('<span class="vc no"><i>⛔</i>'+esc(v)+'</span>');
+    else ch.push('<button type="button" class="vc" data-vtake="'+esc(v)+'" data-slot="'+slot+'"><i></i>'+esc(v)+'</button>');
+    if(r.s!=='ok')hn.push((r.s==='no'?'⛔ ':'🟡 ')+esc(v)+': '+esc(r.w));
   });
-  return rows.length?'<div class="vnote"><h4>💊 مع هذي الوجبة</h4>'+rows.join('')+'</div>':'';
+  return ch.length?'<div class="vt2"><div class="vc2">💊 '+ch.join('')+'</div>'+(hn.length?'<div class="vn2">'+hn.join('<br>')+'</div>':'')+'</div>':'';
 }
 function nowStatus(ty,d){
   if(sel!==TK())return null;
@@ -808,7 +826,7 @@ function renderMeals(){
     h+='<div class="mk-meal"><div class="tt"><span class="dot" style="background:'+MCOL[m[0]]+'"></span><b>'+m[1]+'</b>'+(ts.length?'<span class="t">'+tStr(Math.min.apply(null,ts))+'</span>':'')+'<span class="num k">'+mt.k+' سعرة</span></div>'+
       xs.map(x=>'<button type="button" class="item" data-id="'+x.id+'"><span class="nm">'+esc(x.n)+'</span>'+(x.q||x.ck?'<span class="q">'+(x.q?esc(x.q):'')+(x.ck?(x.q?' · ':'')+(x.ck.t==='butter'?'🧈':'🫒')+' '+x.ck.g+' جم':'')+'</span>':'')+'<span class="kk num">'+x.k+'</span></button>').join('')+
       '<div class="ft num">'+mt.p+' بروتين · '+mt.c+' كارب'+(mt.s?' (منها '+mt.s+' سكر)':'')+' · '+mt.f+' دهون</div>'+
-      (note?'<details class="mk-vit"><summary>💊 ملاحظات الفيتامينات</summary>'+note+'</details>':'')+
+      note+
       '<div class="mk-f"><button type="button" class="p" data-addto="'+m[0]+'">＋ إضافة</button><button type="button" data-savemeal="'+m[0]+'">⭐ احفظها</button></div></div>';
   });
   $('meals').innerHTML=h||'<p class="cap" style="padding:6px 0">ما سجلت شيء بهذا اليوم. اكتب أكلك فوق واضغط «احسب وأضف».</p>';
@@ -907,7 +925,7 @@ function norm(r){
   if(!r||typeof r!=='object')return null;
   const n=String(r.n||r.name||'').trim().slice(0,80),k=Math.round(+r.k);
   if(!n||!isFinite(k)||k<0||k>6000)return null;
-  return {n:n,q:String(r.q||'').slice(0,40),k:k,p:dec(r.p),c:dec(r.c),fi:dec(r.fi),f:dec(r.f),s:dec(r.s),w:z(r.w),cf:z(r.cf),ca:z(r.ca),fe:z(r.fe),g:z(r.g)||gramsFromQ(r.q)};
+  return {n:n,q:String(r.q||'').slice(0,40),k:k,p:dec(r.p),c:dec(r.c),fi:dec(r.fi),f:dec(r.f),s:Math.min(dec(r.s),dec(r.c)),w:z(r.w),cf:z(r.cf),ca:z(r.ca),fe:z(r.fe),g:z(r.g)||gramsFromQ(r.q)};
 }
 const toLatin=s=>String(s).replace(/[٠-٩]/g,c=>String.fromCharCode(c.charCodeAt(0)-1632+48)).replace(/[۰-۹]/g,c=>String.fromCharCode(c.charCodeAt(0)-1776+48)).replace(/[٫،]/g,'.');
 function gramsFromQ(q){return /(جم|غ|غرام|جرام|مل|\bg\b|ml)/i.test(String(q||''))?z(num(q)):0}
@@ -1126,7 +1144,7 @@ $('fSave').addEventListener('click',()=>{
   const n=$('fName').value.trim(),k=Math.round(+$('fk').value);
   if(!n||$('fk').value===''||!isFinite(k)||k<0){$('fMsg').textContent='اكتب الاسم والسعرات على الأقل.';return}
   const rec={m:$('fMeal').value,n:n,q:''};FIELDS.forEach(f=>{rec[f[1]]=f[1]==='k'?k:(['p','c','fi','f','s'].includes(f[1])?dec($(f[0]).value):z($(f[0]).value))});
-  ckApply(rec);
+  if(rec.s>rec.c)rec.s=rec.c;ckApply(rec);
   snap();const d=day(sel);
   if(editId){const x=d.items.find(v=>v.id===editId);if(x)Object.assign(x,rec)}
   else d.items.push(Object.assign({id:Date.now(),t:stamp()},rec));
@@ -1169,7 +1187,7 @@ function guessSlot(d){
 }
 $('meals').addEventListener('click',e=>{
   const vt=e.target.closest('[data-vtake]');
-  if(vt){const d=day(sel);d.vit[vt.dataset.vtake]={t:stamp(),m:vt.dataset.slot};save();renderAll();toast('سجلت '+vt.dataset.vtake,false);return}
+  if(vt){const d=day(sel),k=vt.dataset.vtake;if(d.vit[k]&&d.vit[k].m===vt.dataset.slot){delete d.vit[k];save();renderAll();toast('ألغيت '+k,false);return}d.vit[k]={t:stamp(),m:vt.dataset.slot};save();renderAll();toast('سجلت '+k,false);return}
   const sv=e.target.closest('[data-savemeal]');
   if(sv){
     const slot=sv.dataset.savemeal;
@@ -1228,7 +1246,7 @@ function listEntries(){
   const out=[];
   S.meals.forEach(m=>out.push({key:'m'+m.id,t:'meal',kind:'meal',id:m.id,n:m.n,e:'🍽️',slot:m.slot||curMeal,sub:'وجبة · '+slotName(m.slot||curMeal)}));
   S.snacks.forEach(x=>{const c=catOf(x);out.push({key:'s'+x.id,t:'sn',kind:c,id:x.id,n:x.n,e:catI(c)[2],slot:x.slot||(c==='extra'?curMeal:'s'),sub:catI(c)[1]+(x.k?' · '+x.k+' سعرة':'')+(x.p?' · '+x.p+' بروتين':'')+(x.cf?' · '+x.cf+' ملغ':'')});});
-  S.adds.forEach(a=>{const c=a.cat==='extra'?'extra':'sauce';out.push({key:'a'+a.id,t:'add',kind:c,id:a.id,n:a.n,e:catI(c)[2],slot:curMeal,sub:catI(c)[1]+' · تكتب الجرامات'});});
+  S.adds.forEach(a=>{const c=CATS.some(z=>z[0]===a.cat)?a.cat:'sauce';out.push({key:'a'+a.id,t:'add',kind:c,id:a.id,n:a.n,e:catI(c)[2],slot:curMeal,sub:catI(c)[1]+' · تكتب الجرامات'});});
   return out;
 }
 function renderMyMeals(){
@@ -1243,7 +1261,7 @@ function renderMyMeals(){
   const list=all.filter(x=>(mmF==='all'||x.kind===mmF)&&(!q||x.n.toLowerCase().includes(q)));
   const row=x=>{
     const fl=flash[x.key]&&Date.now()-flash[x.key]<3500;
-    const btn=mmEdit?(x.t!=='meal'?'<select class="catsel" data-cat="'+x.t+':'+x.id+'" aria-label="القسم">'+(x.t==='sn'?[['drink','مشروب'],['snack','سناك'],['extra','إضافة طعام']]:[['sauce','صوص'],['extra','إضافة طعام']]).map(o=>'<option value="'+o[0]+'"'+(o[0]===x.kind?' selected':'')+'>'+o[1]+'</option>').join('')+'</select>':'')+'<button type="button" class="dx" data-del="'+x.t+':'+x.id+'" aria-label="حذف">×</button>':
+    const btn=mmEdit?(mmEdit?'<button type="button" class="dx ed" data-ed="'+x.t+':'+x.id+'" aria-label="تعديل">✎</button>':'')+'<button type="button" class="dx" data-del="'+x.t+':'+x.id+'" aria-label="حذف">×</button>':
       '<button type="button" class="add'+(fl?' done':'')+'" data-add="'+x.t+':'+x.id+'">'+(fl?'✓ أضيف '+lam(x.slot):'+ '+lam(x.slot))+'</button>';
     return '<div class="lrow"><div class="nm">'+x.e+' '+esc(x.n)+'<small>'+esc(x.sub)+'</small></div>'+btn+'</div>';
   };
@@ -1487,7 +1505,7 @@ $('s2body').addEventListener('click',async e=>{
     const n=$('dn').value.trim(),cf=z($('dcf').value),k=z($('dk').value);
     if(!n){s2msg('اكتب الاسم.');return}
     if(act==='dadd'&&!(cf>0)&&!(k>0)){s2msg('اكتب الكافيين أو السعرات.');return}
-    const it={n:n,q:'',k:k,p:dec($('dp').value),c:dec($('dc').value),fi:0,f:dec($('df').value),s:dec($('ds').value),w:z($('dw').value),cf:cf},slot=$('s2slot').value;
+    const it={n:n,q:'',k:k,p:dec($('dp').value),c:dec($('dc').value),fi:0,f:dec($('df').value),s:Math.min(dec($('ds').value),dec($('dc').value)),w:z($('dw').value),cf:cf},slot=$('s2slot').value;
     if(act==='dsave'||($('dsave')&&$('dsave').checked)){S.snacks.push(Object.assign({id:Date.now(),slot:slot,cat:($('dcat')&&$('dcat').value)||(M&&M.from==='caf'?'drink':undefined)},it));save();renderMyMeals()}
     if(act==='dadd'){const msg=commit([it],slot);closeS2();qSay(msg,'ok')}
     else{renderCaf();closeS2();toast('تم حفظ «'+n+'» في سناكاتي',false)}
@@ -2518,6 +2536,122 @@ $('myMeals').addEventListener('change',e=>{
   const s=e.target.closest('.catsel');if(!s)return;
   const [t,id]=s.dataset.cat.split(':'),x=(t==='sn'?S.snacks:S.adds).find(v=>String(v.id)===id);
   if(x){x.cat=s.value;save();renderMyMeals()}
+});
+
+/* ===== v31: تعديل عناصر القائمة + إضافة بالوصف (AI) + ملء يدوي ===== */
+async function aiSumText(text){
+  const its=await askGemini(text),t=sum(its);
+  t.s=Math.min(t.s||0,t.c||0);
+  return {n:its.length===1?its[0].n:text,items:its,t:t};
+}
+const EDF=[['k','السعرات','ed_k',1],['p','البروتين (جم)','ed_p',0],['c','الكارب (جم)','ed_c',0],['fi','الألياف (جم)','ed_fi',0],['s','منها سكر (جم)','ed_s',0],['f','الدهون (جم)','ed_f',0]];
+function edFind(){return M.t==='meal'?S.meals.find(v=>v.id===M.id):(M.t==='sn'?S.snacks:S.adds).find(v=>v.id===M.id)}
+function renderEd(){
+  const x=edFind();if(!x){closeS2();return}
+  let h='<h2>✎ تعديل</h2><input id="ed_n" type="text" autocomplete="off" value="'+esc(x.n)+'">';
+  if(M.t==='meal'){
+    h+='<label>الوجبة<select id="ed_slot">'+MEALS.map(m=>'<option value="'+m[0]+'"'+(m[0]===(x.slot||curMeal)?' selected':'')+'>'+m[1]+'</option>').join('')+'</select></label>'+
+      '<p class="note">مكوّنات الوجبة (بالجرامات) ما تتعدل هنا. احذفها واحفظ وجبة جديدة من اليوم.</p>';
+  }else{
+    h+='<p class="note" style="margin:8px 0 4px">القسم</p><div class="chiprow">'+CATS.map(c=>'<span class="cp'+(c[0]===M.cat?' on':'')+'"><button type="button" data-edc="'+c[0]+'">'+c[2]+' '+c[1]+'</button></span>').join('')+'</div>'+
+      '<button type="button" class="btn soft" data-ed2="ai">✨ عبّي الأرقام بالذكاء الاصطناعي</button>'+
+      (M.t==='add'?'<p class="note">الأرقام لكل 100 جم، وتكتب الجرامات وقت الإضافة.</p>':'')+
+      '<div class="f2">'+EDF.map(f=>'<label>'+f[1]+'<input id="'+f[2]+'" type="number" inputmode="'+(f[0]==='k'?'numeric':'decimal')+'" min="0" value="'+(x[f[0]]||'')+'"></label>').join('')+
+      (M.t==='sn'?'<label>الماء (مل)<input id="ed_w" type="number" inputmode="numeric" min="0" value="'+(x.w||'')+'"></label><label>الكافيين (ملغ)<input id="ed_cf" type="number" inputmode="numeric" min="0" value="'+(x.cf||'')+'"></label>'+
+        '<label>تنحسب في وجبة<select id="ed_slot">'+MEALS.map(m=>'<option value="'+m[0]+'"'+(m[0]===(x.slot||'s')?' selected':'')+'>'+m[1]+'</option>').join('')+'</select></label>':
+        '<label>جرامات افتراضية<input id="ed_sg" type="number" inputmode="numeric" min="0" value="'+(x.sg||'')+'"></label>')+'</div>';
+  }
+  h+='<p class="msg err" id="s2msg" aria-live="polite"></p><button type="button" class="btn big" data-ed2="save">حفظ</button><button type="button" class="btn ghost" data-ed2="del" style="color:var(--no)">حذف</button><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
+  $('s2body').innerHTML=h;
+}
+{const _r3=renderS2;renderS2=function(){if(M&&M.mode==='ed')return renderEd();return _r3()}}
+$('myMeals').addEventListener('click',e=>{
+  const b=e.target.closest('[data-ed]');if(!b)return;
+  const [t,id]=b.dataset.ed.split(':'),x=(t==='meal'?S.meals:t==='sn'?S.snacks:S.adds).find(v=>String(v.id)===id);
+  if(!x)return;
+  openS2({mode:'ed',t:t,id:x.id,cat:t==='meal'?'meal':(CATS.some(c=>c[0]===x.cat)?x.cat:(t==='sn'?catOf(x):'sauce'))});
+});
+$('s2body').addEventListener('click',async e=>{
+  if(!M||M.mode!=='ed')return;
+  const c=e.target.closest('[data-edc]');
+  if(c){const keep=['ed_n','ed_k','ed_p','ed_c','ed_fi','ed_s','ed_f','ed_w','ed_cf','ed_sg','ed_slot'].map(i=>$(i)?[i,$(i).value]:null).filter(Boolean);M.cat=c.dataset.edc;renderEd();keep.forEach(([i,v])=>{if($(i))$(i).value=v});return}
+  const b=e.target.closest('[data-ed2]');if(!b)return;
+  const a=b.dataset.ed2,x=edFind();if(!x)return;
+  if(a==='del'){
+    if(M.t==='meal')S.meals=S.meals.filter(v=>v!==x);else if(M.t==='sn')S.snacks=S.snacks.filter(v=>v!==x);else S.adds=S.adds.filter(v=>v!==x);
+    save();closeS2();renderMyMeals();return;
+  }
+  if(a==='ai'){
+    const nm=$('ed_n').value.trim();if(!nm){s2msg('اكتب الاسم أول.');return}
+    if(!hasAI()){s2msg(ERR.nokey);return}
+    b.disabled=true;b.textContent='جاري الحساب...';
+    try{
+      const r=await aiSumText(M.t==='add'&&!/\d/.test(nm)?nm+' 100 جم':nm);if(!M||M.mode!=='ed')return;
+      const t=r.t;$('ed_k').value=t.k||'';$('ed_p').value=t.p||'';$('ed_c').value=t.c||'';$('ed_fi').value=t.fi||'';$('ed_s').value=t.s||'';$('ed_f').value=t.f||'';
+      if($('ed_w'))$('ed_w').value=t.w||'';if($('ed_cf'))$('ed_cf').value=t.cf||'';
+      s2msg('انحسبت. راجع الأرقام وعدّلها لو تبي.',true);
+    }catch(err){s2msg(errText(err))}
+    if(M&&M.mode==='ed'){b.disabled=false;b.textContent='✨ عبّي الأرقام بالذكاء الاصطناعي'}
+    return;
+  }
+  if(a==='save'){
+    const n=$('ed_n').value.trim();if(!n){s2msg('اكتب الاسم.');return}
+    x.n=n.slice(0,80);
+    if(M.t==='meal'){x.slot=$('ed_slot').value}
+    else{
+      x.k=z($('ed_k').value);x.p=dec($('ed_p').value);x.c=dec($('ed_c').value);x.fi=dec($('ed_fi').value);x.f=dec($('ed_f').value);x.s=Math.min(dec($('ed_s').value),x.c);
+      x.cat=M.cat;
+      if(M.t==='sn'){x.w=z($('ed_w').value);x.cf=z($('ed_cf').value);x.slot=$('ed_slot').value}
+      else x.sg=z($('ed_sg').value);
+    }
+    save();closeS2();renderMyMeals();renderCaf&&renderCaf();
+  }
+});
+/* إضافة بالوصف داخل ＋إضافة */
+function atAiHtml(){
+  let r='';
+  if(M.aiBusy)r='<p class="note">جاري الحساب...</p>';
+  else if(M.aiErr)r='<p class="msg err">'+esc(M.aiErr)+'</p>';
+  else if(M.ai){const t=M.ai.t;r='<div class="airs"><div class="h"><b>'+esc(M.ai.n)+'</b><span class="num">'+t.k+' سعرة</span></div><div class="note num">'+t.p+' بروتين · '+t.c+' كارب'+(t.s?' (منها '+t.s+' سكر)':'')+' · '+t.f+' دهون</div>'+
+    '<div style="display:flex;gap:8px;margin-top:8px"><button type="button" class="btn sm" style="flex:1;background:var(--fill);color:var(--ink)" data-ata="save">⭐ احفظ بالقائمة</button><button type="button" class="btn sm" style="flex:2" data-ata="add">＋ أضف '+lam(M.slot)+'</button></div></div>'}
+  return '<div class="ai3"><div class="lb">✨ أضف بالوصف</div><div style="display:flex;gap:6px"><input id="atai" type="text" style="margin:0" placeholder="مثال: سلمون مطبوخ بالقلاية الهوائية 150 جم" value="'+esc(M.aiq||'')+'" autocomplete="off"><button type="button" class="btn sm" style="width:auto;padding:0 16px" data-ata="go">احسب</button></div>'+r+'</div>';
+}
+{const _ra=renderAddTo;renderAddTo=function(){_ra();$('s2body').insertAdjacentHTML('afterbegin','');const h=$('s2body').querySelector('h2');if(h)h.insertAdjacentHTML('afterend',atAiHtml())}}
+$('s2body').addEventListener('input',e=>{if(e.target.id==='atai'&&M&&M.mode==='addto')M.aiq=e.target.value});
+$('s2body').addEventListener('click',async e=>{
+  if(!M||M.mode!=='addto')return;
+  const b=e.target.closest('[data-ata]');if(!b)return;
+  const a=b.dataset.ata;
+  if(a==='go'){
+    const q=(M.aiq||'').trim();if(!q)return;
+    if(!hasAI()){M.aiErr=ERR.nokey;renderAddTo();return}
+    M.aiBusy=true;M.aiErr='';M.ai=null;renderAddTo();
+    const keep=M;
+    try{const r=await aiSumText(q);if(M!==keep)return;M.ai=r}catch(err){if(M!==keep)return;M.aiErr=errText(err)}
+    M.aiBusy=false;renderAddTo();return;
+  }
+  if(!M.ai)return;
+  if(a==='add'){
+    snap();commitTo(sel,M.ai.items.map(i=>Object.assign({},i,{s:Math.min(i.s||0,i.c||0)})),M.slot,stamp(),false);
+    toast('تمت إضافة «'+M.ai.n+'» ('+M.ai.t.k+' سعرة)',true);M.ai=null;M.aiq='';renderAddTo();return;
+  }
+  if(a==='save'){
+    const t=M.ai.t;S.snacks.push({id:Date.now(),n:M.ai.n,k:t.k,p:t.p,c:t.c,fi:t.fi,f:t.f,s:t.s,w:t.w,cf:t.cf,slot:M.slot,cat:atCat==='meal'?'extra':atCat});
+    save();renderMyMeals();toast('حُفظ «'+M.ai.n+'» في قائمة الطعام',false);
+  }
+});
+/* ملء الإدخال اليدوي بالوصف */
+$('fAi').addEventListener('click',async()=>{
+  const nm=$('fName').value.trim(),msg=$('fMsg'),b=$('fAi');
+  if(!nm){msg.textContent='اكتب الأكلة أول.';return}
+  if(!hasAI()){msg.textContent=ERR.nokey;return}
+  b.disabled=true;b.textContent='جاري الحساب...';msg.textContent='';
+  try{
+    const r=await aiSumText(nm),t=r.t;
+    $('fk').value=t.k||'';$('fp').value=t.p||'';$('fc').value=t.c||'';$('ffi').value=t.fi||'';$('fs').value=t.s||'';$('ff').value=t.f||'';$('fw').value=t.w||'';$('fcf').value=t.cf||'';
+    msg.textContent='انحسبت. راجع الأرقام وعدّلها لو تبي.';
+  }catch(err){msg.textContent=errText(err)}
+  b.disabled=false;b.textContent='✨ عبّي الأرقام بالوصف (AI)';
 });
 show('Home');
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
