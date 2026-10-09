@@ -847,7 +847,7 @@ function norm(r){
   if(!n||!isFinite(k)||k<0||k>6000)return null;
   return {n:n,q:String(r.q||'').slice(0,40),k:k,p:dec(r.p),c:dec(r.c),fi:dec(r.fi),f:dec(r.f),w:z(r.w),cf:z(r.cf),ca:z(r.ca),fe:z(r.fe),g:z(r.g)||gramsFromQ(r.q)};
 }
-const toLatin=s=>s.replace(/[٠-٩]/g,c=>String.fromCharCode(c.charCodeAt(0)-1632)).replace(/[۰-۹]/g,c=>String.fromCharCode(c.charCodeAt(0)-1776));
+const toLatin=s=>String(s).replace(/[٠-٩]/g,c=>String.fromCharCode(c.charCodeAt(0)-1632+48)).replace(/[۰-۹]/g,c=>String.fromCharCode(c.charCodeAt(0)-1776+48)).replace(/[٫،]/g,'.');
 function gramsFromQ(q){return /(جم|غ|غرام|جرام|مل|\bg\b|ml)/i.test(String(q||''))?z(num(q)):0}
 const num=s=>{const m=toLatin(String(s||'')).match(/\d+(?:[.,]\d+)?/);return m?Math.round(parseFloat(m[0].replace(',','.'))):0};
 const numd=s=>{const m=toLatin(String(s||'')).match(/\d+(?:[.,]\d+)?/);return m?parseFloat(m[0].replace(',','.')):0};
@@ -1089,7 +1089,7 @@ $('cQuick').addEventListener('click',e=>{const b=e.target.closest('[data-cq]');i
 $('cManual').addEventListener('click',()=>openS2({mode:'drink',from:'caf',name:'قهوة',w:S.cupMl,save:false}));
 $('vList').addEventListener('click',e=>{
   const x=e.target.closest('[data-vx]');
-  if(x){const i=+x.dataset.vx;S.vits.splice(i,1);save();renderVit();return}
+  if(x){const i=+x.dataset.vx;S.vits.splice(i,1);save();renderAll();return}
   const b=e.target.closest('[data-v]');if(!b)return;
   const v=S.vits[+b.dataset.v],d=day(sel);
   if(vTaken(d,v))delete d.vit[v];else{
@@ -1116,9 +1116,19 @@ $('meals').addEventListener('click',e=>{
   const b=e.target.closest('.item');if(b)openSheet(+b.dataset.id);
 });
 $('vEdit').addEventListener('click',()=>{vEdit=!vEdit;renderVit()});
-function addVit(){const v=$('vNew').value.trim();if(!v||S.vits.includes(v))return;S.vits.push(v);$('vNew').value='';save();renderVit()}
+function addVit(){const v=$('vNew').value.trim();if(!v||S.vits.includes(v))return;S.vits.push(v);$('vNew').value='';save();renderAll()}
 $('vAdd').addEventListener('click',addVit);
 $('vNew').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addVit()}});
+
+/* أرقام عربية/فارسية: تتحول تلقائياً لأرقام إنجليزية في أي خانة رقمية */
+(function(){
+  const isNum=t=>t&&t.tagName==='INPUT'&&(t.getAttribute('inputmode')==='numeric'||t.getAttribute('inputmode')==='decimal'||t.getAttribute('type')==='number');
+  const fix=t=>{if(!t)return;if(t.getAttribute('type')==='number')t.setAttribute('type','text');if(!t.getAttribute('inputmode'))t.setAttribute('inputmode','decimal')};
+  const sweep=r=>{(r.querySelectorAll?r.querySelectorAll('input[type=number]'):[]).forEach(fix)};
+  sweep(document);
+  try{new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1){if(isNum(n))fix(n);sweep(n)}}))).observe(document.body,{childList:true,subtree:true})}catch(e){}
+  document.addEventListener('input',e=>{const t=e.target;if(!isNum(t))return;const v=t.value,n=toLatin(v);if(n!==v){const p=t.selectionStart;t.value=n;try{t.setSelectionRange(p,p)}catch(x){}}},true);
+})();
 
 /* ---------- body log ---------- */
 function setDay(fn){const d=day(sel);fn(d);save();renderBody();renderRing()}
@@ -1217,6 +1227,7 @@ $('myMeals').addEventListener('click',e=>{
   if(e.target.closest('#mmEdit')){mmEdit=!mmEdit;renderMyMeals();return}
   if(e.target.closest('#mmNew'))openS2({mode:'new'});
 });
+{const _rmm=renderMyMeals;renderMyMeals=function(){_rmm();renderShorts()}}
 function openS2(state){M=state;$('sheet2').hidden=false;renderS2();$('s2body').scrollTop=0}
 function closeS2(){$('sheet2').hidden=true;M=null}
 function updateTot(){if(M&&M.mode==='review'){const el=$('s2tot');if(el){const t=sum(M.items);el.innerHTML='المجموع: <b>'+fmt(t.k)+'</b> سعرة · '+t.p+' بروتين · '+t.c+' كارب · '+t.fi+' ألياف · '+t.f+' دهون'}return}
@@ -1869,25 +1880,26 @@ async function sharePDF(){
 $('pdfGo').addEventListener('click',()=>openS2({mode:'pdf',stage:'pick',opts:pdfOptions(),err:''}));
 
 /* ---------- settings ---------- */
-const TG=[['k','السعرات',800],['p','البروتين (جم)',0],['c','الكارب (جم)',0],['fi','الألياف (جم)',0],['f','الدهون (جم)',0],['w','الماء (مل)',500],['caf','حد الكافيين (ملغ)',0],['cupMg','كافيين الكوب (ملغ)',1],['cupMl','حجم الكوب (مل)',50]];
+const TG=[['k','السعرات',800],['p','البروتين (جم)',0],['c','الكارب (جم)',0],['fi','الألياف (جم)',0],['f','الدهون (جم)',0],['w','الماء (مل، أو اكتب باللتر مثل 4)',500],['caf','حد الكافيين (ملغ)',0],['cupMg','كافيين الكوب (ملغ)',1],['cupMl','حجم الكوب (مل)',50]];
 function renderSet(){
   $('tgrid').innerHTML=TG.map(g=>'<label>'+g[1]+'<input data-t="'+g[0]+'" type="number" inputmode="numeric" min="'+g[2]+'" value="'+(g[0]==='cupMg'||g[0]==='cupMl'?S[g[0]]:S.t[g[0]])+'"></label>').join('');
   const mk=S.t.p*4+S.t.c*4+S.t.f*9;
   $('tHint').textContent='الماكروز اللي حطيتها تساوي '+fmt(mk)+' سعرة (بروتين وكارب 4 للجرام، دهون 9).';
   $('sKey').value=S.key;$('sUseList').checked=S.useList!==false;$('sOr').value=S.orKey||'';$('sOrM').value=S.orModel||'openai/gpt-4o-mini';$('sModel').value=S.model;
   const a=anchor();$('pH').value=S.prof.h;$('pAge').value=S.prof.age;$('pAct').value=String(S.prof.act);
-  $('pW0').value=a?a.w:'';$('pD0').value=a?a.d:'';
+  $('pW0').value=S.prof.w0>0?S.prof.w0:(a?a.w:'');$('pD0').value=S.prof.d0||(a?a.d:'');
 }
 function saveProf(){
   const h=Math.round(+$('pH').value),ag=Math.round(+$('pAge').value),w0=dec($('pW0').value),d0=$('pD0').value;
   if(h>=100&&h<=250)S.prof.h=h;if(ag>=10&&ag<=100)S.prof.age=ag;S.prof.act=+$('pAct').value||1.45;
-  if(w0>0&&d0){S.prof.w0=w0;S.prof.d0=d0}
+  if(w0>0)S.prof.w0=w0;if(d0)S.prof.d0=d0;
   save();renderSet();
 }
 ['pH','pAge','pW0','pD0','pAct'].forEach(id=>$(id).addEventListener('change',saveProf));
 $('tgrid').addEventListener('change',e=>{
   const i=e.target.closest('input');if(!i)return;
-  const key=i.dataset.t,g=TG.find(x=>x[0]===key),v=Math.round(+i.value);
+  const key=i.dataset.t,g=TG.find(x=>x[0]===key);if(String(i.value).trim()===''){renderSet();return}let v=Math.round(+toLatin(i.value));
+  if(key==='w'){const f=parseFloat(toLatin(i.value).replace(',','.'));v=Math.round(f>0&&f<=20?f*1000:f)}
   if(isFinite(v)&&v>=g[2]){if(key==='cupMg'||key==='cupMl')S[key]=v;else S.t[key]=v}
   save();renderSet();
 });
