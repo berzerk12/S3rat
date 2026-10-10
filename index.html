@@ -438,6 +438,25 @@ details.mk-vit>div{display:block;margin-top:6px}
 .seg4 button small{display:block;font-size:11px;font-weight:500;color:var(--muted)}
 .seg4 button.on{background:var(--blue);color:#fff}.seg4 button.on small{color:rgba(255,255,255,.85)}
 .rvloc{background:rgba(255,149,0,.12);border:1px solid rgba(255,149,0,.4);border-radius:14px;padding:10px 12px;margin:10px 0;font-size:14px;line-height:1.6}
+/* v34 */
+.cc-sec{display:flex;align-items:center;gap:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.cc-sec .cn{flex:none}.cc-sec .cs{flex:1;text-align:end;font-weight:500;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-sec .chev{flex:none;color:var(--muted);transition:transform .2s;font-size:12px}
+.cc-sec.closed .chev{transform:rotate(180deg)}
+.cc-sec.closed{background:var(--card);border-radius:16px;padding:13px 16px;margin:10px 0 0;color:var(--ink);font-size:15px;font-weight:700;box-shadow:inset 0 0 0 1px var(--line)}
+.cc-sec.closed .cs{font-size:13px}
+.mk-meal{padding:0}
+.mk-meal .mh{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:13px 14px;text-align:start;font-family:inherit;color:var(--ink)}
+.mk-meal .mh .dot{width:10px;height:10px;border-radius:50%;flex:none}
+.mk-meal .mh .mn{flex:1;min-width:0}.mk-meal .mh .mn b{font-size:16px;display:block}.mk-meal .mh .mn small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.mk-meal .mh .k{font-weight:700;font-size:15px;white-space:nowrap}
+.mk-meal .mh .chev{color:var(--muted);font-size:12px;transition:transform .2s;transform:rotate(180deg)}
+.mk-meal.open .mh .chev{transform:none}
+.mk-meal .mvt{font-style:normal;font-size:12px}
+.mk-meal .mb{padding:0 14px 12px;border-top:1px solid var(--line)}
+.mk-meal .mb .item:first-child{border-top:0;margin-top:4px}
+#qText{min-height:58px!important;height:58px}
+.mk-vt{margin:-4px 0 10px}
 </style>
 </head>
 <body>
@@ -488,8 +507,8 @@ details.mk-vit>div{display:block;margin-top:6px}
     </section>
     <div class="sec">الأكل</div>
     <section class="card slim" id="secFood" aria-label="أضف أكلك">
-      <div class="seg" id="mchips" role="group" aria-label="الوجبة"></div>
-      <textarea id="qText" placeholder="وش أكلت؟ اكتب هنا، مثال: صدر دجاج مشوي وبطاطس وسلطة"></textarea>
+      <div class="seg" id="mchips" role="group" aria-label="الوجبة" hidden></div>
+      <textarea id="qText" placeholder="وش أكلت؟"></textarea>
       <div class="btns2"><button class="btn sm" id="qGo" type="button">احسب وأضف</button><button class="btn sm soft" id="barBtn" type="button">📷 صوّر الملصق</button></div>
       <p class="msg" id="qMsg" aria-live="polite"></p>
       <div id="pend" style="display:flex;flex-direction:column;gap:8px"></div>
@@ -521,7 +540,7 @@ details.mk-vit>div{display:block;margin-top:6px}
     </section>
 
     <div class="sec">نشاطك نص اليوم</div>
-    <section class="card slim" aria-label="نشاط نص اليوم">
+    <section class="card slim" id="secMid" aria-label="نشاط نص اليوم">
       <div class="rowsp"><b style="font-size:14px">⚡ كيف نشاطك الحين؟</b><span class="cap">منتصف اليوم</span></div>
       <div class="opts sm" id="en2Opts"></div>
     </section>
@@ -694,7 +713,7 @@ const EN=[[4,'نشيط','⚡'],[3,'عادي','🙂'],[2,'وسط','😐'],[1,'ت�
 const enAvg=d=>{const v=[d.energy,d.en2,d.en3].filter(x=>x!=null);return v.length?avgOf(v):null};
 const MD=[[5,'ممتاز','😄'],[4,'مبسوط','🙂'],[3,'عادي','😐'],[2,'مو زين','🙁'],[1,'زعلان','😢']];
 
-const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,s:45,w:3000,caf:400},cupMg:200,cupMl:375,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},lastBk:0,bkSnooze:0,rcp:[],prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
+const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,s:45,w:3000,caf:400},cupMg:200,cupMl:245,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},lastBk:0,bkSnooze:0,rcp:[],prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
 let S=JSON.parse(JSON.stringify(DEF));
 let mornOpen=null,mornFor='';
 let sel=TK(),curMeal='b',vEdit=false,editId=null,storeOK=true,curView='Home',repOff=0,lastTK=TK();
@@ -703,6 +722,7 @@ try{
   if(raw){const o=JSON.parse(raw);S=Object.assign({},S,o);S.t=Object.assign({},DEF.t,o.t||{});S.days=o.days||{};S.cache=o.cache||{};S.vits=o.vits||[];S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.pend=o.pend||[];S.reps=o.reps||{};S.rcp=Array.isArray(o.rcp)?o.rcp:[];S.prof=Object.assign({},DEF.prof,o.prof||{})}
 }catch(e){storeOK=false}
 delete S.gem;
+if(S.cupV!==2){S.cupV=2;S.cupMl=245}
 S.pend.forEach(p=>{if(p.st==='run')p.st='wait'});
 function fixDays(){Object.keys(S.days).forEach(k=>{const d=S.days[k];if(!d||typeof d!=='object'){delete S.days[k];return}d.items=d.items||[];d.water=d.water||[];d.cups=d.cups||0;d.cupT=d.cupT||[];d.vit=d.vit||{}})}
 fixDays();
@@ -940,7 +960,7 @@ function renderVit(){
 }
 function renderBody(){
   const d=peek(sel);
-  if(mornFor!==sel){mornFor=sel;mornOpen=null}
+  if(mornFor!==sel){mornFor=sel;const u=S.ui&&S.ui.m;mornOpen=(u&&u.d===sel)?u.o:null}
   const mdone=!!(d.sleep&&d.energy!=null&&d.wt>0),mopen=mornOpen!==null?mornOpen:!mdone;
   $('mornSum').hidden=mopen;$('mornForm').hidden=!mopen;$('mornDone').hidden=!(d.sleep&&d.energy!=null);
   const eo=EN.find(o=>o[0]===d.energy);
@@ -1016,7 +1036,9 @@ const LABELP='هذي صورة عبوة منتج غذائي وفيها ملصق �
 const GBASE='https://generativelanguage.googleapis.com/v1beta/';
 async function gfetch(path,opt){
   let r;
-  try{r=await fetch(GBASE+path,opt)}catch(e){throw {code:'net'}}
+  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),25000);
+  try{r=await fetch(GBASE+path,Object.assign({},opt,{signal:ac.signal}))}catch(e){clearTimeout(tm);throw (e&&e.name==='AbortError')?{code:503,detail:'انتهت المهلة'}:{code:'net'}}
+  clearTimeout(tm);
   if(!r.ok){
     let m='';
     try{const j=await r.json();m=(j&&j.error&&j.error.message)||''}catch(e){}
@@ -1278,8 +1300,9 @@ function setDay(fn){const d=day(sel);fn(d);save();renderBody();renderRing()}
 $('slP').addEventListener('click',()=>{setDay(d=>{d.sleep=Math.min(14,r1((d.sleep||0)+.5))})});
 $('slM').addEventListener('click',()=>{setDay(d=>{const v=r1((d.sleep||0)-.5);if(v<=0)delete d.sleep;else d.sleep=v})});
 $('slQ').addEventListener('click',e=>{const b=e.target.closest('[data-h]');if(b){setDay(d=>{d.sleep=+b.dataset.h})}});
-$('mornSum').addEventListener('click',()=>{mornOpen=true;renderBody()});
-$('mornDone').addEventListener('click',()=>{mornOpen=false;renderBody();$('secMorning').scrollIntoView({behavior:'smooth',block:'nearest'})});
+const mornSet=o=>{mornOpen=o;S.ui=S.ui||{};S.ui.m={d:sel,o:o};save()};
+$('mornSum').addEventListener('click',()=>{mornSet(true);renderBody()});
+$('mornDone').addEventListener('click',()=>{mornSet(false);renderBody();$('secMorning').scrollIntoView({behavior:'smooth',block:'nearest'})});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-ek]');if(!b)return;const v=+b.dataset.e,k=b.dataset.ek;setDay(d=>{if(d[k]===v)delete d[k];else d[k]=v})});
 $('mdOpts').addEventListener('click',e=>{const b=e.target.closest('[data-md]');if(!b)return;const v=+b.dataset.md;setDay(d=>{if(d.mood===v)delete d.mood;else d.mood=v})});
 $('trOpts').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;const v=b.dataset.t==='1';setDay(d=>{if(d.train===v)delete d.train;else d.train=v})});
@@ -1346,7 +1369,7 @@ function renderMyMeals(){
 }
 function renderShorts(){}
 function addMealDirect(m,slot){
-  const items=m.parts.map(p=>Object.assign({n:p.n,q:p.g+' جم',g:p.g},scaleRow({b:p,g:p.g})));
+  const items=m.parts.map(p=>Object.assign({n:p.n,q:p.g+(p.u?' حصة':' جم'),g:p.g},scaleRow({b:p,g:p.g})));
   qSay(commit(items,slot),'ok');
 }
 function addSnack(s){
@@ -2297,7 +2320,7 @@ let SGO=[];
 function entryList(){
   const out=[];
   S.meals.forEach(m=>{
-    const items=m.parts.map(p=>Object.assign({n:p.n,q:p.g+' جم',g:p.g},scaleRow({b:p,g:p.g})));
+    const items=m.parts.map(p=>Object.assign({n:p.n,q:p.g+(p.u?' حصة':' جم'),g:p.g},scaleRow({b:p,g:p.g})));
     out.push({kind:'meal',n:m.n,items:items,t:sum(items)});
   });
   S.snacks.forEach(x=>{
@@ -2569,7 +2592,7 @@ renderSug();
 /* ---------- شاشة ＋ إضافة (من قائمة الطعام إلى وجبة) ---------- */
 let atCat='meal';
 function entryItems(e){
-  if(e.t==='meal'){const m=S.meals.find(v=>v.id===e.id);return m?m.parts.map(p=>Object.assign({n:p.n,q:p.g+' جم',g:p.g},scaleRow({b:p,g:p.g}))):[]}
+  if(e.t==='meal'){const m=S.meals.find(v=>v.id===e.id);return m?m.parts.map(p=>Object.assign({n:p.n,q:p.g+(p.u?' حصة':' جم'),g:p.g},scaleRow({b:p,g:p.g}))):[]}
   const x=S.snacks.find(v=>v.id===e.id);
   return x?[{n:x.n,q:'',k:x.k||0,p:x.p||0,c:x.c||0,fi:x.fi||0,f:x.f||0,s:x.s||0,w:x.w||0,cf:x.cf||0}]:[];
 }
@@ -2861,17 +2884,17 @@ const NWF=[['k','السعرات'],['p','البروتين (جم)'],['c','الكا
 const per100Def=k=>k==='sauce'||k==='ingr'||k==='extra';
 function nwInit(){
   const c0=(typeof mmF!=='undefined'&&catKnown(mmF)&&mmF!=='meal'&&mmF!=='all')?mmF:'snack';
-  M={mode:'nw',cat:catKnown(c0)?c0:'other',name:'',desc:'',dbox:false,per:per100Def(c0)?'100':'item',v:{},pc:'',slot:M.slot||curMeal,msg:'',ok:false,busy:false};
+  const pl=M.plate||null;M={mode:'nw',plate:pl,cat:pl?'snack':(catKnown(c0)?c0:'other'),name:'',desc:'',dbox:false,per:(pl?false:per100Def(c0))?'100':'item',v:{},pc:'',slot:M.slot||curMeal,msg:'',ok:false,busy:false};
 }
 function nwChips(){
-  return CATS.map(c=>'<span class="cp'+(c[0]===M.cat?' on':'')+'"><button type="button" data-nwc="'+c[0]+'">'+c[2]+' '+esc(c[1])+'</button></span>').join('')+'<span class="cp"><button type="button" data-ncat="x" style="color:var(--blue)">＋ تصنيف</button></span>';
+  return CATS.filter(c=>!(M.plate&&c[0]==='meal')).map(c=>'<span class="cp'+(c[0]===M.cat?' on':'')+'"><button type="button" data-nwc="'+c[0]+'">'+c[2]+' '+esc(c[1])+'</button></span>').join('')+'<span class="cp"><button type="button" data-ncat="x" style="color:var(--blue)">＋ تصنيف</button></span>';
 }
 function renderNw(){
   const meal=M.cat==='meal';
   let h='<h2>＋ عنصر جديد</h2><p class="note" style="margin:0 0 6px">في أي تصنيف؟</p><div class="chiprow" style="margin-bottom:10px">'+nwChips()+'</div>'+
     '<input id="nwN" type="text" placeholder="الاسم" autocomplete="off" value="'+esc(M.name)+'">';
   if(meal){
-    h+='<p class="note">الوجبة تتكوّن من مكوّنات بالجرامات.</p><button type="button" class="btn big" data-act="nw_meal">التالي: المكوّنات</button>';
+    h+='<p class="note">الوجبة صحن: تختار له أصناف من قائمتك أو تنشئ صنف جديد.</p><button type="button" class="btn big" data-act="nw_meal">التالي: أصناف الوجبة</button>';
   }else{
     h+='<div class="btns2"><label class="btn sm soft edlb">📷 صوّر الملصق<input id="nwFile" type="file" accept="image/*" style="display:none"></label><button type="button" class="btn sm soft" data-nw="ai">✨ وصف بالنص</button></div>'+
       (M.dbox?'<div class="ai3"><div class="lb">وصف المنتج</div><textarea id="nwDesc" placeholder="اوصف المنتج بالتفصيل: النوع، الحجم، طريقة التحضير...">'+esc(M.desc)+'</textarea><button type="button" class="btn sm" data-nw="calc"'+(M.busy?' disabled':'')+'>'+(M.busy?'جاري الحساب...':'احسب الأرقام')+'</button></div>':'')+
@@ -2879,11 +2902,12 @@ function renderNw(){
       '<div class="f2">'+NWF.map(f=>'<label>'+f[1]+'<input id="nw_'+f[0]+'" type="number" inputmode="decimal" min="0" value="'+esc(M.v[f[0]]==null?'':M.v[f[0]])+'"></label>').join('')+
       (M.per==='item'?'<label>الماء (مل)<input id="nw_w" type="number" inputmode="numeric" min="0" value="'+esc(M.v.w==null?'':M.v.w)+'"></label><label>الكافيين (ملغ)<input id="nw_cf" type="number" inputmode="numeric" min="0" value="'+esc(M.v.cf==null?'':M.v.cf)+'"></label>':
         '<label>وزن الحبة (جم) اختياري<input id="nw_pc" type="number" inputmode="decimal" min="0" value="'+esc(M.pc)+'"></label>')+'</div>'+
-      (M.per==='item'?'<label>تنحسب في وجبة'+slotSel()+'</label>':'')+
+      (M.per==='item'&&!M.plate?'<label>تنحسب في وجبة'+slotSel()+'</label>':'')+
       '<p class="msg '+(M.ok?'ok':'err')+'" id="s2msg" aria-live="polite">'+esc(M.msg||'')+'</p>'+
-      '<div class="btns2"><button type="button" class="btn" style="background:var(--fill);color:var(--ink)" data-nw="save">⭐ حفظ بالقائمة</button><button type="button" class="btn" data-nw="add">＋ إضافة لوجبة</button></div>';
+      (M.plate?'<div class="btns2"><button type="button" class="btn" style="background:var(--fill);color:var(--ink)" data-nw="psave">⭐ حفظ بالقائمة</button><button type="button" class="btn" data-nw="padd">＋ أضفه للوجبة</button></div>':
+      '<div class="btns2"><button type="button" class="btn" style="background:var(--fill);color:var(--ink)" data-nw="save">⭐ حفظ بالقائمة</button><button type="button" class="btn" data-nw="add">＋ إضافة لوجبة</button></div>');
   }
-  $('s2body').innerHTML=h+'<button type="button" class="btn ghost" data-act="close">إغلاق</button>';
+  $('s2body').innerHTML=h+(M.plate?'<button type="button" class="btn ghost" data-nw="back">رجوع للوجبة</button>':'<button type="button" class="btn ghost" data-act="close">إغلاق</button>');
 }
 function nwRead(){
   const v=M.v,c=dec(v.c),it={k:z(v.k),p:dec(v.p),c:c,fi:dec(v.fi),f:dec(v.f),s:Math.min(dec(v.s),c),w:z(v.w),cf:z(v.cf)};return it;
@@ -2939,6 +2963,8 @@ const rvMac=x=>(x.p||0)+' بروتين · '+(x.c||0)+' كارب'+(x.s?' (منه�
 {const _r5=renderS2;renderS2=function(){
   if(M&&M.mode==='new')nwInit();
   if(M&&M.mode==='ed'&&M.t!=='meal'&&!catKnown(M.cat))M.cat='other';
+  if(M&&M.mode==='plate')return renderPlate();
+  if(M&&M.mode==='pick')return renderPick();
   if(M&&M.mode==='pcs')return renderPcs();
   if(M&&M.mode==='cats')return renderCats();
   if(M&&M.mode==='nw')return renderNw();
@@ -3008,7 +3034,7 @@ $('s2body').addEventListener('click',async e=>{
     if(b.dataset.nwper){M.per=b.dataset.nwper;renderNw();return}
     if(b.dataset.act==='nw_meal'){
       const nm=String(M.name||'').trim();
-      openS2({mode:'build',name:nm,slot:M.slot||curMeal,text:'',rows:[]});return;
+      openS2({mode:'plate',name:nm,slot:M.slot||curMeal,rows:[]});return;
     }
     const a=b.dataset.nw;
     if(a==='ai'){M.dbox=!M.dbox;renderNw();return}
@@ -3025,6 +3051,8 @@ $('s2body').addEventListener('click',async e=>{
       }catch(err){if(M!==keep)return;M.msg=errText(err);M.ok=false}
       M.busy=false;renderNw();return;
     }
+    if(a==='back'){M=M.plate;renderS2();return}
+    if(a==='psave'||a==='padd'){if(!nwPlate(a==='padd'))renderNw();return}
     if(a==='save'||a==='add'){if(!nwSave(a==='add'))renderNw();return}
     return;
   }
@@ -3082,6 +3110,125 @@ $('s2body').addEventListener('change',async e=>{
     }catch(err){s2msg(errText(err))}
   }
 });
+
+/* ===== v34: صحن الوجبة + بطاقات تقفل + وجبات مختصرة ===== */
+function plRowsH(){
+  return M.rows.map((r,i)=>'<div class="prow"><div class="pn">'+esc(r.n)+'</div><label class="pg"><input type="number" inputmode="decimal" step="any" min="0" value="'+(r.g||'')+'" data-g="'+i+'" placeholder="'+(r.u?'حصة':'جم')+'" aria-label="الكمية"><span>'+(r.u?'حصة':'جم')+'</span></label><button type="button" class="vx" data-rm="'+i+'" aria-label="حذف">×</button><div class="pm num" id="pm'+i+'">'+macroLine(scaleRow(r))+'</div></div>').join('');
+}
+function renderPlate(){
+  $('s2body').innerHTML='<h2>🍽️ وجبة جديدة</h2><input id="s2name" type="text" placeholder="اسم الوجبة" autocomplete="off" value="'+esc(M.name||'')+'">'+
+    '<div id="s2rows">'+(M.rows.length?plRowsH():'<p class="note">الصحن فاضي. أضف أصناف من قائمتك أو أنشئ صنف جديد.</p>')+'</div>'+
+    '<div class="btns2"><button type="button" class="btn sm soft" data-pl="pick">＋ من القائمة</button><button type="button" class="btn sm soft" data-pl="new">＋ صنف جديد</button></div>'+
+    '<div class="tot num" id="s2tot"></div><label>تنحسب في وجبة'+slotSel()+'</label><p class="msg err" id="s2msg" aria-live="polite"></p>'+
+    '<div class="btns2"><button type="button" class="btn" style="background:var(--fill);color:var(--ink)" data-pl="save">⭐ حفظ بالقائمة</button><button type="button" class="btn" data-pl="add">＋ إضافة لوجبة</button></div><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
+  updateTot();
+}
+function plRowFrom(en){
+  if(en.t==='add'){const a=S.adds.find(v=>v.id===en.id);return {n:a.n,b:Object.assign({},a,{g:a.g||100}),g:a.pc>0?a.pc:0,free:false,u:0}}
+  const x=S.snacks.find(v=>v.id===en.id),b={g:1};KEYS.forEach(k=>b[k]=x[k]||0);return {n:x.n,b:b,g:1,free:false,u:1};
+}
+function pickRows(){
+  const q=(M.q||'').trim().toLowerCase();
+  const l=listEntries().filter(x=>x.t!=='meal'&&(M.pc==='all'||x.kind===M.pc)&&(!q||x.n.toLowerCase().includes(q)));
+  if(!l.length)return '<p class="note" style="padding:8px 0">ما فيه أصناف هنا. اضغط «＋ صنف جديد» من الوجبة.</p>';
+  return l.map(x=>{const fl=M.fl&&M.fl[x.key]&&Date.now()-M.fl[x.key]<3000;
+    return '<div class="mk-row"><span class="em">'+x.e+'</span><div class="nm">'+esc(x.n)+'<small>'+esc(x.sub.replace(/^[^·]*· ?/,'')||x.sub)+'</small></div><button type="button" class="'+(fl?'done':'')+'" data-pkk="'+x.key+'">'+(fl?'✓':'＋')+'</button></div>'}).join('');
+}
+function renderPick(){
+  $('s2body').innerHTML='<h2>اختر من قائمتك</h2><input id="pkq" type="search" placeholder="🔍 ابحث..." autocomplete="off" value="'+esc(M.q||'')+'">'+
+    '<div class="chiprow" style="margin:10px 0">'+[['all','الكل','']].concat(CATS.filter(c=>c[0]!=='meal')).map(c=>'<span class="cp'+(c[0]===M.pc?' on':'')+'"><button type="button" data-pkc="'+c[0]+'">'+(c[2]?c[2]+' ':'')+esc(c[1])+'</button></span>').join('')+'</div>'+
+    '<div id="pkList">'+pickRows()+'</div><button type="button" class="btn big" data-act="pkdone" style="margin-top:10px">تم</button>';
+}
+function nwPlate(add){
+  const n=String(M.name||'').trim();
+  if(!n){M.msg='اكتب الاسم.';M.ok=false;return false}
+  const r=nwRead();
+  if(!(r.k>0)&&!(r.p||r.c||r.f)){M.msg='اكتب الأرقام، أو استخدم الوصف أو صوّر الملصق.';M.ok=false;return false}
+  const pl=M.plate,per=M.per,cat=M.cat,pc=dec(M.pc);
+  const rec=Object.assign({id:Date.now(),n:n.slice(0,80),cat:cat},r);
+  if(per==='100'){Object.assign(rec,{g:100,sg:0,pc:pc,w:0,cf:0})}
+  if(add){
+    const b=Object.assign({},rec,{g:per==='100'?100:1});
+    pl.rows.push({n:rec.n,b:b,g:per==='100'?(pc||0):1,free:false,u:per==='100'?0:1});
+  }else{
+    if(per==='100')S.adds.push(rec);else S.snacks.push(Object.assign(rec,{slot:'s'}));
+    save();renderMyMeals();toast('انحفظ «'+n+'» في قائمة الطعام',false);
+  }
+  M=pl;renderS2();return true;
+}
+$('s2body').addEventListener('input',e=>{
+  if(M&&M.mode==='pick'&&e.target.id==='pkq'){M.q=e.target.value;$('pkList').innerHTML=pickRows()}
+});
+$('s2body').addEventListener('click',e=>{
+  if(!M)return;
+  const b=e.target.closest('button');if(!b)return;
+  if(M.mode==='plate'){
+    const a=b.dataset.pl;if(!a)return;
+    if(a==='pick'){openS2({mode:'pick',plate:M,pc:'all',q:'',fl:{}});return}
+    if(a==='new'){openS2({mode:'new',plate:M});return}
+    if(!M.rows.length||M.rows.some(r=>!(r.g>0))){s2msg('أضف صنف واحد على الأقل واكتب كمياتها.');return}
+    if(a==='save'){
+      if(!(M.name||'').trim()){s2msg('اكتب اسم الوجبة.');return}
+      S.meals.push({id:Date.now(),n:M.name.trim(),slot:M.slot,parts:M.rows.map(r=>Object.assign({n:r.n,g:r.g},r.u?{u:1}:{},scaleRow(r)))});
+      save();mmOpen=true;renderMyMeals();const nm=M.name.trim();closeS2();toast('تم حفظ الوجبة «'+nm+'»',false);return;
+    }
+    if(a==='add'){
+      const items=M.rows.map(r=>Object.assign({n:r.n,q:r.g+(r.u?' حصة':' جم'),g:r.g},scaleRow(r)));
+      const msg=commit(items,M.slot);closeS2();qSay(msg,'ok');return;
+    }
+    return;
+  }
+  if(M.mode==='pick'){
+    if(b.dataset.pkc){M.pc=b.dataset.pkc;renderPick();return}
+    if(b.dataset.act==='pkdone'){M=M.plate;renderS2();return}
+    if(b.dataset.pkk){
+      const en=listEntries().find(x=>x.key===b.dataset.pkk);if(!en)return;
+      M.plate.rows.push(plRowFrom(en));M.fl[en.key]=Date.now();
+      $('pkList').innerHTML=pickRows();setTimeout(()=>{if(M&&M.mode==='pick'&&$('pkList'))$('pkList').innerHTML=pickRows()},3100);
+    }
+  }
+});
+/* ---- بطاقات تقفل وتحفظ حالتها ---- */
+const CCS=[['secMid','⚡',null,d=>{const o=EN.find(v=>v[0]===d.en2);return o?o[1]:''}],['secTrain','🏋️',null,d=>d.train==null?'':(d.train?'تمرنت ✓':'ما تمرنت')],['secVit','💊','vSmall',null],['secEnd','🌙',null,d=>{const o=MD.find(v=>v[0]===d.mood);return o?o[1]+' '+o[2]:''}]];
+CCS.forEach(c=>{
+  const sec=$(c[0]),lb=sec&&sec.previousElementSibling;if(!sec||!lb||!lb.classList.contains('sec'))return;
+  lb.classList.add('cc-sec');lb.dataset.cc=c[0];lb.setAttribute('role','button');lb.tabIndex=0;
+  lb.innerHTML='<span class="cn">'+c[1]+' '+esc(lb.textContent)+'</span><span class="cs"></span><span class="chev">⌃</span>';
+});
+const ccOpen=id=>!(S.ui&&S.ui.cc&&S.ui.cc[id]===false);
+function ccSync(){
+  const d=peek(sel);
+  CCS.forEach(c=>{
+    const sec=$(c[0]),lb=sec&&sec.previousElementSibling;if(!sec||!lb||!lb.classList.contains('cc-sec'))return;
+    const op=ccOpen(c[0]);sec.hidden=!op;lb.classList.toggle('closed',!op);lb.setAttribute('aria-expanded',String(op));
+    const t=c[2]?($(c[2])||{}).textContent:(c[3]?c[3](d):'');
+    lb.querySelector('.cs').textContent=t||'';
+  });
+}
+document.addEventListener('click',e=>{
+  const l=e.target.closest('.cc-sec');if(!l)return;
+  const id=l.dataset.cc;S.ui=S.ui||{};S.ui.cc=S.ui.cc||{};S.ui.cc[id]=!ccOpen(id);save();ccSync();
+});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('cc-sec')){e.preventDefault();e.target.click()}});
+['renderAll','renderWater','renderCaf','renderVit','renderBody'].forEach(n=>{const f=eval(n);eval(n+'=function(){const r=f.apply(this,arguments);ccSync();return r}')});
+/* ---- وجبات اليوم مختصرة ---- */
+renderMeals=function(){
+  const d=peek(sel),mo=(S.ui&&S.ui.mo)||{};let h='';
+  MEALS.forEach(m=>{
+    const xs=d.items.filter(x=>x.m===m[0]);if(!xs.length)return;
+    const mt=sum(xs),ts=xs.map(x=>x.t).filter(t=>t!=null),note=mealNote(d,m[0]),op=!!mo[m[0]],n=xs.length;
+    h+='<div class="mk-meal'+(op?' open':'')+'"><button type="button" class="mh" data-mtog="'+m[0]+'" aria-expanded="'+op+'"><span class="dot" style="background:'+MCOL[m[0]]+'"></span><span class="mn"><b>'+m[1]+'</b><small>'+(n===1?'صنف واحد':n===2?'صنفين':n+' أصناف')+' · '+mt.p+' بروتين'+(ts.length?' · '+tStr(Math.min.apply(null,ts)):'')+'</small></span><span class="num k">'+fmt(mt.k)+' سعرة</span><span class="chev">⌃</span></button>'+
+      (op?'<div class="mb">'+xs.map(x=>'<button type="button" class="item" data-id="'+x.id+'"><span class="nm">'+esc(x.n)+'</span>'+(x.q||x.ck?'<span class="q">'+(x.q?esc(x.q):'')+(x.ck?(x.q?' · ':'')+(x.ck.t==='butter'?'🧈':'🫒')+' '+x.ck.g+' جم':'')+'</span>':'')+'<span class="kk num">'+x.k+'</span></button>').join('')+
+      '<div class="ft num">'+mt.p+' بروتين · '+mt.c+' كارب'+(mt.s?' (منها '+mt.s+' سكر)':'')+' · '+mt.f+' دهون</div>'+
+      '<div class="mk-f"><button type="button" class="p" data-addto="'+m[0]+'">＋ إضافة</button><button type="button" data-savemeal="'+m[0]+'">⭐ احفظها</button></div></div>':'')+'</div>'+(note?'<div class="mk-vt">'+note+'</div>':'');
+  });
+  $('meals').innerHTML=h||'<p class="cap" style="padding:6px 0">ما سجلت شيء بهذا اليوم. اكتب أكلك فوق واضغط «احسب وأضف».</p>';
+};
+$('meals').addEventListener('click',e=>{
+  const b=e.target.closest('[data-mtog]');if(!b)return;
+  const k=b.dataset.mtog;S.ui=S.ui||{};S.ui.mo=S.ui.mo||{};S.ui.mo[k]=!S.ui.mo[k];save();renderMeals();
+});
+ccSync();
 show('Home');
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
