@@ -563,6 +563,41 @@ details.mk-vit>div{display:block;margin-top:6px}
 .drkt>div{border-inline-start:1px solid var(--line)}.drkt>div:first-child{border:0}.drkt b{display:block;font-size:17px}.drkt small{font-size:10.5px;color:var(--muted)}
 .drkbtn{border:1px solid var(--ink);background:none;border-radius:999px;padding:9px 14px;font-weight:700;font-size:14px;font-family:inherit;color:var(--ink);align-self:flex-start}
 .drkbtn:active{transform:scale(.96)}
+
+/* ===== v44: الوضع الليلي «غرافيت ناعم» (Style A) ===== */
+@media (prefers-color-scheme: dark){
+:root{--bg:#0F1115;--card:#171A20;--fill:#1F232B;--fill2:#2A2F38;--ink:#E3E1DC;--muted:#8E939C;--line:#2A2E36;
+--blue:#C2A878;--green:#7FA58F;--red:#C2706A;--orange:#C48F5C;--purple:#9C8FB0;--teal:#78A0B4;--brown:#C2A878;--pink:#BE7F94;
+--kcal:#C48F5C;--prot:#C2706A;--carb:#C9AE72;--fat:#7FA58F;--fib:#9AA0AA;--sug:#BE7F94;--water:#78A0B4;--caf:#C2A878;
+--tint:#2A2F38;--ok:#7FA58F;--warn:#C9AE72;--no:#C2706A;--bar:rgba(23,26,32,.95)}
+body{background:radial-gradient(130% 55% at 50% 0%,#1A2230 0%,#0F1115 62%) fixed}
+.card,.mealcard,#secCaf{border:0!important;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0) 60%),var(--card)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important}
+.hd{border-bottom:0}.tabs{border-top:0;box-shadow:0 -1px 0 rgba(255,255,255,.04)}
+#secCaf{--ck:#E3E1DC;--cp:#171A20;--cl:#2A2E36;--cg:#7FA58F;--cy:#C9AE72;--cr:#C2706A}
+#secCaf>.rowsp:first-child,.zmsg,.top2{border-color:var(--line)}
+.drkbtn,.dseg,.dc{border-color:var(--line)}
+}
+
+/* ===== v46: نهار v44 + ليل برونزي ===== */
+@media (prefers-color-scheme: dark){
+
+:root{--bg:#131211;--card:#1C1A18;--fill:#262320;--fill2:#312D29;--ink:#E6E1D8;--muted:#928B80;--line:#2E2B27;--blue:#C2A878;--green:#7FA58F;--red:#C2706A;--orange:#C48F5C;--kcal:#C48F5C;--prot:#C2706A;--carb:#C9AE72;--fat:#7FA58F;--fib:#A39B8D;--sug:#BE7F94;--water:#78A0B4;--caf:#C2A878;--tint:#312D29;--ok:#7FA58F;--warn:#C9AE72;--no:#C2706A;--bar:rgba(28,26,24,.95)}
+body{background:radial-gradient(130% 55% at 50% 0%,#221E19 0%,#131211 62%) fixed!important}
+.card,.mealcard,#secCaf{border:0!important;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,0) 60%),var(--card)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important}
+#secCaf{--ck:#E6E1D8;--cp:#1C1A18;--cl:#2E2B27;--cg:#7FA58F;--cy:#C9AE72;--cr:#C2706A}
+#secCaf>.rowsp:first-child,.zmsg{border-color:#2E2B27!important}.drkbtn,.dseg{border-color:#2E2B27!important}
+.tabs{box-shadow:0 -1px 0 rgba(255,255,255,.04)}
+
+:root{--blue:#D4B47C;--caf:#D4B47C;--tint:#2E2619;--bg:#110F0D;--card:#1A1714;--muted:#9C9384;--fr:#3A2F20;--rule:#6B5638}
+body{background:radial-gradient(120% 50% at 50% 0%,#2A2013 0%,#110F0D 62%) fixed!important}
+#secCaf{--ck:#E8DFCF;--cp:#1A1714;--cl:#2C2620;--cg:#7FA58F;--cy:#D4B47C;--cr:#C2706A}
+.sec,.cathd.mhd b,.hd h1,.top2 b{color:#E6CC96}
+
+.btn,#trayBar #trGo,.plb,.mst button:not(:first-child),.btn.soft,.btn[style*="--fill"],.drkbtn,.dseg button,.cp button,.aob{background:var(--fill)!important;color:var(--ink)!important;border:0!important;box-shadow:0 2px 6px rgba(138,104,56,.28)!important}
+.btn.ghost{background:transparent!important;color:var(--ink)!important;box-shadow:none!important}
+.cp.on button,.dseg button.on,.aob.on,.mtabs button.on{background:rgba(212,180,124,.30)!important;color:#F0D9A6!important;border:0!important;box-shadow:0 2px 10px rgba(212,180,124,.22)!important}
+.card,.mealcard,#secCaf{border:0!important;margin:6px 0!important;box-shadow:inset 0 1px 0 rgba(212,180,124,.28)!important;background:linear-gradient(180deg,rgba(212,180,124,.06),rgba(255,255,255,0) 55%),var(--card)!important}
+}
 </style>
 </head>
 <body>
@@ -3553,7 +3588,7 @@ function renderSleepCaf(){
   const pos=m=>Math.max(0,Math.min(100,(m-from)/(bed-from)*100));
   const gp=g==null?0:pos(g),yp=y==null?gp:Math.max(gp,pos(y));
   const f=m=>tStr(m%1440);
-  let h='<div class="zrow"><span class="num">'+f(from)+'</span><span>وقت القهوة</span><span class="num">'+f(bed)+'</span></div>'+
+  let h='<div class="zrow"><span class="num">'+f(from)+'</span><span class="num">'+f(bed)+'</span></div>'+
     '<div class="zw"><div class="zbar"><i class="zg" style="width:'+gp+'%"></i><i class="zy" style="width:'+(yp-gp)+'%"></i><i class="zr" style="width:'+(100-yp)+'%"></i></div>'+(isT&&now>=from&&now<=bed?'<u style="inset-inline-start:'+pos(now)+'%"><em>الحين</em></u>':'')+'</div>'+
     '<div class="zlg"><div><b class="num">'+(g==null?'—':f(g))+'</b><small>مناسب حتى</small></div><div><b class="num">'+(y==null?'—':f(y))+'</b><small>انتبه حتى</small></div><div><b class="num">'+f(bed)+'</b><small>'+(pl.late?'نومك (متأخر)':'وقت نومك')+'</small></div></div>';
   if(isT){
