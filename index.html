@@ -612,6 +612,36 @@ body{background:#121110!important}
 #secVit{border-inline-start:3px solid rgba(165,125,195,.45)!important}
 .card,.mealcard,#secCaf{box-shadow:inset 0 1px 0 rgba(212,180,124,.10)!important;background:linear-gradient(180deg,rgba(212,180,124,.02),rgba(255,255,255,0) 55%),var(--card)!important}
 }
+.zbar .zs{background:color-mix(in srgb,var(--ck) 14%,transparent)}
+.zrow{justify-content:space-between}
+/* ===== v48: عداد قهوة أنيق ===== */
+.zw{margin-top:12px;height:34px}
+.zbar{display:block!important;height:8px!important;border-radius:8px!important;box-shadow:none!important;position:absolute;inset-inline:0;top:13px;
+ background:linear-gradient(to left,var(--cg) 0,var(--cg) calc(var(--gp) - 7%),var(--cy) calc(var(--gp) + 7%),var(--cy) calc(var(--yp) - 7%),var(--cr) calc(var(--yp) + 7%),var(--cr) 100%);opacity:.92}
+.zw u{top:4px!important;width:16px!important;height:16px!important;border-radius:50%!important;background:var(--cp)!important;border:2.5px solid var(--ck);box-shadow:0 2px 6px rgba(0,0,0,.25);transform:translateX(50%)}
+[dir=rtl] .zw u{transform:translateX(50%)}
+.zw u em{top:-17px!important;font-size:10px!important;font-weight:600;opacity:.8;transform:translateX(-50%) !important}
+.ctk{top:25px!important;width:5px!important;height:5px!important;border-radius:50%!important;opacity:.6!important}
+.zrow{font-size:10px!important;letter-spacing:.6px!important;opacity:.55!important}
+/* ===== v48: ليل B + بطاقة الكافيين المبسطة ===== */
+@media (prefers-color-scheme: dark){
+:root{--bg:#0E0E0F;--card:#19191B;--fill:#232326;--fill2:#2D2D31;--line:#2A2A2D;--tint:#2D2D31;--bar:rgba(25,25,27,.95)}
+body{background:radial-gradient(120% 38% at 50% 0%,rgba(150,105,55,.15),rgba(150,105,55,0) 70%),#0E0E0F!important}
+.card,.mealcard,#secCaf{background:radial-gradient(90% 60% at 50% 0%,rgba(170,125,70,.07),rgba(170,125,70,0) 70%),var(--card)!important;border:1px solid rgba(190,155,100,.30)!important;box-shadow:none!important}
+#secCaf{--cp:#19191B}
+.cp.on button,.dseg button.on,.aob.on,.mtabs button.on{background:#3A3A3E!important}
+}
+#secCaf>.rowsp:first-child,#secCaf>.bar,#cLog{display:none!important}
+.chead{display:flex;justify-content:space-between;align-items:center}.chead b{font-size:16px}.chead small{font-size:11.5px;opacity:.65}
+.chero{text-align:center;padding:6px 0 2px}.chero .big{font-size:40px;font-weight:800;line-height:1.1}.chero small{display:block;opacity:.65;font-size:12px;margin-top:4px}
+.cstrip{position:relative;height:134px;margin:8px 0 2px}
+.cact{display:flex;gap:8px;margin-top:6px}.cact .cadd{flex:1;font-weight:700}.cact .csec{flex:0 0 auto;padding-inline:16px}
+.cprow{display:flex;gap:8px;margin-bottom:12px}.cprow.wrap{flex-wrap:wrap;justify-content:center}
+.cpchip{padding:8px 14px;border-radius:20px;border:0;background:var(--fill);color:var(--ink);font-family:inherit;font-weight:600;font-size:13px}.cpchip.on{background:var(--ink);color:var(--card);font-weight:800}
+.cpbig{text-align:center;font-size:44px;font-weight:800;line-height:1.1;margin-top:6px}.cpsub{text-align:center;font-size:12px;opacity:.6;margin-bottom:6px}
+.cptime{display:flex;justify-content:space-between;align-items:center;margin:10px 0;font-size:13px}.cptime input{font-family:inherit;font-size:15px;border:0;background:var(--fill);color:var(--ink);border-radius:10px;padding:8px 10px}
+.cpsize{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:12px;background:var(--fill);font-size:13px}
+.cpprev{margin-top:12px;border-radius:12px;padding:10px 12px;background:var(--fill);border-inline-start:3px solid var(--green)}.cpprev.stop{border-inline-start-color:var(--red)}.cpprev b{display:block}.cpprev small{display:block;opacity:.7;font-size:12px;margin-top:2px}
 </style>
 </head>
 <body>
@@ -658,7 +688,7 @@ body{background:#121110!important}
         <div class="stp"><button class="rb" type="button" id="cMinus" aria-label="نقص كوب">−</button><b class="num" id="cCups">0</b><button class="rb" type="button" id="cPlus" aria-label="زيادة كوب">+</button></div></div>
       <div class="bar"><i id="cBar" style="background:var(--caf);width:0"></i></div>
       <div id="cSleep"></div>
-      <button type="button" class="drkbtn" id="cDrk">☕ سجّل مشروب</button>
+      <div class="cact"><button type="button" class="drkbtn cadd" id="cAdd">☕ أضف كوب</button><button type="button" class="drkbtn csec" id="cDrk">مشروب</button></div>
       <div id="cQuick"></div>
       <div class="rowsp cap"><span id="cLog"></span><span class="rowsp" style="gap:12px"><button class="link" id="cUndo" type="button">↩︎ تراجع</button><button class="link" id="cManual" type="button">إدخال يدوي</button></span></div>
     </section>
@@ -3594,36 +3624,98 @@ function cafCut(doses,thr,from,bed){ // آخر وقت تبدأ فيه كوب و�
 function cafClear(doses,t0){ // متى يصير مجموع الكافيين <= حد الأمان بعد كوب الحين
   const all=doses.concat([[t0,S.cupMg]]);for(let T=t0;T<t0+30*60;T+=10){if(cafRem(all,T)<=CAF_OK)return T}return null;
 }
+/* ===== v48: بطاقة الكافيين المبسطة + إضافة كوب بوقت ===== */
+const cafP=m=>Math.max(0,Math.min(100,(m-360)/1080*100));
+const cafR5=m=>Math.ceil(m/5)*5;
+function cafAdvice(doses,now,pl){
+  const bed=pl.bed,L=T=>cafRem(doses,T),from=Math.max(now==null?pl.wake:now,pl.wake);
+  const cut=cafCut(doses,CAF_MID,from,bed);let nx=null;
+  for(let T=from;T<=bed;T+=5){if(L(T)<=CAF_MID){nx=T;break}}
+  if(!doses.length&&from<=bed)nx=from;
+  const stop=(now!=null&&now>bed)||cut==null||nx==null||nx>cut;
+  const t0=now==null?pl.wake:now,rn=L(t0);let clr=t0;
+  for(let T=t0;T<t0+1200;T+=5){if(L(T)<=CAF_OK){clr=T;break}}
+  return {cut:cut,nx:nx,stop:stop,rn:rn,rb:L(bed),clr:clr,bed:bed,from:from};
+}
+function cafMinsTxt(m){return m<60?m+' دقيقة':((Math.round(m/30)/2)+' ساعة')}
 function renderSleepCaf(){
   const el=$('cSleep');if(!el)return;
-  const d=peek(sel),pl=slpFor(sel),isT=sel===TK(),now=isT?nowMin():null,doses=cafDoses(d);
-  const from=Math.max(pl.wake,0),bed=pl.bed;
-  const g=cafCut([],CAF_OK,from,bed),y=cafCut([],CAF_MID,from,bed); // الشريط: أوقات اليوم لكوب جديد
-  const pos=m=>Math.max(0,Math.min(100,(m-from)/(bed-from)*100));
-  const tk=doses.filter(x=>x[0]>=from&&x[0]<=bed).map(x=>'<i class="ctk" style="inset-inline-start:'+pos(x[0])+'%"></i>').join('');
-  const gp=g==null?0:pos(g),yp=y==null?gp:Math.max(gp,pos(y));
-  const f=m=>tStr(m%1440);
-  let h='<div class="zrow"><span class="num">'+f(from)+'</span><span class="num">'+f(bed)+'</span></div>'+
-    '<div class="zw"><div class="zbar"><i class="zg" style="width:'+gp+'%"></i><i class="zy" style="width:'+(yp-gp)+'%"></i><i class="zr" style="width:'+(100-yp)+'%"></i></div>'+tk+(isT&&now>=from&&now<=bed?'<u style="inset-inline-start:'+pos(now)+'%"><em>الحين</em></u>':'')+'</div>'+
-    '<div class="zlg"><div><b class="num">'+(g==null?'—':f(g))+'</b><small>مناسب حتى</small></div><div><b class="num">'+(y==null?'—':f(y))+'</b><small>انتبه حتى</small></div><div><b class="num">'+f(bed)+'</b><small>'+(pl.late?'نومك (متأخر)':'وقت نومك')+'</small></div></div>';
+  const d=peek(sel),pl=slpFor(sel),isT=sel===TK(),now=isT?nowMin():null,doses=cafDoses(d).sort((a,b)=>a[0]-b[0]),bed=pl.bed;
+  const f=m=>tStr(Math.round(m)%1440),tot=Math.round(doses.reduce((a,v)=>a+v[1],0));
+  const g=cafCut([],CAF_OK,360,bed),y=cafCut([],CAF_MID,360,bed),gp=g==null?0:cafP(g),yp=y==null?gp:Math.max(gp,cafP(y));
+  const ad=cafAdvice(doses,now,pl),stop=ad.stop,nx=ad.nx,cut=ad.cut;
+  const A=(m,css,inner,ex)=>'<span style="position:absolute;'+css+';inset-inline-start:'+cafP(m)+'%;transform:translateX(50%);white-space:nowrap;'+(ex||'')+'">'+inner+'</span>';
+  /* hero */
+  let big='',sub='',bc='var(--cg)';
   if(isT){
-    const rn=cafRem(doses,now);let msg='',sub='',zc='g';
-    if(now<from){msg='لسا بدري، أول كوب لك براحتك ☕'}
-    else{
-      const z=cafZone(doses,now,Math.max(bed,now)),clr=cafClear(doses,now);zc=now>bed?'r':z.z;
-      if(now>bed)msg='أي كوب الحين بيأثر على نومك'+(clr?' لين الساعة <b class="num">'+f(clr)+'</b>':'');
-      else if(z.z==='g')msg='هذا الكوب ما بيأثر على نومك 👌';
-      else msg='هذا الكوب بيأثر على عمق نومك لين الساعة <b class="num">'+(clr?f(clr):'—')+'</b>';
-      if(now<=bed)sub='يبقى منه <span class="num">'+Math.round(z.r)+'</span> ملغ عند نومك';
-    }
-    if(rn>=5)sub+=(sub?' · ':'')+'في جسمك الحين <span class="num">'+Math.round(rn)+'</span> ملغ';
-    h+='<div class="zmsg zm-'+zc+'">'+msg+(sub?'<small>'+sub+'</small>':'')+'</div>';
-  }
-  h+='<button type="button" class="link zset" id="zSet">⏰ أوقات النوم</button><div id="zForm" hidden>'+
+    if(stop){big='أوقف';bc='var(--cr)';sub=(now>bed?'أي كوب الحين بيأثر على نومك':'اكتفِ بما شربته')+(doses.length&&ad.clr>now?' · أثره يزول <span class="num">'+f(ad.clr)+'</span>'+(ad.clr>=1440?' (بكرة)':''):'')}
+    else if(nx<=now){big='الحين';sub='تقدر تشرب كوب · آخر موعد <span class="num">'+f(cut)+'</span>'}
+    else{big=cafMinsTxt(nx-now);sub='للكوب الجاي · <span class="num">'+f(nx)+'</span>'}
+  }else{big='<span class="num">'+tot+'</span> ملغ';bc='var(--ck)';sub=doses.length?'مجموع اليوم · عند نومك <span class="num">'+Math.round(ad.rb)+'</span> ملغ':'ما سجلت كافيين'}
+  const hero='<div class="chead"><b>☕ الكافيين</b><small>اليوم · <span class="num">'+doses.length+'</span> أكواب · <span class="num">'+tot+'</span> ملغ</small></div>'+
+    '<div class="chero"><div class="big" style="color:'+bc+'">'+big+'</div><small>'+sub+'</small></div>';
+  /* strip */
+  const ks=doses.map(x=>Math.round(x[0])),gr=[];
+  ks.forEach(k=>{const q=gr[gr.length-1];if(q&&cafP(k)-cafP(q[q.length-1])<=14)q.push(k);else gr.push([k])});
+  const cupLbl=gr.map(q=>{const c=q.reduce((a,b)=>a+b,0)/q.length,t=q.length===1?f(q[0]):(f(q[0])+' – '+f(q[q.length-1]));return A(c,'top:22px','<span style="font-size:13px">'+(q.length>1?'☕×'+q.length:'☕')+'</span><div class="num" style="font-size:10px;opacity:.8;margin-top:-1px;text-align:center">'+t+'</div>')}).join('');
+  const stem=ks.map(k=>'<i style="position:absolute;top:50px;height:12px;border-inline-start:1.5px solid color-mix(in srgb,var(--ck) 55%,transparent);inset-inline-start:'+cafP(k)+'%"></i>').join('');
+  const stopX=isT?(stop?now:cut):null;
+  const pastShade=isT?'<i style="position:absolute;top:62px;height:10px;border-radius:10px 0 0 10px;background:var(--cp);opacity:.5;inset-inline-start:0;width:'+cafP(now)+'%"></i>':'';
+  const hatch=(isT&&stopX!=null)?'<i style="position:absolute;top:62px;height:10px;border-radius:0 10px 10px 0;inset-inline-start:'+cafP(stopX)+'%;width:'+(100-cafP(stopX))+'%;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ck) 22%,transparent) 0 3px,transparent 3px 6px)"></i>':'';
+  const nowM=isT?('<i style="position:absolute;top:16px;height:60px;border-inline-start:1.5px solid var(--ck);inset-inline-start:'+cafP(now)+'%"></i>'+A(now,'top:-2px','الحين','font-size:10.5px;font-weight:800;background:var(--ck);color:var(--cp);padding:1px 8px;border-radius:10px')):'';
+  const nxM=(isT&&!stop)?('<span style="position:absolute;top:59px;width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2.5px solid var(--cg);background:var(--cp);transform:translateX(50%);inset-inline-start:'+cafP(nx)+'%"></span>'+A(nx,'top:80px','<span style="color:var(--cg);font-size:11px;font-weight:800">▶ الكوب الجاي</span><div class="num" style="color:var(--cg);font-size:11px;font-weight:700;text-align:center">'+f(nx)+'</div>')):'';
+  const stopM=isT?('<i style="position:absolute;top:58px;height:18px;border-inline-start:2.5px solid var(--cr);inset-inline-start:'+cafP(stopX)+'%"></i>'+A(stopX,'top:80px','<span style="color:var(--cr);font-size:11px;font-weight:800">⛔ '+(stop?'توقف':'حد التوقف')+'</span>'+(stop?'':'<div class="num" style="color:var(--cr);font-size:11px;font-weight:700;text-align:center">'+f(cut)+'</div>'))):'';
+  const bedM='<i style="position:absolute;top:60px;height:14px;border-inline-start:1.5px dashed color-mix(in srgb,var(--ck) 55%,transparent);inset-inline-start:'+cafP(bed)+'%"></i>'+A(bed,'top:80px','<span style="font-size:10.5px;opacity:.75">🌙 نومك</span><div class="num" style="font-size:10.5px;opacity:.75;text-align:center">'+f(bed)+'</div>');
+  const hrs=[360,540,720,900,1080,1260,1440].map(m=>'<span class="num" style="position:absolute;top:120px;white-space:nowrap;'+(m===1440?'left:0;':(m===360?'right:0;':'inset-inline-start:'+cafP(m)+'%;transform:translateX(50%);'))+'font-size:10px;opacity:.5">'+({360:'6 ص',540:'9 ص',720:'12 م',900:'3 م',1080:'6 م',1260:'9 م',1440:'12 ص'}[m])+'</span>').join('');
+  const strip='<div class="cstrip">'+
+    '<div style="position:absolute;top:62px;left:0;right:0;height:10px;border-radius:10px;background:linear-gradient(to left,var(--cg) 0,var(--cg) calc('+gp+'% - 7%),var(--cy) calc('+gp+'% + 7%),var(--cy) calc('+yp+'% - 7%),var(--cr) calc('+yp+'% + 7%),var(--cr) 100%)"></div>'+
+    pastShade+hatch+stem+nowM+nxM+stopM+bedM+cupLbl+hrs+'</div>';
+  const zf='<button type="button" class="link zset" id="zSet">⏰ أوقات النوم</button><div id="zForm" hidden>'+
     [['wb','نومك (سبت–أربعاء)'],['wk','صحيانك (أحد–خميس)'],['lb','نومك (خميس وجمعة)'],['lk','صحيانك (جمعة وسبت)']].map(a=>'<label>'+a[1]+'<input type="time" data-sl="'+a[0]+'" value="'+slpPlan()[a[0]]+'"></label>').join('')+
-    '<p class="cap">الحساب: نصف عمر الكافيين '+CAF_HL+' ساعات، وكوبك '+S.cupMg+' ملغ. «مناسب» = يبقى منه ≤ '+CAF_OK+' ملغ عند نومك.</p></div>';
-  el.innerHTML=h;
+    '<p class="cap">الحساب: نصف عمر الكافيين '+CAF_HL+' ساعات، وكوبك '+S.cupMg+' ملغ. «الكوب الجاي» حين يهبط مجموعك لنحو '+CAF_MID+' ملغ، و«حد التوقف» آخر موعد يبقى بعده أقل من '+CAF_MID+' ملغ عند نومك.</p></div>';
+  el.innerHTML=hero+strip+zf;
 }
+/* ===== شاشة إضافة كوب ===== */
+function cupInit(){const n=sel===TK()?nowMin():8*60;return {mode:'cup2',when:sel===TK()?'now':'other',t:n,n:1}}
+function cupDoses(){const d=peek(sel),ds=cafDoses(d);for(let i=0;i<M.n;i++)ds.push([M.when==='now'&&sel===TK()?nowMin():M.t,S.cupMg]);return ds}
+function renderCupSheet(){
+  const isT=sel===TK(),now=isT?nowMin():null,pl=slpFor(sel),t=(M.when==='now'&&isT)?now:M.t;
+  const chip=(a,txt,on)=>'<button type="button" class="cpchip'+(on?' on':'')+'" '+a+'>'+txt+'</button>';
+  const ad=cafAdvice(cupDoses(),now,pl),f=m=>tStr(Math.round(m)%1440);
+  const rel=isT?[[60,'قبل ساعة'],[120,'قبل ساعتين'],[180,'قبل 3 ساعات']]:[[420,'7:00 ص'],[480,'8:00 ص'],[600,'10:00 ص']];
+  const prev=!isT?'<small>الأوقات تتحسب على اليوم المحدد</small>':(ad.stop?'<b>بعد الإضافة: توقف</b><small>أثر أكوابك يزول '+f(ad.clr)+(ad.clr>=1440?' (بكرة)':'')+'</small>':'<b>بعد الإضافة: الكوب الجاي '+f(ad.nx)+'</b><small>آخر موعد '+f(ad.cut)+'</small>');
+  const err=M.err?'<p class="msg err">'+M.err+'</p>':'';
+  $('s2body').innerHTML='<div class="top2"><b>☕ أضف كوب</b><small>'+(isT?'حدّد الوقت لو نسيت تسجّله':'اليوم المحدد')+'</small></div>'+
+   (isT?'<div class="cprow">'+chip('data-cp="now"','الحين · '+f(now),M.when==='now')+chip('data-cp="other"','وقت ثاني',M.when==='other')+'</div>':'')+
+   '<div class="cpbig num">'+f(t)+'</div><div class="cpsub">وقت الكوب</div>'+
+   (M.when==='other'||!isT?'<div class="cprow wrap">'+rel.map(r=>chip('data-cr="'+(isT?now-r[0]:r[0])+'"',r[1],t===(isT?now-r[0]:r[0]))).join('')+'</div><label class="cptime">وقت محدد<input type="time" id="cpTime" value="'+hmS(t)+'"></label>':'')+
+   '<div class="cpsize"><span>الحجم · كوب <span class="num">'+S.cupMg+' ملغ</span></span><span class="stp"><button class="rb" type="button" data-cn="1">+</button><b class="num">'+M.n+'</b><button class="rb" type="button" data-cn="-1">−</button></span></div>'+
+   '<div class="adv cpprev'+(ad.stop&&isT?' stop':'')+'">'+prev+'</div>'+err+
+   '<div class="act"><button type="button" class="btn big" data-cp="save">أضف الكوب</button></div><button type="button" class="btn ghost" data-cp="back">رجوع</button>';
+}
+{const _rc2=renderS2;renderS2=function(){if(M&&M.mode==='cup2')return renderCupSheet();return _rc2()}}
+$('s2body').addEventListener('click',e=>{
+  if(!M||M.mode!=='cup2')return;
+  const b=e.target.closest('[data-cp],[data-cr],[data-cn]');if(!b)return;
+  if(b.dataset.cr!=null){M.t=+b.dataset.cr;M.when='other';M.err='';renderCupSheet();return}
+  if(b.dataset.cn){M.n=Math.max(1,Math.min(6,M.n+(+b.dataset.cn)));renderCupSheet();return}
+  const a=b.dataset.cp;
+  if(a==='now'){M.when='now';M.err='';renderCupSheet();return}
+  if(a==='other'){M.when='other';M.t=Math.max(0,nowMin()-60);M.err='';renderCupSheet();return}
+  if(a==='back'){closeS2();return}
+  if(a==='save'){
+    const isT=sel===TK(),t=(M.when==='now'&&isT)?nowMin():M.t;
+    if(isT&&t>nowMin()){M.err='الوقت لسا ما جا';renderCupSheet();return}
+    snap();const d=day(sel);for(let i=0;i<M.n;i++){d.cups++;d.cupT.push(t)}
+    const n=M.n;closeS2();save();renderAll();toast('+ '+n+' كوب قهوة ('+tStr(t)+')',true)
+  }
+});
+$('s2body').addEventListener('change',e=>{
+  if(!M||M.mode!=='cup2'||e.target.id!=='cpTime'||!e.target.value)return;
+  M.t=hm(e.target.value);M.when='other';M.err='';renderCupSheet();
+});
+$('cAdd').addEventListener('click',()=>openS2(cupInit()));
+
 {const _rc=renderCaf;renderCaf=function(){_rc();renderSleepCaf()}}
 $('secCaf').addEventListener('click',e=>{if(e.target.closest('#zSet'))$('zForm').hidden=!$('zForm').hidden});
 $('secCaf').addEventListener('change',e=>{
