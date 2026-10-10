@@ -1520,15 +1520,21 @@ $('s2body').addEventListener('change',async e=>{
     }catch(err){s2msg(errText(err)+' تقدر تكتب الأرقام بيدك.')}
   }
 });
-function readImage(file){return new Promise((res,rej)=>{
-  const fr=new FileReader();
-  fr.onload=()=>{const im=new Image();im.onload=()=>{
-    const mx=1280,s=Math.min(1,mx/Math.max(im.width,im.height)),c=document.createElement('canvas');
-    c.width=Math.max(1,Math.round(im.width*s));c.height=Math.max(1,Math.round(im.height*s));
-    c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+function readImage(file){return new Promise(async(res,rej)=>{
+  const fail=()=>rej({code:'img',message:'ما قدرت أفتح الصورة. جرّب صورة ثانية أو صوّرها من جديد'});
+  const draw=(src,w,h)=>{
+    const mx=1280,sc=Math.min(1,mx/Math.max(w,h)),c=document.createElement('canvas');
+    c.width=Math.max(1,Math.round(w*sc));c.height=Math.max(1,Math.round(h*sc));
+    c.getContext('2d').drawImage(src,0,0,c.width,c.height);
     res(c.toDataURL('image/jpeg',.85).split(',')[1]);
-  };im.onerror=()=>rej({code:'img',message:'ما قدرت أفتح الصورة'});im.src=fr.result};
-  fr.onerror=()=>rej({code:'img',message:'ما قدرت أقرأ الصورة'});fr.readAsDataURL(file)})}
+  };
+  try{
+    if(window.createImageBitmap){const bm=await createImageBitmap(file);draw(bm,bm.width,bm.height);if(bm.close)bm.close();return}
+  }catch(e){}
+  const u=URL.createObjectURL(file),im=new Image();
+  im.onload=()=>{try{draw(im,im.naturalWidth||im.width,im.naturalHeight||im.height)}catch(e){fail()}URL.revokeObjectURL(u)};
+  im.onerror=()=>{URL.revokeObjectURL(u);fail()};im.src=u;
+})}
 $('s2body').addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b||!M)return;
   if(b.dataset.rrm!==undefined){M.items.splice(+b.dataset.rrm,1);renderS2();return}
