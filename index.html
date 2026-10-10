@@ -457,6 +457,50 @@ details.mk-vit>div{display:block;margin-top:6px}
 .mk-meal .mb .item:first-child{border-top:0;margin-top:4px}
 #qText{min-height:58px!important;height:58px}
 .mk-vt{margin:-4px 0 10px}
+.cc-sec .ce{display:none;flex:none;color:var(--blue);font-weight:700;font-size:14px}
+.cc-sec.closed .ce{display:inline}
+.cc-sec{cursor:default}.cc-sec.closed{cursor:pointer}
+.pst{display:inline-flex;align-items:center;gap:6px;flex:none}
+.pst button{width:34px;height:34px;border-radius:50%;border:0;background:var(--fill);color:var(--blue);font-size:20px;font-family:inherit;font-weight:600}
+.pst b{min-width:26px;text-align:center;font-size:17px}
+.prow .pn small{font-weight:400;color:var(--muted);font-size:12.5px}
+
+/* v38 قائمة الطعام بأسلوب المنيو */
+.mtabs{display:flex;background:var(--fill);border-radius:12px;padding:3px;margin:2px 0 4px}
+.mtabs button{flex:1;border:0;background:none;border-radius:10px;padding:8px 4px;font-size:14px;font-weight:600;color:var(--muted);font-family:inherit;transition:background .25s,color .25s,box-shadow .25s}
+.mtabs button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.cathd.mhd{display:flex;align-items:center;gap:8px;margin:18px 0 2px;color:var(--ink)}
+.cathd.mhd b{font-size:17px;font-weight:800}.cathd.mhd i{flex:1;border-top:1.5px dotted var(--line)}.cathd.mhd small{color:var(--muted);font-size:12px}
+.lrow.mrow{gap:10px}
+.lrow .nm small .ch,.aopl .ch{display:inline-block;background:rgba(48,209,88,.14);color:var(--green);border-radius:7px;padding:1px 7px;font-size:11.5px;font-weight:700;margin-inline-end:4px;margin-top:3px}
+.lrow .kk{text-align:center;line-height:1.1;flex:none;margin-inline-end:2px}.lrow .kk b{display:block;font-size:16px}.lrow .kk small{font-size:10.5px;color:var(--muted);margin:0}
+.mrow.rise{animation:mrise .42s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*38ms)}
+@keyframes mrise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.plb{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:var(--green);color:#fff;font-size:21px;font-weight:600;font-family:inherit;transition:transform .15s}
+.plb:active,.pst button:active{transform:scale(.86)}
+.plb.pop{animation:mpop .35s}
+@keyframes mpop{40%{transform:scale(1.35)}100%{transform:scale(1)}}
+.mst{background:rgba(48,209,88,.14);border-radius:999px;padding:3px;gap:4px;animation:mstp .25s ease-out}
+.mst button{width:30px;height:30px;background:var(--green);color:#fff}.mst button:first-child{background:var(--card);color:var(--green)}.mst b{color:var(--green);min-width:20px}
+@keyframes mstp{from{transform:scale(.7);opacity:.4}to{transform:none;opacity:1}}
+.newmeal{width:100%;margin-top:12px;border:2px dashed var(--line);background:none;border-radius:16px;padding:13px;color:var(--green);font-weight:700;font-size:15px;font-family:inherit}
+#trayBar{position:fixed;inset-inline:14px;bottom:calc(74px + env(safe-area-inset-bottom,0px));max-width:532px;margin-inline:auto;z-index:14;background:#1C1C1E;color:#fff;border-radius:22px;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 32px rgba(0,0,0,.3);transform:translateY(160%);opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.2,.9,.3,1.15),opacity .25s}
+#trayBar.on{transform:none;opacity:1;pointer-events:auto}
+#trayBar .n{background:#FF9F0A;color:#000;min-width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+#trayBar .tx{flex:1;min-width:0}#trayBar .tx b{display:block;font-size:14.5px}#trayBar .tx small{opacity:.7;font-size:12px;white-space:nowrap}
+#trayBar select{background:#3A3A3C;color:#fff;border:0;border-radius:10px;padding:8px 6px;font-size:13px;font-family:inherit;width:auto;max-width:74px}
+#trayBar #trGo{border:0;background:var(--green);color:#fff;border-radius:13px;padding:10px 15px;font-weight:700;font-size:14px;font-family:inherit}
+#trayBar #trX{border:0;background:none;color:#fff9;font-size:22px;padding:0 4px}
+.sheetbg:not([hidden]) .sheet{animation:sup .34s cubic-bezier(.2,.85,.25,1)}
+@keyframes sup{from{transform:translateY(60px);opacity:.3}to{transform:none;opacity:1}}
+.qk{display:flex;gap:8px}.qk button{flex:1;border:0;border-radius:999px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);padding:8px 0;font-size:14px;font-weight:600;font-family:inherit;transition:background .2s,color .2s}
+.qk button.on{background:var(--green);color:#fff;box-shadow:none}
+.aopl{display:flex;flex-wrap:wrap;gap:8px}
+.aob{border:0;border-radius:999px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);padding:8px 13px;font-size:14px;font-weight:600;font-family:inherit;transition:transform .15s,background .2s,color .2s}
+.aob.on{background:var(--green);color:#fff;box-shadow:0 4px 12px rgba(48,209,88,.35);animation:mpop .35s}
+.aob:active{transform:scale(.94)}
+.aochk{display:flex;align-items:center;gap:8px;font-size:14px}.aochk input{width:auto}
+@media (prefers-reduced-motion:reduce){.mrow.rise,.plb.pop,.mst,.sheetbg:not([hidden]) .sheet,.aob.on{animation:none!important}#trayBar{transition:none}}
 </style>
 </head>
 <body>
@@ -523,6 +567,7 @@ details.mk-vit>div{display:block;margin-top:6px}
     <section class="card slim" id="myMeals" aria-label="قائمة الطعام">
       <div class="rowsp"><div><b>⭐ قائمة الطعام</b><div class="cap" id="mmCount"></div></div><button type="button" class="link" id="mmToggle">فتح</button></div>
       <div id="mmBody" hidden>
+        <div class="mtabs" id="mmTabs"></div>
         <input id="mmSearch" type="search" placeholder="🔍 ابحث في قائمة الطعام..." autocomplete="off">
         <div class="chiprow" id="mmFilter"></div>
         <div id="mmList"></div>
@@ -713,7 +758,7 @@ const EN=[[4,'نشيط','⚡'],[3,'عادي','🙂'],[2,'وسط','😐'],[1,'ت�
 const enAvg=d=>{const v=[d.energy,d.en2,d.en3].filter(x=>x!=null);return v.length?avgOf(v):null};
 const MD=[[5,'ممتاز','😄'],[4,'مبسوط','🙂'],[3,'عادي','😐'],[2,'مو زين','🙁'],[1,'زعلان','😢']];
 
-const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,s:45,w:3000,caf:400},cupMg:200,cupMl:245,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},lastBk:0,bkSnooze:0,rcp:[],prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
+const DEF={t:{k:1800,p:160,c:155,fi:30,f:60,s:45,w:3000,caf:400},cupMg:170,cupMl:245,vits:['فيتامين د','أوميغا 3','ماغنيسيوم','زنك'],key:'',orKey:'',orModel:'openai/gpt-4o-mini',model:'gemini-flash-latest',gem:'',days:{},cache:{},meals:[],adds:[],snacks:[],pend:[],reps:{},lastBk:0,bkSnooze:0,rcp:[],prof:{h:178,age:26,act:1.45,w0:null,d0:null}};
 let S=JSON.parse(JSON.stringify(DEF));
 let mornOpen=null,mornFor='';
 let sel=TK(),curMeal='b',vEdit=false,editId=null,storeOK=true,curView='Home',repOff=0,lastTK=TK();
@@ -722,7 +767,7 @@ try{
   if(raw){const o=JSON.parse(raw);S=Object.assign({},S,o);S.t=Object.assign({},DEF.t,o.t||{});S.days=o.days||{};S.cache=o.cache||{};S.vits=o.vits||[];S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.pend=o.pend||[];S.reps=o.reps||{};S.rcp=Array.isArray(o.rcp)?o.rcp:[];S.prof=Object.assign({},DEF.prof,o.prof||{})}
 }catch(e){storeOK=false}
 delete S.gem;
-if(S.cupV!==2){S.cupV=2;S.cupMl=245}
+if(S.cupV!==3){S.cupV=3;S.cupMl=245;S.cupMg=170}
 S.pend.forEach(p=>{if(p.st==='run')p.st='wait'});
 function fixDays(){Object.keys(S.days).forEach(k=>{const d=S.days[k];if(!d||typeof d!=='object'){delete S.days[k];return}d.items=d.items||[];d.water=d.water||[];d.cups=d.cups||0;d.cupT=d.cupT||[];d.vit=d.vit||{}})}
 fixDays();
@@ -738,7 +783,9 @@ function sum(list){
   const a=list.reduce((a,x)=>{for(const k of ['k','p','c','fi','f','s','w','cf'])a[k]+=x[k]||0;return a},{k:0,p:0,c:0,s:0,fi:0,f:0,w:0,cf:0});
   ['p','c','fi','f','s'].forEach(k=>a[k]=r1(a[k]));['k','w','cf'].forEach(k=>a[k]=Math.round(a[k]));return a;
 }
-const foodWater=d=>sum(d.items).w+d.cups*S.cupMl;
+const DRK=/قهوه|لاتيه|كابتشينو|اسبريسو|امريكانو|موكا|نسكافيه|شاي|كرك|عصير|سموذي|سموزي|حليب|لبن|(^|\s)ماء|مويه|مياه|مشروب|طاقه|كولا|بيبسي|سفن|فانتا|سبرايت|زيرو|شيك|ريد بول|مونستر/;
+const drinkW=x=>{if(!(x.w>0))return 0;if(x.dr||x.cf>=10)return x.w;const t=String(x.n||'').toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');return DRK.test(t)?x.w:0}
+const foodWater=d=>d.items.reduce((a,x)=>a+drinkW(x),0)+d.cups*S.cupMl;
 const water=d=>d.water.reduce((a,x)=>a+x.ml,0)+foodWater(d);
 const cafMg=d=>d.cups*S.cupMg+sum(d.items).cf;
 
@@ -917,8 +964,9 @@ function renderWater(){
   const d=peek(sel),dr=d.water.reduce((a,x)=>a+x.ml,0),fd=foodWater(d),tot=dr+fd,tg=S.t.w;
   $('wSmall').textContent=lit(tot)+' / '+lit(tg)+(tot>=tg?' ✓':'');
   $('wBar').style.width=Math.min(tot/tg*100,100)+'%';
-  const l=d.water[d.water.length-1];
-  $('wLast').textContent=l?'آخر إضافة '+l.ml+' مل'+(l.t!=null?' · '+tStr(l.t):''):'ما سجلت ماء مباشر'+(fd?' (من الأكل '+lit(fd)+')':'');
+  const cof=d.cups*S.cupMl+d.items.reduce((a,x)=>a+(x.cf>=10?drinkW(x):0),0),oth=d.items.reduce((a,x)=>a+(x.cf>=10?0:drinkW(x)),0),pp=[];
+  if(dr>0)pp.push('💧 ماء '+dr+' مل');if(cof>0)pp.push('☕ قهوة '+cof+' مل');if(oth>0)pp.push('🥤 مشروبات '+oth+' مل');
+  $('wLast').textContent=pp.length?pp.join(' · '):'ما سجلت شي'
   $('wUndo').disabled=!d.water.length;
 }
 function renderCaf(){
@@ -1711,7 +1759,7 @@ function show(v){
   window.scrollTo(0,0);
 }
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)show(b.dataset.v)});
-document.addEventListener('click',e=>{const g=e.target.closest('[data-scroll]');if(g){const t=$(g.dataset.scroll);if(t)t.scrollIntoView({behavior:'smooth',block:'start'})}});
+document.addEventListener('click',e=>{const g=e.target.closest('[data-scroll]');if(g){if(typeof ccOpen==='function')ccOpen(g.dataset.scroll);const t=$(g.dataset.scroll);if(t)t.scrollIntoView({behavior:'smooth',block:'start'})}});
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'&&TK()!==lastTK){if(sel===lastTK)sel=TK();lastTK=TK();renderAll()}
 });
@@ -2594,7 +2642,7 @@ let atCat='meal';
 function entryItems(e){
   if(e.t==='meal'){const m=S.meals.find(v=>v.id===e.id);return m?m.parts.map(p=>Object.assign({n:p.n,q:p.g+(p.u?' حصة':' جم'),g:p.g},scaleRow({b:p,g:p.g}))):[]}
   const x=S.snacks.find(v=>v.id===e.id);
-  return x?[{n:x.n,q:'',k:x.k||0,p:x.p||0,c:x.c||0,fi:x.fi||0,f:x.f||0,s:x.s||0,w:x.w||0,cf:x.cf||0}]:[];
+  return x?[Object.assign({n:x.n,q:'',k:x.k||0,p:x.p||0,c:x.c||0,fi:x.fi||0,f:x.f||0,s:x.s||0,w:x.w||0,cf:x.cf||0},catOf(x)==='drink'?{dr:1}:{})]:[];
 }
 function atRows(){
   const q=(M.q||'').trim().toLowerCase();
@@ -2903,6 +2951,7 @@ function renderNw(){
       (M.per==='item'?'<label>الماء (مل)<input id="nw_w" type="number" inputmode="numeric" min="0" value="'+esc(M.v.w==null?'':M.v.w)+'"></label><label>الكافيين (ملغ)<input id="nw_cf" type="number" inputmode="numeric" min="0" value="'+esc(M.v.cf==null?'':M.v.cf)+'"></label>':
         '<label>وزن الحبة (جم) اختياري<input id="nw_pc" type="number" inputmode="decimal" min="0" value="'+esc(M.pc)+'"></label>')+'</div>'+
       (M.per==='item'&&!M.plate?'<label>تنحسب في وجبة'+slotSel()+'</label>':'')+
+      '<label class="aochk"><input type="checkbox" id="nwAo"'+(M.ao?' checked':'')+'> يُستخدم كإضافة (يظهر ضمن اقتراحات الإضافات)</label>'+
       '<p class="msg '+(M.ok?'ok':'err')+'" id="s2msg" aria-live="polite">'+esc(M.msg||'')+'</p>'+
       (M.plate?'<div class="btns2"><button type="button" class="btn" style="background:var(--fill);color:var(--ink)" data-nw="psave">⭐ حفظ بالقائمة</button><button type="button" class="btn" data-nw="padd">＋ أضفه للوجبة</button></div>':
       '<div class="btns2"><button type="button" class="btn" style="background:var(--fill);color:var(--ink)" data-nw="save">⭐ حفظ بالقائمة</button><button type="button" class="btn" data-nw="add">＋ إضافة لوجبة</button></div>');
@@ -2912,16 +2961,17 @@ function renderNw(){
 function nwRead(){
   const v=M.v,c=dec(v.c),it={k:z(v.k),p:dec(v.p),c:c,fi:dec(v.fi),f:dec(v.f),s:Math.min(dec(v.s),c),w:z(v.w),cf:z(v.cf)};return it;
 }
+const aoOn=()=>($('nwAo')&&$('nwAo').checked)?1:0;
 function nwSave(add){
   const n=String(M.name||'').trim();
   if(!n){M.msg='اكتب الاسم.';M.ok=false;return false}
   const r=nwRead();
   if(!(r.k>0)&&!(r.p||r.c||r.f)){M.msg='اكتب الأرقام، أو استخدم الوصف أو صوّر الملصق.';M.ok=false;return false}
   let rec;
-  if(M.per==='100'){rec={id:Date.now(),sg:0,n:n.slice(0,80),g:100,k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,cat:M.cat,w:0,cf:0,pc:dec(M.pc)};S.adds.push(rec)}
-  else{rec={id:Date.now(),n:n.slice(0,80),k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,w:r.w,cf:r.cf,cat:M.cat,slot:'s'};if(!add)S.snacks.push(rec)}
+  if(M.per==='100'){rec={id:Date.now(),sg:0,n:n.slice(0,80),g:100,k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,cat:M.cat,w:0,cf:0,pc:dec(M.pc),ao:aoOn()};S.adds.push(rec)}
+  else{rec={id:Date.now(),n:n.slice(0,80),k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,w:r.w,cf:r.cf,cat:M.cat,slot:'s',ao:aoOn()};if(!add)S.snacks.push(rec)}
   if(add&&M.per==='item'){
-    const msg=commit([{n:rec.n,q:'',k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,w:r.w,cf:r.cf}],M.slot);closeS2();qSay(msg,'ok');return true;
+    const msg=commit([Object.assign({n:rec.n,q:'',k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,w:r.w,cf:r.cf},M.cat==='drink'?{dr:1}:{})],M.slot);closeS2();qSay(msg,'ok');return true;
   }
   save();mmOpen=true;renderMyMeals();
   if(add&&M.per==='100'){const sl=M.slot;openAddG(rec,sl);toast('انحفظ «'+n+'» بالقائمة. حدد الكمية وأضفه',false);return true}
@@ -3112,8 +3162,10 @@ $('s2body').addEventListener('change',async e=>{
 });
 
 /* ===== v34: صحن الوجبة + بطاقات تقفل + وجبات مختصرة ===== */
+const plUnit=r=>r.u===2?pcWord(r.n):(r.u===1?r.g+' حصة':'');
+function plStep(r,i){return '<div class="pst"><button type="button" data-pst="'+i+':-1" aria-label="أنقص">−</button><b class="num">'+(r.u===2?r.cnt:r.g)+'</b><button type="button" data-pst="'+i+':1" aria-label="زد">＋</button></div>'}
 function plRowsH(){
-  return M.rows.map((r,i)=>'<div class="prow"><div class="pn">'+esc(r.n)+'</div><label class="pg"><input type="number" inputmode="decimal" step="any" min="0" value="'+(r.g||'')+'" data-g="'+i+'" placeholder="'+(r.u?'حصة':'جم')+'" aria-label="الكمية"><span>'+(r.u?'حصة':'جم')+'</span></label><button type="button" class="vx" data-rm="'+i+'" aria-label="حذف">×</button><div class="pm num" id="pm'+i+'">'+macroLine(scaleRow(r))+'</div></div>').join('');
+  return M.rows.map((r,i)=>r.u?'<div class="prow"><div class="pn">'+esc(r.n)+(r.u===2?'<small> · '+r.g+' جم</small>':'')+'</div>'+plStep(r,i)+'<div class="pm num" id="pm'+i+'">'+macroLine(scaleRow(r))+'</div></div>':'<div class="prow"><div class="pn">'+esc(r.n)+'</div><label class="pg"><input type="number" inputmode="decimal" step="any" min="0" value="'+(r.g||'')+'" data-g="'+i+'" placeholder="جم" aria-label="الكمية"><span>جم</span></label><button type="button" class="vx" data-rm="'+i+'" aria-label="حذف">×</button><div class="pm num" id="pm'+i+'">'+macroLine(scaleRow(r))+'</div></div>').join('');
 }
 function renderPlate(){
   $('s2body').innerHTML='<h2>🍽️ وجبة جديدة</h2><input id="s2name" type="text" placeholder="اسم الوجبة" autocomplete="off" value="'+esc(M.name||'')+'">'+
@@ -3124,15 +3176,23 @@ function renderPlate(){
   updateTot();
 }
 function plRowFrom(en){
-  if(en.t==='add'){const a=S.adds.find(v=>v.id===en.id);return {n:a.n,b:Object.assign({},a,{g:a.g||100}),g:a.pc>0?a.pc:0,free:false,u:0}}
-  const x=S.snacks.find(v=>v.id===en.id),b={g:1};KEYS.forEach(k=>b[k]=x[k]||0);return {n:x.n,b:b,g:1,free:false,u:1};
+  if(en.t==='add'){const a=S.adds.find(v=>v.id===en.id),b=Object.assign({},a,{g:a.g||100});
+    return a.pc>0?{key:en.key,n:a.n,b:b,g:a.pc,cnt:1,pcw:a.pc,free:false,u:2}:{key:en.key,n:a.n,b:b,g:0,free:false,u:0}}
+  const x=S.snacks.find(v=>v.id===en.id),b={g:1};KEYS.forEach(k=>b[k]=x[k]||0);return {key:en.key,n:x.n,b:b,g:1,free:false,u:1};
+}
+function plBump(r,d){ // returns false when row should be removed
+  if(r.u===2){r.cnt+=d;if(r.cnt<=0)return false;r.g=Math.round(r.cnt*r.pcw*10)/10;return true}
+  r.g+=d;return r.g>0;
 }
 function pickRows(){
   const q=(M.q||'').trim().toLowerCase();
   const l=listEntries().filter(x=>x.t!=='meal'&&(M.pc==='all'||x.kind===M.pc)&&(!q||x.n.toLowerCase().includes(q)));
   if(!l.length)return '<p class="note" style="padding:8px 0">ما فيه أصناف هنا. اضغط «＋ صنف جديد» من الوجبة.</p>';
-  return l.map(x=>{const fl=M.fl&&M.fl[x.key]&&Date.now()-M.fl[x.key]<3000;
-    return '<div class="mk-row"><span class="em">'+x.e+'</span><div class="nm">'+esc(x.n)+'<small>'+esc(x.sub.replace(/^[^·]*· ?/,'')||x.sub)+'</small></div><button type="button" class="'+(fl?'done':'')+'" data-pkk="'+x.key+'">'+(fl?'✓':'＋')+'</button></div>'}).join('');
+  return l.map(x=>{const r=M.plate.rows.find(v=>v.key===x.key);let ctl;
+    if(r&&r.u)ctl='<div class="pst"><button type="button" data-pkm="'+x.key+':-1" aria-label="أنقص">−</button><b class="num">'+(r.u===2?r.cnt:r.g)+'</b><button type="button" data-pkm="'+x.key+':1" aria-label="زد">＋</button></div>';
+    else if(r)ctl='<button type="button" class="done" data-pkk="'+x.key+'">✓</button>';
+    else ctl='<button type="button" data-pkk="'+x.key+'">＋</button>';
+    return '<div class="mk-row"><span class="em">'+x.e+'</span><div class="nm">'+esc(x.n)+'<small>'+esc(x.sub.replace(/^[^·]*· ?/,'')||x.sub)+'</small></div>'+ctl+'</div>'}).join('');
 }
 function renderPick(){
   $('s2body').innerHTML='<h2>اختر من قائمتك</h2><input id="pkq" type="search" placeholder="🔍 ابحث..." autocomplete="off" value="'+esc(M.q||'')+'">'+
@@ -3145,11 +3205,11 @@ function nwPlate(add){
   const r=nwRead();
   if(!(r.k>0)&&!(r.p||r.c||r.f)){M.msg='اكتب الأرقام، أو استخدم الوصف أو صوّر الملصق.';M.ok=false;return false}
   const pl=M.plate,per=M.per,cat=M.cat,pc=dec(M.pc);
-  const rec=Object.assign({id:Date.now(),n:n.slice(0,80),cat:cat},r);
+  const rec=Object.assign({id:Date.now(),n:n.slice(0,80),cat:cat,ao:aoOn()},r);
   if(per==='100'){Object.assign(rec,{g:100,sg:0,pc:pc,w:0,cf:0})}
   if(add){
     const b=Object.assign({},rec,{g:per==='100'?100:1});
-    pl.rows.push({n:rec.n,b:b,g:per==='100'?(pc||0):1,free:false,u:per==='100'?0:1});
+    pl.rows.push(per==='100'?(pc>0?{n:rec.n,b:b,g:pc,cnt:1,pcw:pc,free:false,u:2}:{n:rec.n,b:b,g:0,free:false,u:0}):{n:rec.n,b:b,g:1,free:false,u:1});
   }else{
     if(per==='100')S.adds.push(rec);else S.snacks.push(Object.assign(rec,{slot:'s'}));
     save();renderMyMeals();toast('انحفظ «'+n+'» في قائمة الطعام',false);
@@ -3163,17 +3223,18 @@ $('s2body').addEventListener('click',e=>{
   if(!M)return;
   const b=e.target.closest('button');if(!b)return;
   if(M.mode==='plate'){
+    if(b.dataset.pst){const a=b.dataset.pst.split(':'),i=+a[0];if(!plBump(M.rows[i],+a[1]))M.rows.splice(i,1);renderPlate();return}
     const a=b.dataset.pl;if(!a)return;
     if(a==='pick'){openS2({mode:'pick',plate:M,pc:'all',q:'',fl:{}});return}
     if(a==='new'){openS2({mode:'new',plate:M});return}
     if(!M.rows.length||M.rows.some(r=>!(r.g>0))){s2msg('أضف صنف واحد على الأقل واكتب كمياتها.');return}
     if(a==='save'){
       if(!(M.name||'').trim()){s2msg('اكتب اسم الوجبة.');return}
-      S.meals.push({id:Date.now(),n:M.name.trim(),slot:M.slot,parts:M.rows.map(r=>Object.assign({n:r.n,g:r.g},r.u?{u:1}:{},scaleRow(r)))});
+      S.meals.push({id:Date.now(),n:M.name.trim(),slot:M.slot,parts:M.rows.map(r=>Object.assign({n:r.n,g:r.g},r.u===1?{u:1}:{},scaleRow(r)))});
       save();mmOpen=true;renderMyMeals();const nm=M.name.trim();closeS2();toast('تم حفظ الوجبة «'+nm+'»',false);return;
     }
     if(a==='add'){
-      const items=M.rows.map(r=>Object.assign({n:r.n,q:r.g+(r.u?' حصة':' جم'),g:r.g},scaleRow(r)));
+      const items=M.rows.map(r=>Object.assign({n:r.n,q:(r.u===2?pcWord(r.cnt)+' · '+r.g+' جم':(r.u===1?r.g+' حصة':r.g+' جم')),g:r.g},scaleRow(r)));
       const msg=commit(items,M.slot);closeS2();qSay(msg,'ok');return;
     }
     return;
@@ -3183,33 +3244,48 @@ $('s2body').addEventListener('click',e=>{
     if(b.dataset.act==='pkdone'){M=M.plate;renderS2();return}
     if(b.dataset.pkk){
       const en=listEntries().find(x=>x.key===b.dataset.pkk);if(!en)return;
-      M.plate.rows.push(plRowFrom(en));M.fl[en.key]=Date.now();
-      $('pkList').innerHTML=pickRows();setTimeout(()=>{if(M&&M.mode==='pick'&&$('pkList'))$('pkList').innerHTML=pickRows()},3100);
+      const ix=M.plate.rows.findIndex(v=>v.key===en.key);
+      if(ix>=0)M.plate.rows.splice(ix,1);else M.plate.rows.push(plRowFrom(en));
+      $('pkList').innerHTML=pickRows();return;
+    }
+    if(b.dataset.pkm){
+      const a=b.dataset.pkm.split(':'),d=+a.pop(),key=a.join(':'),ix=M.plate.rows.findIndex(v=>v.key===key);
+      if(ix>=0&&!plBump(M.plate.rows[ix],d))M.plate.rows.splice(ix,1);
+      $('pkList').innerHTML=pickRows();return;
     }
   }
 });
-/* ---- بطاقات تقفل وتحفظ حالتها ---- */
-const CCS=[['secMid','⚡',null,d=>{const o=EN.find(v=>v[0]===d.en2);return o?o[1]:''}],['secTrain','🏋️',null,d=>d.train==null?'':(d.train?'تمرنت ✓':'ما تمرنت')],['secVit','💊','vSmall',null],['secEnd','🌙',null,d=>{const o=MD.find(v=>v[0]===d.mood);return o?o[1]+' '+o[2]:''}]];
+/* ---- بطاقات تسجّل وتتقفل أوتوماتيكياً ---- */
+const CCS=[
+ ['secMid','⚡',d=>d.en2!=null,d=>{const o=EN.find(v=>v[0]===d.en2);return o?o[2]+' '+o[1]:''}],
+ ['secTrain','🏋️',d=>d.train!=null,d=>d.train==null?'':(d.train?'تمرنت ✓':'ما تمرنت')],
+ ['secVit','💊',d=>S.vits.length>0&&S.vits.every(v=>vTaken(d,v)),d=>S.vits.length?S.vits.filter(v=>vTaken(d,v)).length+' / '+S.vits.length+' ✓':''],
+ ['secEnd','🌙',d=>d.en3!=null&&d.mood!=null,d=>{const o=MD.find(v=>v[0]===d.mood),e=EN.find(v=>v[0]===d.en3);return (o?o[2]+' '+o[1]:'')+(e?' · نشاط '+e[1]:'')}]
+];
+const ccEd={},ccSig={};
 CCS.forEach(c=>{
   const sec=$(c[0]),lb=sec&&sec.previousElementSibling;if(!sec||!lb||!lb.classList.contains('sec'))return;
-  lb.classList.add('cc-sec');lb.dataset.cc=c[0];lb.setAttribute('role','button');lb.tabIndex=0;
-  lb.innerHTML='<span class="cn">'+c[1]+' '+esc(lb.textContent)+'</span><span class="cs"></span><span class="chev">⌃</span>';
+  lb.classList.add('cc-sec');lb.dataset.cc=c[0];
+  lb.innerHTML='<span class="cn">'+c[1]+' '+esc(lb.textContent)+'</span><span class="cs"></span><span class="ce">تعديل</span>';
 });
-const ccOpen=id=>!(S.ui&&S.ui.cc&&S.ui.cc[id]===false);
 function ccSync(){
   const d=peek(sel);
   CCS.forEach(c=>{
     const sec=$(c[0]),lb=sec&&sec.previousElementSibling;if(!sec||!lb||!lb.classList.contains('cc-sec'))return;
-    const op=ccOpen(c[0]);sec.hidden=!op;lb.classList.toggle('closed',!op);lb.setAttribute('aria-expanded',String(op));
-    const t=c[2]?($(c[2])||{}).textContent:(c[3]?c[3](d):'');
-    lb.querySelector('.cs').textContent=t||'';
+    const id=c[0],sm=c[3](d);
+    if(ccEd[id]!==undefined&&(ccEd[id]!==sel||(sm!==ccSig[id]&&!(id==='secVit'&&vEdit))))delete ccEd[id];
+    const op=!c[2](d)||ccEd[id]===sel;
+    sec.hidden=!op;lb.classList.toggle('closed',!op);
+    lb.setAttribute('role',op?'':'button');lb.tabIndex=op?-1:0;
+    lb.querySelector('.cs').textContent=op?'':sm;
   });
 }
+function ccOpen(id){const c=CCS.find(v=>v[0]===id);if(!c)return;const sec=$(id);if(sec&&sec.hidden){ccEd[id]=sel;ccSig[id]=c[3](peek(sel));ccSync()}}
 document.addEventListener('click',e=>{
-  const l=e.target.closest('.cc-sec');if(!l)return;
-  const id=l.dataset.cc;S.ui=S.ui||{};S.ui.cc=S.ui.cc||{};S.ui.cc[id]=!ccOpen(id);save();ccSync();
+  const l=e.target.closest('.cc-sec.closed');if(!l)return;
+  const id=l.dataset.cc,c=CCS.find(v=>v[0]===id);ccEd[id]=sel;ccSig[id]=c[3](peek(sel));ccSync();
 });
-document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('cc-sec')){e.preventDefault();e.target.click()}});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('closed')&&e.target.classList.contains('cc-sec')){e.preventDefault();e.target.click()}});
 ['renderAll','renderWater','renderCaf','renderVit','renderBody'].forEach(n=>{const f=eval(n);eval(n+'=function(){const r=f.apply(this,arguments);ccSync();return r}')});
 /* ---- وجبات اليوم مختصرة ---- */
 renderMeals=function(){
@@ -3229,6 +3305,155 @@ $('meals').addEventListener('click',e=>{
   const k=b.dataset.mtog;S.ui=S.ui||{};S.ui.mo=S.ui.mo||{};S.ui.mo[k]=!S.ui.mo[k];save();renderMeals();
 });
 ccSync();
+/* ===== v38: قائمة الطعام بأسلوب المنيو: تبويبات + عدادات + شريط الوجبة + ورقة أساس وإضافات ===== */
+let mmTab='items',mmAnim=true,mmPop='',TRAY=[],trSlot='';
+mmOpen=true;
+const mrec=en=>en.t==='add'?S.adds.find(v=>v.id===en.id):(en.t==='sn'?S.snacks.find(v=>v.id===en.id):S.meals.find(v=>v.id===en.id));
+function entStats(en){
+  const r=mrec(en);if(!r)return {k:0,p:0,note:''};
+  if(en.t==='meal'){const t=sum(r.parts.map(p=>scaleRow({b:p,g:p.g})));return {k:t.k,p:t.p,note:r.parts.length+' أصناف'}}
+  if(en.t==='sn')return {k:r.k||0,p:r.p||0,note:r.cf?r.cf+' ملغ كافيين':'حصة'};
+  const b=Object.assign({},r,{g:r.g||100});
+  if(r.pc>0){const s=scaleRow({b:b,g:r.pc});return {k:s.k,p:s.p,note:r.pc+' جم'}}
+  const s=scaleRow({b:b,g:100});return {k:s.k,p:s.p,note:'لكل 100 جم'};
+}
+function recentEntries(){
+  const all=listEntries().filter(x=>x.t!=='meal'),seen={},out=[];
+  Object.keys(S.days).sort().reverse().some(k=>{
+    (S.days[k].items||[]).slice().reverse().forEach(it=>{const en=all.find(x=>x.n===it.n);if(en&&!seen[en.key]&&out.length<12){seen[en.key]=1;out.push(en)}});
+    return out.length>=12;
+  });
+  return out;
+}
+const trI=k=>TRAY.findIndex(r=>r.key===k);
+function mRow(x,i,rise){
+  const st=entStats(x),fl=flash[x.key]&&Date.now()-flash[x.key]<3500;
+  let ctl;
+  if(mmEdit)ctl='<button type="button" class="dx ed" data-ed="'+x.t+':'+x.id+'" aria-label="تعديل">✎</button><button type="button" class="dx" data-del="'+x.t+':'+x.id+'" aria-label="حذف">×</button>';
+  else if(x.t==='meal')ctl='<button type="button" class="add" data-edm="'+x.key+'" aria-label="تعديل الإضافات">✏️</button><button type="button" class="add'+(fl?' done':'')+'" data-add="meal:'+x.id+'">'+(fl?'✓ أضيف':'＋ أضف')+'</button>';
+  else{
+    const ti=trI(x.key),r=ti>=0?TRAY[ti]:null;
+    if(r)ctl='<div class="pst mst"><button type="button" data-tpm="'+x.key+':-1" aria-label="أنقص">−</button><b class="num">'+(r.u===2?r.cnt:r.g)+'</b><button type="button" data-tpm="'+x.key+':1" aria-label="زد">＋</button></div>';
+    else{const a=x.t==='add'&&!(mrec(x).pc>0);ctl='<button type="button" class="plb'+(mmPop===x.key?' pop':'')+'" '+(a?'data-open="'+x.key+'"':'data-tray="'+x.key+'"')+' aria-label="إضافة">＋</button>'}
+  }
+  const chips=(st.p>0?'<span class="ch">'+st.p+' بروتين</span>':'')+(st.note?'<span class="ch">'+esc(st.note)+'</span>':'');
+  return '<div class="lrow mrow'+(rise?' rise':'')+'" style="--i:'+Math.min(i,12)+'"><span class="em">'+x.e+'</span><div class="nm" data-open="'+x.key+'">'+esc(x.n)+'<small>'+chips+'</small></div><div class="kk num"><b>'+fmt(st.k)+'</b><small>سعرة</small></div>'+ctl+'</div>';
+}
+renderMyMeals=function(){
+  const all=listEntries(),rise=mmAnim;mmAnim=false;
+  $('mmCount').textContent=all.length?all.length+' عنصر · كل شي تضيفه بضغطة':'ما فيه عناصر بعد';
+  $('mmToggle').textContent=mmOpen?'إغلاق':'فتح';
+  $('mmBody').hidden=!mmOpen;
+  if(mmF!=='all'&&!catKnown(mmF))mmF='all';
+  $('mmEdit').textContent=mmEdit?'تم':'تعديل';
+  if(!mmOpen){renderTray();return}
+  $('mmTabs').innerHTML=[['items','الأصناف'],['meals','وجباتي'],['recent','الأخيرة']].map(t=>'<button type="button" data-mt="'+t[0]+'" class="'+(t[0]===mmTab?'on':'')+'">'+t[1]+'</button>').join('');
+  $('mmFilter').hidden=mmTab!=='items';
+  $('mmFilter').innerHTML=[['all','الكل','']].concat(CATS.filter(c=>c[0]!=='meal'&&(c[0]!=='other'||all.some(x=>x.kind==='other')))).map(c=>'<span class="cp'+(c[0]===mmF?' on':'')+'"><button type="button" data-f="'+c[0]+'">'+(c[2]?c[2]+' ':'')+esc(c[1])+'</button></span>').join('')+'<span class="cp"><button type="button" data-ncat="list" style="color:var(--blue)">＋ تصنيف</button></span>';
+  const q=mmQ.trim().toLowerCase(),inq=x=>!q||x.n.toLowerCase().includes(q);
+  let h='',n=0;
+  if(mmTab==='meals'){const l=all.filter(x=>x.t==='meal'&&inq(x));h=l.map(x=>mRow(x,n++,rise)).join('')+'<button type="button" class="newmeal" data-act-nm="1">＋ وجبة جديدة</button>'}
+  else if(mmTab==='recent'){const l=recentEntries().filter(inq);h=l.map(x=>mRow(x,n++,rise)).join('')||'<p class="cap" style="padding:10px 0">لسا ما سجلت شي. أصنافك الأخيرة تطلع هنا.</p>'}
+  else{
+    const l=all.filter(x=>x.t!=='meal'&&(mmF==='all'||x.kind===mmF)&&inq(x));
+    if(mmF==='all'&&!q)CATS.forEach(c=>{const g=l.filter(x=>x.kind===c[0]);if(g.length)h+='<div class="cathd mhd"><b>'+c[2]+' '+esc(c[1])+'</b><i></i><small>'+g.length+'</small></div>'+g.map(x=>mRow(x,n++,rise)).join('')});
+    else h=l.map(x=>mRow(x,n++,rise)).join('');
+  }
+  if(!h||h.indexOf('lrow')<0&&mmTab!=='meals'){
+    h=(h||'')+'<p class="cap" style="padding:10px 0">'+(q?'ما لقيت «'+esc(mmQ.trim())+'» في قائمتك.':(all.length?'ما فيه شي هنا.':'احفظ أصنافك ووجباتك هنا، وتضيفها بضغطة. اضغط «+ جديد».'))+'</p>'+(q&&hasAI()?'<button type="button" class="btn sm soft" data-ask="1">✨ صف «'+esc(mmQ.trim())+'» وأضيفه بالذكاء</button>':'');
+  }
+  mmPop='';
+  $('mmList').innerHTML=h;renderTray();
+};
+/* ---- شريط الوجبة الحالية ---- */
+const trayBar=document.createElement('div');trayBar.id='trayBar';trayBar.setAttribute('role','region');trayBar.setAttribute('aria-label','وجبتك الحالية');document.body.appendChild(trayBar);
+function trTot(){return sum(TRAY.map(scaleRow))}
+function renderTray(){
+  const vis=TRAY.length>0&&$('myMeals')&&$('myMeals').offsetParent!==null;
+  trayBar.classList.toggle('on',!!vis);
+  if(!TRAY.length){return}
+  if(!trSlot)trSlot=curMeal;
+  const t=trTot(),cnt=TRAY.reduce((a,r)=>a+(r.u===2?r.cnt:r.g),0);
+  trayBar.innerHTML='<div class="n num">'+cnt+'</div><div class="tx"><b>وجبتك الحالية</b><small class="num">'+fmt(t.k)+' سعرة · '+t.p+' بروتين</small></div><select id="trSlot" aria-label="الوجبة">'+MEALS.map(m=>'<option value="'+m[0]+'"'+(m[0]===trSlot?' selected':'')+'>'+m[1]+'</option>').join('')+'</select><button type="button" id="trGo">أضف</button><button type="button" id="trX" aria-label="تفريغ">×</button>';
+}
+trayBar.addEventListener('change',e=>{if(e.target.id==='trSlot')trSlot=e.target.value});
+trayBar.addEventListener('click',e=>{
+  if(e.target.closest('#trX')){TRAY=[];renderMyMeals();return}
+  if(e.target.closest('#trGo')){
+    if(!TRAY.length)return;
+    const items=TRAY.map(r=>Object.assign({n:r.n,q:(r.u===2?pcWord(r.cnt)+' · '+r.g+' جم':r.g+' حصة'),g:r.g},scaleRow(r)));
+    const slot=trSlot||curMeal;TRAY.forEach(r=>flash[r.key]=Date.now());TRAY=[];
+    const msg=commit(items,slot);qSay(msg,'ok');renderMyMeals();setTimeout(renderMyMeals,3600);
+  }
+});
+{const _sh=show;show=function(){const r=_sh.apply(this,arguments);try{renderTray()}catch(e){}return r}}
+/* ---- النقرات في القائمة ---- */
+$('myMeals').addEventListener('click',e=>{
+  const mt=e.target.closest('[data-mt]');
+  if(mt){mmTab=mt.dataset.mt;mmAnim=true;renderMyMeals();return}
+  if(e.target.closest('#mmFilter [data-f]')){mmAnim=true;return}
+  if(e.target.closest('[data-act-nm]')){openS2({mode:'plate',rows:[],name:'',slot:curMeal});return}
+  if(e.target.closest('[data-ask]')){const q=mmQ.trim();$('qText').value=q;mmQ='';$('mmSearch').value='';renderMyMeals();$('qGo').click();return}
+  const tr=e.target.closest('[data-tray]');
+  if(tr){const en=listEntries().find(x=>x.key===tr.dataset.tray);if(!en)return;TRAY.push(plRowFrom(en));mmPop=en.key;renderMyMeals();return}
+  const tp=e.target.closest('[data-tpm]');
+  if(tp){const a=tp.dataset.tpm.split(':'),d=+a.pop(),k=a.join(':'),i=trI(k);if(i>=0&&!plBump(TRAY[i],d))TRAY.splice(i,1);renderMyMeals();return}
+  const op=e.target.closest('[data-open],[data-edm]');
+  if(op&&!mmEdit){const en=listEntries().find(x=>x.key===(op.dataset.open||op.dataset.edm));if(en)openItem(en)}
+},true);
+$('mmSearch').addEventListener('input',()=>{mmAnim=false});
+$('mmToggle').addEventListener('click',()=>{mmAnim=true});
+/* ---- ورقة الأساس + الإضافات ---- */
+function openItem(en){
+  let rows,name='',mid=null;
+  if(en.t==='meal'){const m=S.meals.find(v=>v.id===en.id);if(!m)return;mid=m.id;name=m.n;
+    rows=m.parts.map(p=>({n:p.n,b:Object.assign({},p,{g:p.g}),g:p.g,free:false,u:p.u?1:0}))}
+  else{const r=plRowFrom(en);if(r.u===0){const a=S.adds.find(v=>v.id===en.id);r.g=a.sg>0?a.sg:100}rows=[r]}
+  openS2({mode:'plate',item:1,base:en.key,baseEm:en.e,rows:rows,name:'',title:en.n,mealId:mid,slot:(en.t==='meal'&&mrec(en).slot)||curMeal});
+}
+function aoList(){
+  return listEntries().filter(x=>{
+    if(x.t==='meal'||x.key===M.base)return false;
+    const r=mrec(x);return (r&&r.ao===1)||['ingr','extra','sauce'].indexOf(x.kind)>=0;
+  }).slice(0,16);
+}
+function aoRow(en){const r=plRowFrom(en);if(r.u===0){const a=S.adds.find(v=>v.id===en.id);r.g=a.sg>0?a.sg:30}r.ao=1;return r}
+function renderItem(){
+  const first=M.rows[0],quick=(!M.mealId&&first&&first.base!==false)?(first.u?[1,2,3,4]:[50,100,150,200]):[];
+  const cur=first?(first.u===2?first.cnt:first.g):0;
+  const pills=aoList().map(en=>{const on=M.rows.some(r=>r.key===en.key),r=aoRow(en),k=scaleRow(r).k;
+    return '<button type="button" class="aob'+(on?' on':'')+'" data-ao="'+en.key+'">'+en.e+' '+esc(en.n)+' <span class="num">+'+k+'</span></button>'}).join('');
+  $('s2body').innerHTML='<h2>'+(M.baseEm||'🍽️')+' '+esc(M.title||'')+'</h2>'+
+    '<div id="s2rows">'+(M.rows.length?plRowsH():'<p class="note">ما بقي شي. أضف صنف من الإضافات تحت.</p>')+'</div>'+
+    (quick.length?'<div class="qk">'+quick.map(n=>'<button type="button" data-pq="'+n+'" class="'+(cur===n?'on':'')+'">'+n+(first.u?'':' جم')+'</button>').join('')+'</div>':'')+
+    '<p class="note" style="margin:2px 0 0">إضافات من قائمتك</p><div class="aopl">'+pills+'<button type="button" class="aob" data-pl="new">＋ جديد</button></div>'+
+    '<div class="tot num" id="s2tot"></div><label>تنحسب في وجبة'+slotSel()+'</label>'+
+    '<input id="s2name" type="text" placeholder="اسم الوجبة (لو تبي تحفظها جاهزة)" autocomplete="off" value="'+esc(M.name||'')+'">'+
+    '<p class="msg err" id="s2msg" aria-live="polite"></p>'+
+    '<div class="btns2"><button type="button" class="btn" style="background:var(--fill);color:var(--ink)" '+(M.mealId?'data-pl2="upd">💾 تحديث الوجبة':'data-pl="save">⭐ حفظ كوجبة')+'</button><button type="button" class="btn" data-pl="add">＋ أضف '+lam(M.slot)+'</button></div><button type="button" class="btn ghost" data-act="close">إغلاق</button>';
+  updateTot();
+}
+{const _rp=renderPlate;renderPlate=function(){if(M&&M.item)return renderItem();return _rp()}}
+$('s2body').addEventListener('click',e=>{
+  if(!M||M.mode!=='plate'||!M.item)return;
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.ao){
+    const i=M.rows.findIndex(r=>r.key===b.dataset.ao);
+    if(i>=0)M.rows.splice(i,1);else{const en=listEntries().find(x=>x.key===b.dataset.ao);if(en)M.rows.push(aoRow(en))}
+    renderItem();return;
+  }
+  if(b.dataset.pq&&M.rows[0]){
+    const r=M.rows[0],n=+b.dataset.pq;
+    if(r.u===2){r.cnt=n;r.g=Math.round(n*r.pcw*10)/10}else r.g=n;
+    renderItem();return;
+  }
+  if(b.dataset.pl2==='upd'){
+    const m=S.meals.find(v=>v.id===M.mealId);if(!m||!M.rows.length||M.rows.some(r=>!(r.g>0))){s2msg('أضف صنف واحد على الأقل واكتب كمياتها.');return}
+    m.parts=M.rows.map(r=>Object.assign({n:r.n,g:r.g},r.u===1?{u:1}:{},scaleRow(r)));
+    save();renderMyMeals();closeS2();toast('تم تحديث «'+m.n+'»',false);
+  }
+},true);
+$('s2body').addEventListener('change',e=>{if(e.target.id==='nwAo'&&M)M.ao=e.target.checked});
 show('Home');
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
