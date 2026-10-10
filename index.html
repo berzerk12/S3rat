@@ -377,18 +377,34 @@ details.mk-vit>div{display:block;margin-top:6px}
 .airs{background:var(--card);border-radius:12px;padding:10px;margin-top:8px;box-shadow:inset 0 0 0 1px var(--line)}
 .airs .h{display:flex;justify-content:space-between;gap:8px}
 .lrow .dx.ed{color:var(--blue)}
+
+.gl{margin:6px 0 14px;height:56px;display:flex;align-items:center;padding:0 8px;gap:8px;border-radius:24px;background:var(--card);box-shadow:var(--shadow)}
+.gl[hidden]{display:none}
+.gl button{border:0;font-family:inherit;cursor:pointer}
+.gl .ar{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--blue);background:var(--fill)}
+.gl .ar svg{width:16px;height:16px}
+.gl .mid{flex:1;background:none;display:flex;align-items:center;justify-content:center;gap:8px;font-size:20px;font-weight:600;letter-spacing:-.2px;color:var(--ink);height:100%}
+.gl .dot{flex:none;width:8px;height:8px;border-radius:50%;background:#30d158;box-sizing:border-box}
+.gl.o .mid{color:#ff9f0a}.gl.o .dot{background:transparent;border:1.5px solid #ff9f0a}
+.lrow .em{flex:none;width:42px;height:42px;border-radius:12px;background:var(--fill);display:grid;place-items:center;font-size:23px}
+.mk-row .em{flex:none;width:38px;height:38px;border-radius:11px;background:var(--fill);display:grid;place-items:center;font-size:21px}
+.wsl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.wsl button{border:0;border-radius:16px;padding:14px 4px;font-family:inherit;font-size:15px;font-weight:700;background:var(--fill);color:var(--ink)}
+.wsl button span{display:block;font-size:28px;margin-bottom:4px}
+.wsl button.cur{box-shadow:inset 0 0 0 2px var(--blue)}
+.lrow .nm{flex:1;min-width:0}
 </style>
 </head>
 <body>
 <div class="app">
-  <header class="hd">
+  <header class="hd" id="hd" hidden>
     <div><h1 id="ttl">اليوم</h1><p id="hello"></p></div>
-    <div class="daynav" id="daynav">
-      <button id="dPrev" type="button" aria-label="اليوم السابق"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
-      <button id="dLbl" class="lbl" type="button"></button>
-      <button id="dNext" type="button" aria-label="اليوم التالي"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-    </div>
   </header>
+  <div class="gl" id="daynav" hidden>
+    <button id="dPrev" type="button" class="ar" aria-label="اليوم السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    <button id="dLbl" type="button" class="mid" aria-label="الرجوع لليوم"><span class="dot"></span><span id="dTxt"></span></button>
+    <button id="dNext" type="button" class="ar" aria-label="اليوم التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  </div>
 
   <!-- اليوم -->
   <main id="vHome">
@@ -785,11 +801,11 @@ function vitSummary(d){
 function setTitle(){
   const t={Home:'اليوم',Rep:'التقارير',Set:'الإعدادات'}[curView];
   $('ttl').textContent=t;
-  $('daynav').hidden=curView!=='Home';
+  $('daynav').hidden=curView!=='Home';$('hd').hidden=curView==='Home';
 }
 function renderTop(){
   $('hello').textContent=DL(new Date(),{weekday:'long',day:'numeric',month:'long'});
-  $('dLbl').textContent=sel===TK()?'اليوم':DL(fromKey(sel),{weekday:'short',day:'numeric',month:'short'});
+  $('dTxt').textContent=DL(fromKey(sel),{weekday:'long'});$('daynav').classList.toggle('o',sel!==TK());
   $('mchips').innerHTML=MEALS.map(m=>'<button type="button" data-m="'+m[0]+'" aria-pressed="'+(m[0]===curMeal)+'">'+m[1]+'</button>').join('');
   setTitle();
 }
@@ -1244,9 +1260,9 @@ const catOf=x=>x.cat||(isDrink(x)?'drink':'snack');
 const catI=k=>(CATS.find(c=>c[0]===k)||CATS[3]);
 function listEntries(){
   const out=[];
-  S.meals.forEach(m=>out.push({key:'m'+m.id,t:'meal',kind:'meal',id:m.id,n:m.n,e:'🍽️',slot:m.slot||curMeal,sub:'وجبة · '+slotName(m.slot||curMeal)}));
-  S.snacks.forEach(x=>{const c=catOf(x);out.push({key:'s'+x.id,t:'sn',kind:c,id:x.id,n:x.n,e:catI(c)[2],slot:x.slot||(c==='extra'?curMeal:'s'),sub:catI(c)[1]+(x.k?' · '+x.k+' سعرة':'')+(x.p?' · '+x.p+' بروتين':'')+(x.cf?' · '+x.cf+' ملغ':'')});});
-  S.adds.forEach(a=>{const c=CATS.some(z=>z[0]===a.cat)?a.cat:'sauce';out.push({key:'a'+a.id,t:'add',kind:c,id:a.id,n:a.n,e:catI(c)[2],slot:curMeal,sub:catI(c)[1]+' · تكتب الجرامات'});});
+  S.meals.forEach(m=>out.push({key:'m'+m.id,t:'meal',kind:'meal',id:m.id,n:m.n,e:emo(m,'meal'),slot:m.slot||curMeal,sub:'وجبة · '+slotName(m.slot||curMeal)}));
+  S.snacks.forEach(x=>{const c=catOf(x);out.push({key:'s'+x.id,t:'sn',kind:c,id:x.id,n:x.n,e:emo(x,c),slot:x.slot||(c==='extra'?curMeal:'s'),sub:catI(c)[1]+(x.k?' · '+x.k+' سعرة':'')+(x.p?' · '+x.p+' بروتين':'')+(x.cf?' · '+x.cf+' ملغ':'')});});
+  S.adds.forEach(a=>{const c=CATS.some(z=>z[0]===a.cat)?a.cat:'sauce';out.push({key:'a'+a.id,t:'add',kind:c,id:a.id,n:a.n,e:emo(a,c),slot:curMeal,sub:catI(c)[1]+' · تكتب الجرامات'});});
   return out;
 }
 function renderMyMeals(){
@@ -1262,8 +1278,8 @@ function renderMyMeals(){
   const row=x=>{
     const fl=flash[x.key]&&Date.now()-flash[x.key]<3500;
     const btn=mmEdit?(mmEdit?'<button type="button" class="dx ed" data-ed="'+x.t+':'+x.id+'" aria-label="تعديل">✎</button>':'')+'<button type="button" class="dx" data-del="'+x.t+':'+x.id+'" aria-label="حذف">×</button>':
-      '<button type="button" class="add'+(fl?' done':'')+'" data-add="'+x.t+':'+x.id+'">'+(fl?'✓ أضيف '+lam(x.slot):'+ '+lam(x.slot))+'</button>';
-    return '<div class="lrow"><div class="nm">'+x.e+' '+esc(x.n)+'<small>'+esc(x.sub)+'</small></div>'+btn+'</div>';
+      '<button type="button" class="add'+(fl?' done':'')+'" data-add="'+x.t+':'+x.id+'">'+(fl?'✓ أضيف':'＋ إضافة')+'</button>';
+    return '<div class="lrow"><span class="em">'+x.e+'</span><div class="nm">'+esc(x.n)+'<small>'+esc(x.sub)+'</small></div>'+btn+'</div>';
   };
   let h='';
   if(mmF==='all'&&!q){CATS.forEach(c=>{const l=list.filter(x=>x.kind===c[0]);if(l.length)h+='<div class="cathd">'+c[2]+' '+c[1]+' ('+l.length+')</div>'+l.map(row).join('')})}
@@ -1285,13 +1301,7 @@ $('mmSearch').addEventListener('input',e=>{mmQ=e.target.value;renderMyMeals()});
 $('mmFilter').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(b){mmF=b.dataset.f;renderMyMeals()}});
 $('myMeals').addEventListener('click',e=>{
   const ad=e.target.closest('[data-add]');
-  if(ad){
-    const [t,id]=ad.dataset.add.split(':');
-    if(t==='meal'){const m=S.meals.find(x=>String(x.id)===id);if(m){addMealDirect(m,m.slot||curMeal);flashKey('m'+id)}}
-    else if(t==='sn'){const x=S.snacks.find(v=>String(v.id)===id);if(x){addSnack(x);flashKey('s'+id)}}
-    else{const a=S.adds.find(v=>String(v.id)===id);if(a)openS2({mode:'padd',p:a,slot:curMeal,g:0})}
-    return;
-  }
+  if(ad){const [t,id]=ad.dataset.add.split(':');openS2({mode:'where',t:t,id:+id});return}
   const dl=e.target.closest('[data-del]');
   if(dl){
     const [t,id]=dl.dataset.del.split(':');
@@ -2066,7 +2076,7 @@ $('wipe').addEventListener('click',()=>{
   snapNow();S.days={};S.cache={};save();renderAll();renderUndo();$('bMsg').className='msg ok';$('bMsg').textContent='تم المسح. تقدر ترجع بياناتك بزر الاسترجاع.';
 });
 
-{const h=new Date().getHours();curMeal=h<11?'b':h<16?'l':h<18?'s':'d'}
+{const h=new Date().getHours();curMeal=h<11?'b':h<16?(MEALS.some(m=>m[0]==='l')?'l':'s'):h<18?'s':'d'}
 /* =====================================================
    طريقة الطبخ + اقتراحات + وصفات
    ===================================================== */
@@ -2188,8 +2198,8 @@ function planSlots(kinds){
     let slot,t;
     if(kd==='snack'){slot='s';t=Math.max(last+(out.length?90:0),now+15);if(H.s>t&&H.s<=LATE&&!out.length)t=H.s}
     else{
-      const cand=[['l',H.l],['d',H.d]].filter(c=>c[1]>=Math.max(last,now-20));
-      if(cand.length){slot=cand[0][0];t=cand[0][1]}else{slot=now<960?'l':'d';t=Math.max(last,now+15)}
+      const hasL=MEALS.some(m=>m[0]==='l'),cand=[['l',H.l],['d',H.d]].filter(c=>(hasL||c[0]!=='l')&&c[1]>=Math.max(last,now-20));
+      if(cand.length){slot=cand[0][0];t=cand[0][1]}else{slot=(now<960&&hasL)?'l':'d';t=Math.max(last,now+15)}
       if(out.length&&t<last+60)t=last+60;
     }
     t=Math.max(rnd5(t),rnd5(now+10));if(t>LATE)t=LATE;
@@ -2503,7 +2513,7 @@ function atRows(){
   const l=listEntries().filter(x=>x.kind===M.cat&&(!q||x.n.toLowerCase().includes(q)));
   if(!l.length)return '<p class="note" style="padding:8px 0">'+(q?'ما لقيت شي بهذا البحث.':'ما فيه عناصر بهذا القسم بعد. اضغط «＋ جديد» وضيف.')+'</p>';
   return l.map(x=>{const fl=flash[x.key]&&Date.now()-flash[x.key]<3000;
-    return '<div class="mk-row"><div class="nm">'+esc(x.n)+'<small>'+esc(x.sub.replace(/^[^·]*· ?/,'')||x.sub)+'</small></div><button type="button" class="'+(fl?'done':'')+'" data-at="'+x.key+'">'+(fl?'✓ أضيف':'＋')+'</button></div>'}).join('');
+    return '<div class="mk-row"><span class="em">'+x.e+'</span><div class="nm">'+esc(x.n)+'<small>'+esc(x.sub.replace(/^[^·]*· ?/,'')||x.sub)+'</small></div><button type="button" class="'+(fl?'done':'')+'" data-at="'+x.key+'">'+(fl?'✓ أضيف':'＋')+'</button></div>'}).join('');
 }
 function renderAddTo(){
   $('s2body').innerHTML='<h2>＋ إضافة إلى '+slotName(M.slot)+'</h2>'+
@@ -2652,6 +2662,60 @@ $('fAi').addEventListener('click',async()=>{
     msg.textContent='انحسبت. راجع الأرقام وعدّلها لو تبي.';
   }catch(err){msg.textContent=errText(err)}
   b.disabled=false;b.textContent='✨ عبّي الأرقام بالوصف (AI)';
+});
+
+
+/* ===== v32: إيموجي حسب الاسم + إخفاء الغداء + سؤال "وين تضيف" ===== */
+const EMO=[
+ [/كيك بار|بروتين بار|بار بروتين|بار /,'🍫'],[/شيك|بروتين شيك/,'🥤'],[/بودن|مهلبي|كاسترد|جيلي/,'🍮'],[/ايس كريم|(^|\s)ايس|بوظه|ايسكريم/,'🍦'],
+ [/كب كيك|كبكيك/,'🧁'],[/كيك|كعك|براوني|دونات|كرواسون|فطيره|معمول/,'🍰'],[/شوكولا|شكولا|كاكاو|كيت كات|سنيكرز|توبليرون/,'🍫'],[/بسكو|كوكيز|بسكويت|ويفر/,'🍪'],
+ [/بيبيروني|بيبروني|بيتزا/,'🍕'],[/برجر|برغر|همبرغر/,'🍔'],[/شاورما|لفه|راب|تورتيلا|بريتو/,'🌯'],[/ساندو|سندو|توست محشي/,'🥪'],[/خبز|توست|تميس|صمون|دانوب|باجيت|رغيف|كعكه خبز/,'🍞'],
+ [/مكرون|باستا|سباغيتي|نودلز|اندومي/,'🍝'],[/(^|\s)رز|ارز|برياني|كبسه|مندي|مجبوس/,'🍚'],[/شوفان|جرانولا|كورن فليكس|سيريال|رقائق/,'🥣'],
+ [/بيض|اومليت|عجه/,'🥚'],[/دجاج|فراخ|تشكن|نقتس|ناجتس|جناح/,'🍗'],[/ستيك|لحم|كباب|كفته|مفروم|غنم|ضاني|بقري/,'🥩'],
+ [/جمبري|روبيان|ربيان/,'🍤'],[/تونه|سمك|سلمون|سردين|هامور|فيليه/,'🐟'],[/فلافل|حمص|فول|عدس/,'🧆'],
+ [/بطاطس|بطاطا|فرايز|شيبس|برنقلز/,'🥔'],[/افوكادو|أفوكادو/,'🥑'],[/زيتون/,'🫒'],[/طماط|بندوره/,'🍅'],[/خيار/,'🥒'],[/(^|\s)جزر/,'🥕'],[/بروكلي|قرنبيط/,'🥦'],[/ذره|كورن/,'🌽'],[/سلطه|خس|جرجير|ورق عنب/,'🥗'],
+ [/موز/,'🍌'],[/تفاح/,'🍎'],[/فراول|توت/,'🍓'],[/برتقال|يوسفي|ليمون|جريب فروت/,'🍊'],[/(^|\s)عنب/,'🍇'],[/بطيخ|شمام/,'🍉'],[/مانجو|منجا/,'🥭'],[/اناناس/,'🍍'],[/(^|\s)تمر|تمور|رطب/,'🌴'],
+ [/لوز|فول سوداني|فستق|بندق|كاجو|مكسرات|جوز|سوداني|زبده فول/,'🥜'],[/زبده|سمن/,'🧈'],[/عسل|دبس|شيره/,'🍯'],[/جبن|شيدر|موزاريلا|لبنه|كريمه جبن|حلوم|فيتا|كرافت|شرائح جبن/,'🧀'],
+ [/حليب|لبن|زبادي|(^|\s)روب|يوغرت/,'🥛'],[/قهوه|لاتيه|كابتشينو|اسبريسو|امريكانو|موكا|نسكافيه/,'☕'],[/شاي|كرك|كركديه|نعناع/,'🍵'],[/عصير|سموذي|سموزي/,'🧃'],
+ [/طاقه|ريد بول|مونستر|بيبسي|كولا|سفن|فانتا|سبرايت|ميرندا|مشروب غازي|زيرو/,'🥤'],[/(^|\s)ماء|مويه|مياه/,'💧'],
+ [/مايو|كاتشب|صوص|رانش|ثوم|باربكيو|خردل|تتبيله|صلصه|طحينه|مخلل/,'🧴']
+];
+const normAr=s=>String(s||'').toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[\u064B-\u0652]/g,'');
+function emo(x,kind){
+  const t=normAr(x&&x.n);
+  for(const r of EMO)if(r[0].test(t))return r[1];
+  return ({meal:'🍽️',drink:'🥤',sauce:'🧴',snack:'🍪',extra:'🧀'})[kind]||'🍽️';
+}
+function fixLunch(){
+  const hasL=Object.keys(S.days||{}).some(k=>((S.days[k]&&S.days[k].items)||[]).some(x=>x.m==='l'));
+  const i=MEALS.findIndex(m=>m[0]==='l');
+  if(!hasL){
+    if(i>=0)MEALS.splice(i,1);
+    S.meals.forEach(m=>{if(m.slot==='l')m.slot='d'});
+    S.snacks.forEach(m=>{if(m.slot==='l')m.slot='d'});
+    if(curMeal==='l')curMeal='s';
+  }else if(i<0)MEALS.splice(1,0,['l','الغداء']);
+}
+{const _ral=renderAll;renderAll=function(){fixLunch();return _ral.apply(this,arguments)}}
+function renderWhere(){
+  const nm=M.t==='meal'?(S.meals.find(v=>String(v.id)===String(M.id))||{}).n:(M.t==='sn'?S.snacks:S.adds).find(v=>String(v.id)===String(M.id));
+  const name=typeof nm==='string'?nm:(nm&&nm.n)||'';
+  const em={b:'🌅',l:'☀️',s:'🥜',d:'🌙'};
+  $('s2body').innerHTML='<h2>وين تضيف «'+esc(name)+'»؟</h2>'+
+    '<div class="wsl">'+MEALS.map(m=>'<button type="button" data-wh="'+m[0]+'" class="'+(m[0]===curMeal?'cur':'')+'"><span>'+(em[m[0]]||'🍽️')+'</span>'+m[1]+'</button>').join('')+'</div>'+
+    '<button type="button" class="btn ghost" data-act="close">إلغاء</button>';
+}
+{const _r4=renderS2;renderS2=function(){if(M&&M.mode==='where')return renderWhere();return _r4()}}
+$('s2body').addEventListener('click',e=>{
+  if(!M||M.mode!=='where')return;
+  const b=e.target.closest('[data-wh]');if(!b)return;
+  const slot=b.dataset.wh,t=M.t,id=M.id,key=(t==='meal'?'m':t==='sn'?'s':'a')+id;
+  if(t==='add'){const a=S.adds.find(v=>String(v.id)===String(id));if(a)openS2({mode:'padd',p:a,slot:slot,g:0});return}
+  const en=listEntries().find(x=>x.key===key);if(!en)return;
+  const items=entryItems(en);if(!items.length)return;
+  snap();commitTo(sel,items,slot,stamp(),false);
+  flash[key]=Date.now();closeS2();renderMyMeals();setTimeout(renderMyMeals,3600);
+  toast('تمت إضافة «'+en.n+'» '+lam(slot)+' ('+sum(items).k+' سعرة)',true);
 });
 show('Home');
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
