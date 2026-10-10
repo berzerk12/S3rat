@@ -501,6 +501,68 @@ details.mk-vit>div{display:block;margin-top:6px}
 .aob:active{transform:scale(.94)}
 .aochk{display:flex;align-items:center;gap:8px;font-size:14px}.aochk input{width:auto}
 @media (prefers-reduced-motion:reduce){.mrow.rise,.plb.pop,.mst,.sheetbg:not([hidden]) .sheet,.aob.on{animation:none!important}#trayBar{transition:none}}
+
+/* v38 كافيين ونوم: ستايل ملصق القهوة المختصة */
+#secCaf{--ck:#3B2A1E;--cp:#F4ECDD;--cl:#D9C9AC;--cg:#6F8F5A;--cy:#D9A441;--cr:#B5503C;background:var(--cp);color:var(--ck);border:1px solid var(--cl);box-shadow:0 0 0 4px var(--cp),0 0 0 5px var(--cl)}
+@media (prefers-color-scheme: dark){#secCaf{--ck:#EADBC5;--cp:#2A211B;--cl:#54443A;--cg:#7FA368;--cy:#E0B04F;--cr:#CC6450}}
+:root[data-theme="dark"] #secCaf{--ck:#EADBC5;--cp:#2A211B;--cl:#54443A;--cg:#7FA368;--cy:#E0B04F;--cr:#CC6450}
+:root[data-theme="light"] #secCaf{--ck:#3B2A1E;--cp:#F4ECDD;--cl:#D9C9AC;--cg:#6F8F5A;--cy:#D9A441;--cr:#B5503C}
+#secCaf .cap,#secCaf small{color:var(--ck);opacity:.7}
+#secCaf>.rowsp:first-child{border-bottom:1.5px solid var(--ck);padding-bottom:10px;margin-bottom:6px}
+#secCaf>.rowsp:first-child b{letter-spacing:.4px}
+#secCaf .bar{background:var(--cl)}
+#secCaf .rb{background:var(--cl);color:var(--ck)}
+#secCaf .link{color:var(--ck);text-decoration:underline;text-underline-offset:3px;opacity:.85}
+#cSleep{display:flex;flex-direction:column;gap:8px;margin:8px 0 4px}
+.zrow{display:flex;justify-content:space-between;font-size:11px;letter-spacing:1.4px;opacity:.75;margin-top:4px}
+.zw{position:relative;margin-top:6px}.zbar{display:flex;height:14px;border-radius:7px;overflow:hidden;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ck) 20%,transparent)}
+.zbar i{display:block;height:100%}.zbar .zg{background:var(--cg)}.zbar .zy{background:var(--cy)}.zbar .zr{background:var(--cr)}
+.zw u{position:absolute;top:-6px;width:2px;height:26px;background:var(--ck);text-decoration:none}
+.zw u em{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-style:normal;font-size:10px;font-weight:700;white-space:nowrap}
+.zlg{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;margin-top:6px}
+.zlg>div{border-inline-start:1px solid color-mix(in srgb,var(--ck) 20%,transparent);padding:2px 4px}.zlg>div:first-child{border:0}
+.zlg b{display:block;font-size:15px}.zlg small{font-size:10.5px;letter-spacing:.8px}
+.zmsg{border-top:1.5px solid var(--ck);padding-top:10px;margin-top:4px;text-align:center;font-size:14.5px;line-height:1.7}
+.zmsg small{display:block;font-size:12px;opacity:.7;margin-top:2px}
+.zmsg.zm-g b{color:var(--cg)}.zmsg.zm-y b{color:var(--cy)}.zmsg.zm-r b{color:var(--cr)}
+.zset{align-self:center;font-size:12.5px}
+#zForm{display:grid;grid-template-columns:1fr 1fr;gap:8px}#zForm label{font-size:12px;opacity:.8}#zForm .cap{grid-column:1/-1}
+#zForm input{background:var(--cl);color:var(--ck)}
+
+/* ===== v40: ثيم ملصق القهوة + المشروبات ===== */
+:root{--bg:#EDE3CF;--card:#F6EFE0;--fill:#E9DFC9;--fill2:#DDD0B5;--ink:#3B2A1E;--muted:#8A7560;--line:#D9C9AC;
+  --blue:#3B2A1E;--green:#6F8F5A;--red:#B5503C;--orange:#C9803A;--purple:#8A6A8F;--teal:#5B8FA3;--brown:#8A6A47;--pink:#B5607A;
+  --kcal:#C9803A;--prot:#B5503C;--carb:#D9A441;--fat:#6F8F5A;--fib:#8A7560;--sug:#C0657A;--water:#5B8FA3;--caf:#8A6A47;
+  --tint:rgba(59,42,30,.1);--ok:#4F7A3E;--warn:#A8741A;--no:#B5503C;--bar:rgba(246,239,224,.92);--shadow:none}
+@media (prefers-color-scheme: dark){:root{--bg:#1E1712;--card:#2A211B;--fill:#352B23;--fill2:#43372D;--ink:#EADBC5;--muted:#A8967F;--line:#54443A;
+  --blue:#A98457;--green:#7FA368;--red:#CC6450;--orange:#D69550;--purple:#A98BB0;--teal:#7FB0C4;--brown:#B08A5C;--pink:#CC7C94;
+  --kcal:#D69550;--prot:#CC6450;--carb:#E0B04F;--fat:#7FA368;--fib:#A8967F;--sug:#D27C93;--water:#7FB0C4;--caf:#B08A5C;
+  --tint:rgba(234,219,197,.14);--ok:#8FB878;--warn:#E0B04F;--no:#E07A66;--bar:rgba(42,33,27,.92)}}
+.card,.mealcard{border:1px solid var(--line);box-shadow:0 0 0 3px var(--card),0 0 0 4px var(--line)}
+.card.slim,.mealcard{margin:0 4px}
+.hd{border-bottom:1.5px solid var(--ink);padding-bottom:8px;margin:0 4px}
+.sec{letter-spacing:1.6px;font-weight:600}
+.tabs{border-top:1.5px solid var(--ink)}
+.btn{color:var(--card)}
+.btn.ghost,.btn[style*="var(--fill)"]{color:var(--ink)}
+.cp.on button{color:var(--card)!important}
+.mk-row button,.lrow button.add{background:var(--tint);color:var(--ink)}
+.plb,.mst button{background:var(--ink);color:var(--card)}.mst button:first-child{background:var(--card);color:var(--ink)}.mst{background:var(--fill)}.mst b{color:var(--ink)}
+#trayBar{background:var(--ink);color:var(--card)}#trayBar #trGo{background:var(--card);color:var(--ink)}#trayBar select{background:rgba(255,255,255,.14);color:var(--card)}
+.aob.on,.qk button.on{background:var(--ink);color:var(--card);box-shadow:none}
+.toast{background:var(--ink);color:var(--card)}
+.top2{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid var(--ink);padding-bottom:8px}.top2 b{font-size:21px}.top2 small{font-size:11px;letter-spacing:2px;color:var(--muted)}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.dc{background:var(--fill);border:1px solid var(--line);border-radius:16px;padding:11px 4px;text-align:center;font-size:13px;font-weight:700;color:var(--ink);font-family:inherit;transition:transform .15s}
+.dc:active{transform:scale(.95)}.dc span{display:block;font-size:26px;margin-bottom:3px}.dc small{display:block;font-weight:400;color:var(--muted);font-size:10.5px}.dc.dsh{border-style:dashed}
+.dseg{width:100%;align-self:stretch;display:flex;border:1px solid var(--ink);border-radius:999px;overflow:hidden}.dseg button{flex:1;border:0;background:none;padding:8px 2px;font-size:13px;font-weight:600;font-family:inherit;color:var(--ink);transition:background .2s,color .2s}.dseg button.on{background:var(--ink);color:var(--card)}
+.dseg:has(small){border-radius:16px}.dseg button b{display:block;font-size:14px}.dseg button small{display:block;font-size:11px;opacity:.75;margin-top:1px}.dseg button{padding:7px 2px;line-height:1.25}
+.drkph{display:flex;flex-direction:column;align-items:center;gap:2px;border:1.5px dashed var(--muted);border-radius:18px;padding:16px;font-size:28px;text-align:center}.drkph b{font-size:15px}.drkph small{font-size:12px;color:var(--muted)}
+.drkml{display:flex;align-items:center;gap:8px}.drkml input{max-width:140px}
+.drkt{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;border:1px solid var(--line);border-radius:16px;padding:10px 0;background:var(--card)}
+.drkt>div{border-inline-start:1px solid var(--line)}.drkt>div:first-child{border:0}.drkt b{display:block;font-size:17px}.drkt small{font-size:10.5px;color:var(--muted)}
+.drkbtn{border:1px solid var(--ink);background:none;border-radius:999px;padding:9px 14px;font-weight:700;font-size:14px;font-family:inherit;color:var(--ink);align-self:flex-start}
+.drkbtn:active{transform:scale(.96)}
 </style>
 </head>
 <body>
@@ -546,8 +608,10 @@ details.mk-vit>div{display:block;margin-top:6px}
       <div class="rowsp"><div><b>☕ الكافيين</b><div class="cap num" id="cSmall"></div></div>
         <div class="stp"><button class="rb" type="button" id="cMinus" aria-label="نقص كوب">−</button><b class="num" id="cCups">0</b><button class="rb" type="button" id="cPlus" aria-label="زيادة كوب">+</button></div></div>
       <div class="bar"><i id="cBar" style="background:var(--caf);width:0"></i></div>
+      <div id="cSleep"></div>
+      <button type="button" class="drkbtn" id="cDrk">☕ سجّل مشروب</button>
       <div id="cQuick"></div>
-      <div class="rowsp cap"><span id="cLog"></span><span class="rowsp" style="gap:12px"><button class="link" id="cUndo" type="button">↩︎ تراجع</button><button class="link" id="cManual" type="button">+ كافيين يدوي</button></span></div>
+      <div class="rowsp cap"><span id="cLog"></span><span class="rowsp" style="gap:12px"><button class="link" id="cUndo" type="button">↩︎ تراجع</button><button class="link" id="cManual" type="button">إدخال يدوي</button></span></div>
     </section>
     <div class="sec">الأكل</div>
     <section class="card slim" id="secFood" aria-label="أضف أكلك">
@@ -3454,6 +3518,193 @@ $('s2body').addEventListener('click',e=>{
   }
 },true);
 $('s2body').addEventListener('change',e=>{if(e.target.id==='nwAo'&&M)M.ao=e.target.checked});
+/* ===== v38: عداد وقت القهوة حسب نومك ===== */
+const CAF_HL=5,CAF_OK=50,CAF_MID=100;
+const hm=s=>{const a=String(s||'').split(':');return (+a[0]||0)*60+(+a[1]||0)};
+const hmS=m=>String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+function slpPlan(){
+  const o=S.slp||{};
+  return {wb:o.wb||'22:00',wk:o.wk||'06:00',lb:o.lb||'01:30',lk:o.lk||'12:00'};
+}
+function slpFor(k){
+  const dow=new Date(k+'T12:00:00').getDay(),p=slpPlan(); // 4=خميس 5=جمعة (نوم متأخر)، 5 و6 صحيان متأخر
+  let bed=(dow===4||dow===5)?hm(p.lb):hm(p.wb);if(bed<12*60)bed+=1440;
+  const wake=(dow===5||dow===6)?hm(p.lk):hm(p.wk);
+  return {bed:bed,wake:wake,late:dow===4||dow===5};
+}
+function cafDoses(d){
+  const o=[];(d.cupT||[]).forEach(t=>{if(t!=null)o.push([t,S.cupMg])});
+  d.items.forEach(x=>{if(x.cf>0&&x.t!=null)o.push([x.t,x.cf])});
+  return o;
+}
+const cafRem=(doses,T)=>doses.reduce((a,v)=>a+(T>=v[0]?v[1]*Math.pow(.5,(T-v[0])/60/CAF_HL):0),0);
+function cafZone(doses,t,bed){const r=cafRem(doses.concat([[t,S.cupMg]]),bed);return {r:r,z:r<=CAF_OK?'g':(r<=CAF_MID?'y':'r')}}
+function cafCut(doses,thr,from,bed){ // آخر وقت تبدأ فيه كوب ويبقى عند النوم <= thr
+  let last=null;for(let t=from;t<=bed;t+=5){if(cafRem(doses.concat([[t,S.cupMg]]),bed)<=thr)last=t}return last;
+}
+function cafClear(doses,t0){ // متى يصير مجموع الكافيين <= حد الأمان بعد كوب الحين
+  const all=doses.concat([[t0,S.cupMg]]);for(let T=t0;T<t0+30*60;T+=10){if(cafRem(all,T)<=CAF_OK)return T}return null;
+}
+function renderSleepCaf(){
+  const el=$('cSleep');if(!el)return;
+  const d=peek(sel),pl=slpFor(sel),isT=sel===TK(),now=isT?nowMin():null,doses=cafDoses(d);
+  const from=Math.max(pl.wake,0),bed=pl.bed;
+  const g=cafCut(doses,CAF_OK,from,bed),y=cafCut(doses,CAF_MID,from,bed);
+  const pos=m=>Math.max(0,Math.min(100,(m-from)/(bed-from)*100));
+  const gp=g==null?0:pos(g),yp=y==null?gp:Math.max(gp,pos(y));
+  const f=m=>tStr(m%1440);
+  let h='<div class="zrow"><span class="num">'+f(from)+'</span><span>وقت القهوة</span><span class="num">'+f(bed)+'</span></div>'+
+    '<div class="zw"><div class="zbar"><i class="zg" style="width:'+gp+'%"></i><i class="zy" style="width:'+(yp-gp)+'%"></i><i class="zr" style="width:'+(100-yp)+'%"></i></div>'+(isT&&now>=from&&now<=bed?'<u style="inset-inline-start:'+pos(now)+'%"><em>الحين</em></u>':'')+'</div>'+
+    '<div class="zlg"><div><b class="num">'+(g==null?'—':f(g))+'</b><small>مناسب حتى</small></div><div><b class="num">'+(y==null?'—':f(y))+'</b><small>انتبه حتى</small></div><div><b class="num">'+f(bed)+'</b><small>'+(pl.late?'نومك (متأخر)':'وقت نومك')+'</small></div></div>';
+  if(isT){
+    const rn=cafRem(doses,now);let msg='',sub='',zc='g';
+    if(now<from){msg='لسا بدري، أول كوب لك براحتك ☕'}
+    else{
+      const z=cafZone(doses,now,Math.max(bed,now)),clr=cafClear(doses,now);zc=now>bed?'r':z.z;
+      if(now>bed)msg='أي كوب الحين بيأثر على نومك'+(clr?' لين الساعة <b class="num">'+f(clr)+'</b>':'');
+      else if(z.z==='g')msg='هذا الكوب ما بيأثر على نومك 👌';
+      else msg='هذا الكوب بيأثر على عمق نومك لين الساعة <b class="num">'+(clr?f(clr):'—')+'</b>';
+      if(now<=bed)sub='يبقى منه <span class="num">'+Math.round(z.r)+'</span> ملغ عند نومك';
+    }
+    if(rn>=5)sub+=(sub?' · ':'')+'في جسمك الحين <span class="num">'+Math.round(rn)+'</span> ملغ';
+    h+='<div class="zmsg zm-'+zc+'">'+msg+(sub?'<small>'+sub+'</small>':'')+'</div>';
+  }
+  h+='<button type="button" class="link zset" id="zSet">⏰ أوقات النوم</button><div id="zForm" hidden>'+
+    [['wb','نومك (سبت–أربعاء)'],['wk','صحيانك (أحد–خميس)'],['lb','نومك (خميس وجمعة)'],['lk','صحيانك (جمعة وسبت)']].map(a=>'<label>'+a[1]+'<input type="time" data-sl="'+a[0]+'" value="'+slpPlan()[a[0]]+'"></label>').join('')+
+    '<p class="cap">الحساب: نصف عمر الكافيين '+CAF_HL+' ساعات، وكوبك '+S.cupMg+' ملغ. «مناسب» = يبقى منه ≤ '+CAF_OK+' ملغ عند نومك.</p></div>';
+  el.innerHTML=h;
+}
+{const _rc=renderCaf;renderCaf=function(){_rc();renderSleepCaf()}}
+$('secCaf').addEventListener('click',e=>{if(e.target.closest('#zSet'))$('zForm').hidden=!$('zForm').hidden});
+$('secCaf').addEventListener('change',e=>{
+  const k=e.target.dataset&&e.target.dataset.sl;if(!k||!e.target.value)return;
+  S.slp=Object.assign(slpPlan(),{});S.slp[k]=e.target.value;save();const open=!$('zForm').hidden;renderSleepCaf();$('zForm').hidden=!open;
+});
+setInterval(()=>{try{if(sel===TK())renderSleepCaf()}catch(e){}},60000);
+renderCaf();
+/* ===== v40: تسجيل المشروبات (قهوة بأنواعها + مشروب طاقة بالذكاء) ===== */
+const DRKT=[
+ ['brew','☕','قهوة سادة','مطبوخة / فلتر'],['esp','☕','إسبريسو','شوت ٦٣ ملغ'],['ame','☕','أمريكانو','شوتات + ماء'],
+ ['cap','☕','كابتشينو','شوتات + حليب'],['lat','☕','لاتيه','شوتات + حليب'],['cold','🧊','كولد برو','حسب الحجم'],
+ ['ice','🧊','آيس كوفي','حسب الحجم'],['nrg','🔋','مشروب طاقة','📷 صوّره'],['man','✍️','إدخال يدوي','حر']];
+const DSIZ=[[240,'صغير'],[355,'وسط'],[470,'كبير']],DSHOT=63,DPER={brew:50,cold:50,ice:40},DSH=['esp','ame','cap','lat'];
+const DMILK={whole:{n:'حليب كامل',k:61,p:3.3,c:4.8,f:3.3,s:4.8},low:{n:'قليل الدسم',k:46,p:3.4,c:4.9,f:1.5,s:4.9},oat:{n:'شوفان',k:48,p:1,c:7,f:1.5,s:4},none:null};
+const dT=t=>DRKT.find(v=>v[0]===t)||DRKT[0];
+function drkInit(t){
+  const sh=t==='esp'?1:2;
+  return {mode:'drk2',step:'cust',type:t,src:'cafe',size:355,ml:S.cupMl||245,shots:sh,milk:(t==='cap'||t==='lat')?'whole':'none',sug:0,syr:0};
+}
+function drkCalc(c){
+  const t=c.type,sh=DSH.indexOf(t)>=0,ml=t==='esp'?30*c.shots:(c.src==='home'?c.ml:c.size);
+  let cf;
+  if(sh)cf=c.shots*DSHOT;else if(t==='brew'&&c.src==='home')cf=S.cupMg*ml/(S.cupMl||245);else cf=DPER[t]*ml/100;
+  let milk=0;
+  if(c.milk!=='none'&&t!=='esp'){milk=t==='lat'?Math.max(0,ml-30*c.shots):(t==='cap'?Math.max(0,.75*(ml-30*c.shots)):40)}
+  const m=DMILK[c.milk],f=milk/100,o={k:ml*.01+(sh?c.shots*1:0),p:0,c:0,f:0,s:0};
+  if(m){o.k+=m.k*f;o.p+=m.p*f;o.c+=m.c*f;o.f+=m.f*f;o.s+=m.s*f}
+  o.k+=c.sug*16+c.syr*20;o.c+=c.sug*4+c.syr*5;o.s+=c.sug*4+c.syr*5;
+  return {k:Math.round(o.k),p:r1(o.p),c:r1(o.c),f:r1(o.f),s:r1(o.s),cf:Math.round(cf),ml:Math.round(ml)};
+}
+function drkItem(c){
+  const v=drkCalc(c),T=dT(c.type),sz=c.src==='cafe'?(DSIZ.find(s=>s[0]===c.size)||['','']):null;
+  let nm=T[2]+(sz&&c.type!=='esp'?' · '+sz[1]:'')+(DSH.indexOf(c.type)>=0?' · '+c.shots+(c.shots===1?' شوت':' شوتات'):'');
+  return {n:nm,q:v.ml+' مل',k:v.k,p:v.p,c:v.c,fi:0,f:v.f,s:v.s,w:v.ml,cf:v.cf,dr:1};
+}
+function drkSave(c){S.drkR=[Object.assign({},c,{step:undefined,mode:undefined})].concat((S.drkR||[]).filter(r=>JSON.stringify(Object.assign({},r))!==JSON.stringify(Object.assign({},c,{step:undefined,mode:undefined})))).slice(0,3)}
+const drkLab=c=>{const T=dT(c.type);return T[1]+' '+T[2]+(c.src==='cafe'&&c.type!=='esp'?' · '+(DSIZ.find(s=>s[0]===c.size)||['',''])[1]:'')+(DSH.indexOf(c.type)>=0?' · '+c.shots+' شوت':'')};
+function renderDrk(){
+  if(M.step==='pick'){
+    const rec=(S.drkR||[]).map((r,i)=>'<button type="button" class="pill" data-drr="'+i+'">'+esc(drkLab(r))+'</button>').join('');
+    const sv=S.snacks.filter(s=>s.cat==='drink'&&s.cf>=10).slice(0,8).map(s=>'<button type="button" class="pill" data-drs="'+s.id+'">'+esc(s.n)+' · '+s.cf+'</button>').join('');
+    $('s2body').innerHTML='<div class="top2"><b>☕ سجّل مشروبك</b><small>اختر النوع</small></div><div class="g3">'+
+      DRKT.map(t=>'<button type="button" class="dc'+(t[0]==='nrg'||t[0]==='man'?' dsh':'')+'" data-drt="'+t[0]+'"><span>'+t[1]+'</span>'+t[2]+'<small>'+t[3]+'</small></button>').join('')+'</div>'+
+      (rec?'<p class="note" style="margin:6px 0 0">أخيراً</p><div class="aopl">'+rec+'</div>':'')+(sv?'<p class="note" style="margin:6px 0 0">محفوظاتي</p><div class="aopl">'+sv+'</div>':'')+
+      '<button type="button" class="btn ghost" data-act="close">إغلاق</button>';return;
+  }
+  if(M.step==='nrg'){
+    const v=M.v||{};
+    $('s2body').innerHTML='<div class="top2"><b>🔋 مشروب طاقة</b><small>بالذكاء</small></div>'+
+      '<label class="drkph">📷<b>صوّر العلبة أو الملصق</b><small>أقرأ الكافيين والسعرات والسكر تلقائياً</small><input id="drkFile" type="file" accept="image/*" style="display:none"></label>'+
+      '<input id="drkN" type="text" placeholder="الاسم" value="'+esc(v.n||'')+'" autocomplete="off">'+
+      '<div class="f2">'+[['ml','الحجم (مل)'],['cf','الكافيين (ملغ)'],['k','السعرات'],['s','السكر (جم)'],['c','الكارب (جم)'],['p','البروتين (جم)']].map(a=>'<label>'+a[1]+'<input id="drk_'+a[0]+'" type="number" inputmode="decimal" min="0" value="'+esc(v[a[0]]==null?'':v[a[0]])+'"></label>').join('')+'</div>'+
+      '<label class="aochk"><input type="checkbox" id="drkSv"'+(M.sv!==false?' checked':'')+'> احفظه في قائمة المشروبات (يظهر هنا وفي قائمة الطعام)</label>'+
+      '<p class="msg '+(M.ok?'ok':'err')+'" id="s2msg" aria-live="polite">'+esc(M.msg||'')+'</p>'+
+      '<div class="btns2"><button type="button" class="btn" style="background:var(--fill);color:var(--ink)" data-drn="save">حفظ بالقائمة فقط</button><button type="button" class="btn" data-drn="add">＋ أضف الآن</button></div><button type="button" class="btn ghost" data-drn="back">رجوع</button>';return;
+  }
+  const T=dT(M.type),sh=DSH.indexOf(M.type)>=0,v=drkCalc(M);
+  let h='<div class="top2"><b>'+T[1]+' '+T[2]+'</b><small>خصّصه</small></div>'+
+    '<p class="note" style="margin:6px 0 2px">المصدر</p><div class="dseg"><button type="button" data-drk="src:cafe" class="'+(M.src==='cafe'?'on':'')+'">من كوفي</button><button type="button" data-drk="src:home" class="'+(M.src==='home'?'on':'')+'">من البيت</button></div>';
+  if(M.type!=='esp'){
+    h+='<p class="note" style="margin:8px 0 2px">الحجم</p>'+(M.src==='cafe'?'<div class="dseg">'+DSIZ.map(s=>'<button type="button" data-drk="size:'+s[0]+'" class="'+(M.size===s[0]?'on':'')+'"><b>'+s[1]+'</b><small class="num">'+s[0]+' مل</small></button>').join('')+'</div>':
+      '<label class="drkml"><input id="drkMl" type="number" inputmode="numeric" min="0" value="'+M.ml+'"><span>مل</span></label>');
+  }
+  if(sh)h+='<p class="note" style="margin:8px 0 2px">عدد الشوتات <small>(كل شوت ≈ '+DSHOT+' ملغ)</small></p><div class="pst"><button type="button" data-drk="shots:-1" aria-label="أنقص">−</button><b class="num">'+M.shots+'</b><button type="button" data-drk="shots:1" aria-label="زد">＋</button></div>';
+  if(M.type!=='esp'){
+    h+='<p class="note" style="margin:8px 0 2px">الحليب والإضافات</p><div class="aopl">'+Object.keys(DMILK).map(k=>'<button type="button" class="aob'+(M.milk===k?' on':'')+'" data-drk="milk:'+k+'">'+(DMILK[k]?DMILK[k].n:'بدون حليب')+'</button>').join('')+'</div>';
+  }
+  h+='<div class="aopl" style="margin-top:6px"><button type="button" class="aob'+(M.sug?' on':'')+'" data-drk="sug:+">＋ سكر'+(M.sug?' ×'+M.sug:'')+'</button><button type="button" class="aob'+(M.syr?' on':'')+'" data-drk="syr:+">＋ شراب'+(M.syr?' ×'+M.syr:'')+'</button></div>'+
+    '<div class="drkt num"><div><b>'+v.cf+'</b><small>كافيين ملغ</small></div><div><b>'+v.k+'</b><small>سعرة</small></div><div><b>'+v.s+'</b><small>سكر جم</small></div><div><b>'+v.p+'</b><small>بروتين جم</small></div></div>'+
+    '<button type="button" class="btn big" data-drn="addc">أضف الآن · '+(sel===TK()?tStr(nowMin()):'')+'</button><button type="button" class="btn ghost" data-drn="back">رجوع</button>';
+  $('s2body').innerHTML=h;
+}
+{const _rd=renderS2;renderS2=function(){if(M&&M.mode==='drk2')return renderDrk();return _rd()}}
+function openDrk(){openS2({mode:'drk2',step:'pick'})}
+$('cDrk').addEventListener('click',openDrk);
+function drkRead(){const g=id=>$(id)?$(id).value:'';return {n:g('drkN').trim().slice(0,60),ml:Math.round(+g('drk_ml')||0),cf:Math.round(+g('drk_cf')||0),k:Math.round(+g('drk_k')||0),s:dec(g('drk_s')),c:dec(g('drk_c')),p:dec(g('drk_p'))}}
+$('s2body').addEventListener('input',e=>{
+  if(!M||M.mode!=='drk2')return;
+  if(e.target.id==='drkMl'){M.ml=Math.max(0,+e.target.value||0);renderDrkTot()}
+});
+function renderDrkTot(){const t=document.querySelector('.drkt');if(!t)return;const v=drkCalc(M);t.innerHTML='<div><b>'+v.cf+'</b><small>كافيين ملغ</small></div><div><b>'+v.k+'</b><small>سعرة</small></div><div><b>'+v.s+'</b><small>سكر جم</small></div><div><b>'+v.p+'</b><small>بروتين جم</small></div>'}
+$('s2body').addEventListener('click',e=>{
+  if(!M||M.mode!=='drk2')return;
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.drt){
+    const t=b.dataset.drt;
+    if(t==='man'){openS2({mode:'drink',from:'caf',name:'قهوة',w:S.cupMl,save:false});return}
+    if(t==='nrg'){M={mode:'drk2',step:'nrg',v:{},sv:true,msg:'',ok:true};renderS2();return}
+    M=drkInit(t);renderS2();return;
+  }
+  if(b.dataset.drr!==undefined){const c=S.drkR[+b.dataset.drr];if(!c)return;const it=drkItem(c);closeS2();qSay(commit([it],'s'),'ok');drkSave(c);save();return}
+  if(b.dataset.drs){const s=S.snacks.find(v=>String(v.id)===b.dataset.drs);if(s){closeS2();addSnack(s)}return}
+  if(b.dataset.drk){
+    const a=b.dataset.drk.split(':'),k=a[0],v=a[1];
+    if(k==='src')M.src=v;else if(k==='size')M.size=+v;else if(k==='milk')M.milk=v;
+    else if(k==='shots')M.shots=Math.max(1,Math.min(6,M.shots+(+v)));
+    else if(k==='sug')M.sug=(M.sug+1)%4;else if(k==='syr')M.syr=(M.syr+1)%4;
+    renderDrk();return;
+  }
+  const n=b.dataset.drn;if(!n)return;
+  if(n==='back'){M={mode:'drk2',step:'pick'};renderS2();return}
+  if(n==='addc'){const it=drkItem(M),c=Object.assign({},M);closeS2();qSay(commit([it],'s'),'ok');drkSave(c);save();return}
+  if(n==='add'||n==='save'){
+    const r=drkRead();
+    if(!r.n){M.v=r;M.msg='اكتب الاسم.';M.ok=false;renderDrk();return}
+    if(!(r.cf>0)&&!(r.k>0)){M.v=r;M.msg='اكتب الأرقام، أو صوّر الملصق.';M.ok=false;renderDrk();return}
+    const sv=$('drkSv')&&$('drkSv').checked;
+    if(n==='save'||sv){S.snacks.push({id:Date.now(),n:r.n,k:r.k,p:r.p,c:r.c,fi:0,f:0,s:Math.min(r.s,r.c||r.s),w:r.ml,cf:r.cf,cat:'drink',slot:'s'});save();renderMyMeals();renderCaf()}
+    if(n==='add'){closeS2();qSay(commit([{n:r.n,q:r.ml?r.ml+' مل':'',k:r.k,p:r.p,c:r.c,fi:0,f:0,s:Math.min(r.s,r.c||r.s),w:r.ml,cf:r.cf,dr:1}],'s'),'ok')}
+    else{closeS2();toast('انحفظ «'+r.n+'» في قائمة المشروبات',false)}
+  }
+});
+const DLP='هذي صورة علبة أو ملصق مشروب (مشروب طاقة أو مشروب فيه كافيين). استخرج الأرقام للعبوة كاملة. إذا الملصق لكل 100 مل حوّلها لحجم العبوة. رجّع JSON فقط بهذا الشكل: {"n":"الاسم بالعربي أو الإنجليزي","ml":حجم العبوة بالمل,"cf":الكافيين بالملغ,"k":السعرات,"p":البروتين جم,"c":الكارب جم,"su":السكر جم}. الأرقام فقط بدون وحدات. إذا الكافيين غير مكتوب قدّره من النوع واكتبه.';
+async function askDrink(b64){
+  const txt=await aiCall([{text:DLP},{inlineData:{mimeType:'image/jpeg',data:b64}}]);
+  const m=txt.match(/\{[\s\S]*\}/);if(!m)throw {code:'parse'};
+  let o;try{o=JSON.parse(m[0])}catch(e){throw {code:'parse'}}
+  const r={n:String(o.n||'').trim().slice(0,60),ml:Math.round(+o.ml||0),cf:Math.round(+o.cf||0),k:Math.round(+o.k||0),p:r1(+o.p||0),c:r1(+o.c||0),s:r1(+o.su||+o.s||0)};
+  if(!(r.k>0)&&!(r.cf>0))throw {code:'parse'};return r;
+}
+$('s2body').addEventListener('change',async e=>{
+  if(!M||M.mode!=='drk2'||e.target.id!=='drkFile')return;
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  const keep=M;
+  if(!hasAI()){M.v=drkRead();M.msg=ERR.nokey;M.ok=false;renderDrk();return}
+  M.v=drkRead();M.msg='جاري قراءة الصورة...';M.ok=true;const mm=$('s2msg');if(mm){mm.textContent=M.msg;mm.className='msg ok'}
+  try{const r=await askDrink(await readImage(f));if(M!==keep)return;M.v=r;M.msg='انقرأ الملصق ✓ راجع الأرقام.';M.ok=true}
+  catch(err){if(M!==keep)return;M.msg=errText(err)+' تقدر تكتب الأرقام بيدك.';M.ok=false}
+  renderDrk();
+});
 show('Home');
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
