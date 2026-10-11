@@ -755,6 +755,16 @@ body{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}
 .cnext b{font-size:20px;font-weight:900}.cnext small{font-size:12px;color:var(--muted)}
 .cnext small:first-child{color:var(--ink);font-weight:700;font-size:13px}
 .chero .big{font-weight:900;letter-spacing:-1px}
+.topr{display:flex;gap:2px;align-items:center}#topUndo{color:var(--blue);font-weight:900;font-size:16px;min-width:44px}
+.est{font-size:10.5px;color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 50%,transparent);border-radius:3px;padding:0 4px;margin-inline-start:4px;font-weight:700}
+.mbst{border:0;background:var(--fill)!important;color:var(--ink)!important;border-radius:var(--r);min-height:36px;padding:4px 10px;font-weight:700;font-size:13px}
+.mbc{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--r);min-height:36px;padding:6px 12px;font-size:13px}
+.mbc.on{background:var(--slab);color:var(--brass);border-color:var(--brass2);font-weight:800}
+@media (prefers-color-scheme: dark){.mbc.on{background:var(--brass);color:#1A120B}}
+.prow.mbr{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}.prow.mbr .pn{flex:1 1 100%;font-weight:800}.prow.mbr .pm{flex:1 1 100%;order:9}.prow.mbr .vx{margin-inline-start:auto}.prow.mbr .pg{flex:0 0 auto}
+body:has(#trayBar:not([hidden])) .dock{display:none}
+body:has(.dock:not([hidden])) .toast{bottom:calc(136px + env(safe-area-inset-bottom,0px))}
+.cupc svg path,.cupc svg rect{transition:none}
 </style>
 </head>
 <body>
@@ -762,7 +772,7 @@ body{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}
   <header class="hd" id="hd" hidden>
     <div><h1 id="ttl">اليوم</h1><p id="hello"></p></div>
   </header>
-  <div class="top" id="topbar" hidden><div class="logo"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="4" fill="none" stroke="var(--brass2)" stroke-width="2"/><g transform="rotate(-25 13 14)"><ellipse cx="13" cy="14" rx="5" ry="7.5" fill="var(--brass2)"/><path d="M13 7c-2 2.5 2 4.5 0 7s2 4.3 0 6.5" fill="none" stroke="var(--bg)" stroke-width="1.3" stroke-linecap="round"/></g><path d="M18.5 4.5c3 0 4.5 1.7 4.5 4.5-3 0-4.5-1.5-4.5-4.5z" fill="var(--green)"/></svg>سعراتي</div><button type="button" class="ic" id="topSet" aria-label="الإعدادات">⚙︎</button></div>
+  <div class="top" id="topbar" hidden><div class="logo"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="4" fill="none" stroke="var(--brass2)" stroke-width="2"/><g transform="rotate(-25 13 14)"><ellipse cx="13" cy="14" rx="5" ry="7.5" fill="var(--brass2)"/><path d="M13 7c-2 2.5 2 4.5 0 7s2 4.3 0 6.5" fill="none" stroke="var(--bg)" stroke-width="1.3" stroke-linecap="round"/></g><path d="M18.5 4.5c3 0 4.5 1.7 4.5 4.5-3 0-4.5-1.5-4.5-4.5z" fill="var(--green)"/></svg>سعراتي</div><span class="topr"><button type="button" class="ic" id="topUndo" aria-label="تراجع عن آخر عملية" hidden>↩︎</button><button type="button" class="ic" id="topSet" aria-label="الإعدادات">⚙︎</button></span></div>
   <div class="greet" id="greet" hidden><span id="gHi"></span><b id="gSub"></b></div>
   <div class="gl" id="daynav" hidden>
     <button id="dPrev" type="button" class="ar" aria-label="اليوم السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -807,7 +817,7 @@ body{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}
       <div id="cSleep"></div>
       <div class="cact"><button type="button" class="drkbtn cadd" id="cAdd">☕ أضف كوب</button><button type="button" class="drkbtn csec" id="cDrk">مشروب</button></div>
       <div id="cQuick"></div>
-      <div class="rowsp cap"><span id="cLog"></span><span class="rowsp" style="gap:12px"><button class="link" id="cUndo" type="button">↩︎ تراجع</button><button class="link" id="cManual" type="button">إدخال يدوي</button></span></div>
+      <div class="rowsp cap"><span id="cLog"></span><span class="rowsp" style="gap:12px"><button class="link" id="cUndo" type="button">− نقص كوب</button><button class="link" id="cManual" type="button">إدخال يدوي</button></span></div>
     </section>
     <div class="sec">الأكل</div>
     <section class="card slim" id="secFood" aria-label="أضف أكلك">
@@ -859,7 +869,7 @@ body{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}
       <div class="rowsp"><div><b>💧 الماء</b><div class="cap num" id="wSmall"></div></div>
         <div class="chp"><button type="button" data-w="330">+330</button><button type="button" data-w="600">+600</button><button type="button" data-w="1500">+1.5 ل</button><button type="button" id="wOther">✏️</button></div></div>
       <div class="bar"><i id="wBar" style="background:var(--water);width:0"></i></div>
-      <div class="rowsp cap"><span id="wLast"></span><button class="link" id="wUndo" type="button">↩︎ تراجع</button></div>
+      <div class="rowsp cap"><span id="wLast"></span><button class="link" id="wUndo" type="button">− نقص آخر ماء</button></div>
     </section>
 
     <section class="card slim" id="secVit" aria-label="الفيتامينات">
@@ -944,6 +954,7 @@ body{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}
     <section class="card">
       <div class="sh"><div class="ic" style="background:rgba(52,199,89,.16)">💾</div><h3>نسخة احتياطية</h3></div>
       <p class="note">البيانات محفوظة في متصفح جوالك فقط. صدّر نسخة كل 28 يوم وخزنها في ملفات iCloud. التطبيق يذكرك. قبل أي استيراد ينحفظ نسخ من بياناتك الحالية تقدر ترجعه.</p>
+      <p class="cap" id="stoInfo"></p>
       <textarea id="bk" placeholder="هنا تظهر النسخة، أو الصق نسخة قديمة عشان تستوردها"></textarea>
       <button class="btn" id="bkFile" type="button">💾 حفظ نسخة كملف</button>
       <div class="btns"><button class="btn soft" id="bkOut" type="button">تصدير ونسخ</button><button class="btn soft" id="bkIn" type="button">استيراد</button></div>
@@ -990,7 +1001,9 @@ body{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}
       <div class="tot" id="ckT" hidden></div></div>
     <p class="msg err" id="fMsg" aria-live="polite"></p>
     <button class="btn" id="fSave" type="button">حفظ</button>
+    <button class="btn soft" id="fGrpEdit" type="button" hidden>تعديل الوجبة كاملة</button>
     <button class="btn danger" id="fDel" type="button" hidden>حذف</button>
+    <button class="btn danger" id="fGrpDel" type="button" hidden>حذف الوجبة كاملة</button>
     <button class="btn ghost" id="fCancel" type="button">إغلاق</button>
   </div>
 </div>
@@ -1007,12 +1020,16 @@ let _nid=0;const nid=()=>{const n=Math.max(Date.now(),_nid+1);_nid=n+1000;return
 const dk=d=>d.toLocaleDateString('en-CA');
 const fromKey=k=>new Date(k+'T12:00:00');
 const addDays=(d,n)=>{const x=new Date(d.getTime());x.setDate(x.getDate()+n);return x};
-const TK=()=>dk(new Date());
+let RYF=null;try{RYF=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'})}catch(e){}
+function ryNow(){ // الوقت الحالي بتوقيت الرياض بغض النظر عن توقيت الجهاز
+  if(RYF){try{const o={};RYF.formatToParts(new Date()).forEach(p=>{o[p.type]=p.value});return {key:o.year+'-'+o.month+'-'+o.day,h:(+o.hour)%24,m:+o.minute}}catch(e){}}
+  const d=new Date();return {key:dk(d),h:d.getHours(),m:d.getMinutes()}}
+const TK=()=>ryNow().key;
 const fmt=n=>Number(n).toLocaleString('en-US');
 const DL=(d,o)=>d.toLocaleDateString('ar-u-ca-gregory-nu-latn',o);
 const lit=ml=>ml>=1000?(ml/1000).toFixed(2).replace(/\.?0+$/,'')+' لتر':Math.round(ml)+' مل';
 const r1=v=>Math.round(v*10)/10;
-const nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
+const nowMin=()=>{const r=ryNow();return r.h*60+r.m};
 const tStr=m=>{if(m==null)return'';const h=Math.floor(m/60),mm=m%60;return (h%12||12)+':'+String(mm).padStart(2,'0')+' '+(h<12?'ص':'م')};
 const gapStr=m=>{const h=Math.floor(m/60),mm=m%60;if(h===0)return mm+' دقيقة';const hs=h===1?'ساعة':h===2?'ساعتين':h+' ساعات';return hs+(mm?' و'+mm+' دقيقة':'')};
 const EN=[[4,'نشيط','⚡'],[3,'عادي','🙂'],[2,'وسط','😐'],[1,'تعبان','😪'],[0,'مرهق','🥱']];
@@ -1038,8 +1055,9 @@ function fixDays(){if(!S.days||typeof S.days!=='object'||Array.isArray(S.days))S
   d.vit=(d.vit&&typeof d.vit==='object'&&!Array.isArray(d.vit))?d.vit:{}})}
 fixDays();
 function save(){
-  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){storeOK=false}
-  if(!storeOK)$('bMsg').textContent='المتصفح ما يسمح بالحفظ، افتح التطبيق من Safari.';
+  let bad=false;try{localStorage.setItem(KEY,JSON.stringify(S));storeOK=true}catch(e){storeOK=false;bad=true}
+  if(bad){$('bMsg').textContent='المتصفح ما يسمح بالحفظ، افتح التطبيق من Safari.';}
+  save.failed=bad;
 }
 const EMPTY=()=>({items:[],water:[],cups:0,cupT:[],vit:{}});
 const peek=k=>S.days[k]||EMPTY();
@@ -1056,16 +1074,24 @@ const water=d=>d.water.reduce((a,x)=>a+x.ml,0)+foodWater(d);
 const cafMg=d=>d.cups*S.cupMg+sum(d.items).cf;
 
 /* ---------- undo / toast ---------- */
-let UNDO=null,toastTm=null;
-function snap(){UNDO={k:sel,d:S.days[sel]?JSON.stringify(S.days[sel]):null}}
+function setH(el,h){if(el.__h===h)return false;el.__h=h;el.innerHTML=h;return true} // لا نعيد بناء العنصر لو ما تغيّر
+let UNDOS=[],toastTm=null;
+const UKIND={i:['items'],w:['water'],c:['cups','cupT'],v:['vit']};
+function snap(kind){ // لقطة للجزء المتأثر فقط من اليوم (طعام/ماء/قهوة/مكملات) حتى لا يمس التراجع غيره
+  const k=sel,d=peek(k),f={};(UKIND[kind||'i']||UKIND.i).forEach(n=>{f[n]=JSON.stringify(d[n])});
+  UNDOS.push({k:k,f:f});if(UNDOS.length>60)UNDOS.shift();undoUI();
+}
+function undoUI(){const n=UNDOS.length;$('toastU').textContent=n>1?'تراجع ('+n+')':'تراجع';const t=$('topUndo');if(t){t.hidden=!n||curView!=='Home';t.textContent='↩︎'+(n>1?' '+n:'')}}
 function hideToast(){$('toast').hidden=true}
-function toast(msg,undo){$('toastT').textContent=msg;$('toastU').hidden=!undo;$('toast').hidden=false;clearTimeout(toastTm);toastTm=setTimeout(hideToast,9000)}
+function toast(msg,undo){if(save.failed)msg='⚠️ ما انحفظ! احفظ نسخة احتياطية من الإعدادات. '+msg;$('toastT').textContent=msg;$('toastU').hidden=!(undo&&UNDOS.length);$('toast').hidden=false;clearTimeout(toastTm);toastTm=setTimeout(hideToast,9000);undoUI()}
 function doUndo(){
-  if(!UNDO)return;
-  if(UNDO.d)S.days[UNDO.k]=JSON.parse(UNDO.d);else delete S.days[UNDO.k];
-  UNDO=null;save();renderAll();toast('تم التراجع',false);
+  const e=UNDOS.pop();if(!e){undoUI();return}
+  const d=day(e.k);Object.keys(e.f).forEach(n=>{d[n]=JSON.parse(e.f[n])});
+  if(sel!==e.k)sel=e.k;
+  save();renderAll();toast('تم التراجع',UNDOS.length>0);
 }
 $('toastU').addEventListener('click',doUndo);
+$('topUndo').addEventListener('click',doUndo);
 
 /* ---------- vitamin brain ---------- */
 const KW={ca:/(حليب|لبن|جبن|جبنة|زبادي|لبنة|قشطة|كريمة|ميلك|بودينق|بودنج|بودن|pudding|كاسترد|ايس كريم|آيس كريم|ice cream|واي|whey|كازين|casein|شيك|milk|cheese|yogurt|yoghurt|labneh|كالسيوم)/i,fe:/(كبدة|كبده|سبانخ|عدس|حديد|liver|spinach|lentil|iron)/i};
@@ -1161,7 +1187,7 @@ function nowStatus(ty,d){
 function vitSummary(d){
   const n=S.vits.length;if(!n)return'';
   const rem=S.vits.filter(v=>!vTaken(d,v)),took=n-rem.length,lines=[];let cls='';
-  const hr=new Date().getHours(),today=sel===TK();
+  const hr=ryNow().h,today=sel===TK();
   const mgRem=rem.find(v=>vType(v)==='mg');
   if(rem.length){
     if(mgRem&&today&&hr>=17){lines.push('⭐ <b>'+esc(mgRem)+' أولوية الحين</b>، خذه قبل النوم'+(hr>=21?' (قرب الوقت)':''));if(hr>=21)cls='alert'}
@@ -1188,7 +1214,7 @@ function renderTop(){
   $('mchips').innerHTML=MEALS.map(m=>'<button type="button" data-m="'+m[0]+'" aria-pressed="'+(m[0]===curMeal)+'">'+m[1]+'</button>').join('');
   setTitle();
 }
-function greetHi(){const h=new Date().getHours();return(h<5?'سهران؟':h<12?'صباح النور':h<16?'ظهرك سعيد':h<19?'عصرك سعيد':'مساء النور')+' يا سلطان'}
+function greetHi(){const h=ryNow().h;return(h<5?'سهران؟':h<12?'صباح النور':h<16?'ظهرك سعيد':h<19?'عصرك سعيد':'مساء النور')+' يا سلطان'}
 function renderRing(){
   const d=peek(sel),t=sum(d.items),kt=S.t.k,left=kt-t.k;
   $('rBig').textContent=fmt(Math.abs(left));
@@ -1201,10 +1227,10 @@ function renderRing(){
   $('gHi').textContent=today?greetHi():DL(fromKey(sel),{weekday:'long',day:'numeric',month:'long'});
   $('gSub').textContent=left<0?'تعدّيت هدفك بـ '+fmt(-left)+' سعرة':(d.items.length?'باقي لك ':'يومك جديد، باقي لك ')+fmt(left)+' سعرة';
   const pr=MAC[0];
-  $('macros').innerHTML=MAC.map((m,ix)=>{
+  setH($('macros'),MAC.map((m,ix)=>{
     const v=t[m[0]],tg=S.t[m[0]],pc=tg>0?Math.min(v/tg*100,100):0,ov=v>tg&&m[0]!=='fi';
     return '<div class="mrow'+(ix===0?' prot':'')+'"><div class="t"><span>'+m[1]+'</span><span class="num">'+v+' / '+tg+'</span></div><div class="bar'+(ov?' over':'')+'"><i style="width:'+pc+'%;background:var('+m[2]+')"></i></div></div>';
-  }).join('');
+  }).join(''));
   renderSum(d);
 }
 function renderSum(d){
@@ -1212,18 +1238,18 @@ function renderSum(d){
   const mdo=MD.find(o=>o[0]===d.mood);
   const w=Math.round(water(d)/100)/10,wt=Math.round(S.t.w/100)/10,mg=cafMg(d),n=S.vits.length,vd=S.vits.filter(v=>vTaken(d,v)).length;
   const sc=(id,cls,h)=>'<button type="button" data-scroll="'+id+'"'+(cls?' class="'+cls+'"':'')+'>'+h+'</button>';
-  $('moodRow').innerHTML=
+  setH($('moodRow'),
     (d.sleep?sc('secMorning','g','😴 <b>نمت '+d.sleep+' س</b>'):sc('secMorning','e','😴 <b>سجّل نومك</b>'))+
     (enL?sc('secMorning','g','⚡ <b>نشاط '+enL+'</b>'):sc('secMorning','e','⚡ <b>نشاطك</b>'))+
-    (d.spend!=null?sc('secEnd','','💸 <b>'+d.spend+' ر اليوم</b>'):sc('secEnd','e','💸 <b>مصروفك</b>'));
+    (d.spend!=null?sc('secEnd','','💸 <b>'+d.spend+' ر اليوم</b>'):sc('secEnd','e','💸 <b>مصروفك</b>')));
   const tile=(id,ic,v,u,cls)=>'<button type="button" class="tile'+(cls?' '+cls:'')+'" data-scroll="'+id+'"><span class="ti">'+ic+'</span><b class="num">'+v+'</b><small>'+u+'</small></button>';
   const lg=(id,t,v,on)=>sc(id,on?'on':'',t+(v?' <b>'+v+'</b>':''));
-  $('dsum').innerHTML=
+  setH($('dsum'),
     '<div class="tiles num">'+tile('secWater','💧',w,'من '+wt+' ل ماء',w>=wt?'ok':'')+tile('secCaf','☕',mg,'ملغ كافيين','')+tile('secVit','💊',n?vd+'/'+n:'—','فيتامينات',n&&vd<n?'warn':(n?'ok':''))+'</div>'+
     '<div class="sec">تسجيل اليوم</div><div class="lgrow">'+
     lg('secMorning','😴 نوم',d.sleep?d.sleep+' س':'',d.sleep)+lg('secMorning','⚡ نشاط',enL||'',enL)+
     lg('secTrain','🏋️ تمرين',d.train===true?'تمرنت':d.train===false?'ما تمرنت':'',d.train!=null)+
-    lg('secEnd',mdo?mdo[2]+' مزاج':'🙂 مزاج',mdo?mdo[1]:'',mdo)+lg('secEnd','💸 مصروف',d.spend!=null?d.spend+' ر':'',d.spend!=null)+'</div>';
+    lg('secEnd',mdo?mdo[2]+' مزاج':'🙂 مزاج',mdo?mdo[1]:'',mdo)+lg('secEnd','💸 مصروف',d.spend!=null?d.spend+' ر':'',d.spend!=null)+'</div>');
 }
 const MCOL={b:'var(--orange)',l:'var(--green)',s:'var(--purple)',d:'var(--blue)'};
 function renderMeals(){
@@ -1268,7 +1294,7 @@ function renderVit(){
   const d=peek(sel),n=S.vits.length,done=S.vits.filter(v=>vTaken(d,v)).length;
   $('vSmall').textContent=n?done+' / '+n:'';
   $('vSum').innerHTML=vitSummary(d);
-  const hr=new Date().getHours(),eve=sel===TK()&&hr>=17;
+  const hr=ryNow().h,eve=sel===TK()&&hr>=17;
   const order=S.vits.map((v,i)=>({v:v,i:i,taken:vTaken(d,v),mg:vType(v)==='mg'}))
     .sort((a,b)=>(a.taken-b.taken)||((eve&&b.mg)-(eve&&a.mg))||(a.i-b.i));
   $('vList').innerHTML=n?order.map(o=>{
@@ -1551,25 +1577,28 @@ $('manual').addEventListener('click',()=>openSheet());
 $('fCancel').addEventListener('click',closeSheet);
 $('sheetBg').addEventListener('click',e=>{if(e.target===$('sheetBg'))closeSheet()});
 $('fSave').addEventListener('click',()=>{
+  if($('sheetBg').hidden)return;
   const n=$('fName').value.trim(),k=Math.round(+$('fk').value);
   if(!n||$('fk').value===''||!isFinite(k)||k<0){$('fMsg').textContent='اكتب الاسم والسعرات على الأقل.';return}
+  if(k>20000){$('fMsg').textContent='السعرات أكبر من المعقول (الحد 20,000). راجع الرقم.';return}
+  if(['fp','fc','ffi','fs','ff'].some(i=>dec($(i).value)>2000)){$('fMsg').textContent='جرامات أكبر من المعقول (الحد 2000). راجع الأرقام.';return}
   const rec={m:$('fMeal').value,n:n,q:''};FIELDS.forEach(f=>{rec[f[1]]=f[1]==='k'?k:(['p','c','fi','f','s'].includes(f[1])?dec($(f[0]).value):z($(f[0]).value))});
   if(rec.s>rec.c)rec.s=rec.c;ckApply(rec);
   snap();const d=day(sel);
   if(editId){const x=d.items.find(v=>v.id===editId);if(x){delete rec.q;if(x.k!==rec.k||x.p!==rec.p)delete x.g;Object.assign(x,rec)}}
-  else d.items.push(Object.assign({id:Date.now(),t:stamp()},rec));
+  else d.items.push(Object.assign({id:nid(),t:stamp()},rec));
   save();closeSheet();renderAll();toast('تم الحفظ',true);
 });
 $('fDel').addEventListener('click',()=>{snap();day(sel).items=day(sel).items.filter(v=>v.id!==editId);save();closeSheet();renderAll();toast('تم الحذف',true)});
 
 /* ---------- water / caffeine / vitamins ---------- */
-function addWater(ml){if(!(ml>0))return;snap();day(sel).water.push({id:Date.now(),ml:Math.round(ml),t:stamp()});save();renderAll();toast('+ '+Math.round(ml)+' مل ماء',true)}
+function addWater(ml){if(!(ml>0))return;snap('w');day(sel).water.push({id:nid(),ml:Math.round(ml),t:stamp()});save();renderAll();toast('+ '+Math.round(ml)+' مل ماء',true)}
 $('secWater').addEventListener('click',e=>{const b=e.target.closest('[data-w]');if(b)addWater(+b.dataset.w)});
-$('wUndo').addEventListener('click',()=>{const d=day(sel);if(!d.water.length)return;snap();d.water.pop();save();renderAll();toast('تم التراجع عن آخر ماء',true)});
+$('wUndo').addEventListener('click',()=>{const d=day(sel);if(!d.water.length)return;snap('w');d.water.pop();save();renderAll();toast('نُقص آخر ماء',true)});
 $('wOther').addEventListener('click',()=>openS2({mode:'water'}));
-function addCups(n){snap();const d=day(sel),t=stamp();for(let i=0;i<n;i++){d.cups++;d.cupT.push(t)}save();renderAll();toast('+ '+n+' كوب قهوة'+(t!=null?' ('+tStr(t)+')':''),true)}
+function addCups(n){snap('c');const d=day(sel),t=stamp();for(let i=0;i<n;i++){d.cups++;d.cupT.push(t)}save();renderAll();toast('+ '+n+' كوب قهوة'+(t!=null?' ('+tStr(t)+')':''),true)}
 $('cPlus').addEventListener('click',()=>addCups(1));
-function dropCup(i){const d=day(sel);if(d.cups<=0)return;snap();d.cups--;if(i==null||i>=d.cupT.length){if(d.cupT.length>d.cups)d.cupT.pop()}else d.cupT.splice(i,1);save();renderAll();toast('تم نقص كوب',true)}
+function dropCup(i){const d=day(sel);if(d.cups<=0)return;snap('c');d.cups--;if(i==null||i>=d.cupT.length){if(d.cupT.length>d.cups)d.cupT.pop()}else d.cupT.splice(i,1);save();renderAll();toast('تم نقص كوب',true)}
 $('cMinus').addEventListener('click',()=>dropCup());
 $('cUndo').addEventListener('click',()=>dropCup());
 $('cLog').addEventListener('click',e=>{
@@ -1597,7 +1626,7 @@ function guessSlot(d){
 }
 $('meals').addEventListener('click',e=>{
   const vt=e.target.closest('[data-vtake]');
-  if(vt){const d=day(sel),k=vt.dataset.vtake;if(d.vit[k]&&d.vit[k].m===vt.dataset.slot){delete d.vit[k];save();renderAll();toast('ألغيت '+k,false);return}d.vit[k]={t:stamp(),m:vt.dataset.slot};save();renderAll();toast('سجلت '+k,false);return}
+  if(vt){const d=day(sel),k=vt.dataset.vtake;snap('v');if(d.vit[k]&&d.vit[k].m===vt.dataset.slot){delete d.vit[k];save();renderAll();toast('ألغيت '+k,true);return}d.vit[k]={t:stamp(),m:vt.dataset.slot};save();renderAll();toast('سجلت '+k,false);return}
   const sv=e.target.closest('[data-savemeal]');
   if(sv){
     const slot=sv.dataset.savemeal;
@@ -1622,7 +1651,7 @@ $('vNew').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();
 })();
 
 /* ---------- body log ---------- */
-function setDay(fn){UNDO=null;hideToast();const d=day(sel);fn(d);save();renderBody();renderRing()}
+function setDay(fn){const d=day(sel);fn(d);save();renderBody();renderRing()}
 $('slP').addEventListener('click',()=>{setDay(d=>{d.sleep=Math.min(14,r1((d.sleep||0)+.5))})});
 $('slM').addEventListener('click',()=>{setDay(d=>{const v=r1((d.sleep||0)-.5);if(v<=0)delete d.sleep;else d.sleep=v})});
 $('slQ').addEventListener('click',e=>{const b=e.target.closest('[data-h]');if(b){setDay(d=>{d.sleep=+b.dataset.h})}});
@@ -1898,7 +1927,7 @@ $('s2body').addEventListener('click',async e=>{
   if(act==='pback'){M.stage='pick';renderS2();return}
   if(act==='rv_retry'){startReview(M.text);return}
   if(act==='rv_bg'){
-    S.pend.push({id:Date.now(),text:M.text,meal:M.slot,day:sel,t:stamp(),st:'wait',tries:0,next:0,err:''});
+    S.pend.push({id:nid(),text:M.text,meal:M.slot,day:sel,t:stamp(),st:'wait',tries:0,next:0,err:''});
     $('qText').value='';save();closeS2();renderPend();runPend();toast('ماشي، يحسبه بالخلفية وتلقاه جاهز للمراجعة',false);return;
   }
   if(act==='rvadd'){
@@ -1914,7 +1943,7 @@ $('s2body').addEventListener('click',async e=>{
     const msg=commit(items,slot);closeS2();$('qText').value='';qSay(msg,'ok');return;
   }
   if(act==='wadd'){const ml=(+$('wv').value)*(+$('wu').value);if(!(ml>0)){s2msg('اكتب الكمية.');return}addWater(ml);closeS2();return}
-  if(act==='n_meal'){openS2({mode:'build',name:'',slot:curMeal,text:'',rows:[]});return}
+  if(act==='n_meal'){openS2({mode:'plate',name:'',slot:curMeal,rows:[]});return}
   if(act==='n_prod'){openS2({mode:'prod'});return}
   if(act==='n_snack'){openS2({mode:'drink',from:'snack'});return}
   if(act==='dfill'){
@@ -1931,7 +1960,7 @@ $('s2body').addEventListener('click',async e=>{
     if(!n){s2msg('اكتب الاسم.');return}
     if(act==='dadd'&&!(cf>0)&&!(k>0)){s2msg('اكتب الكافيين أو السعرات.');return}
     const it={n:n,q:'',k:k,p:dec($('dp').value),c:dec($('dc').value),fi:0,f:dec($('df').value),s:Math.min(dec($('ds').value),dec($('dc').value)),w:z($('dw').value),cf:cf},slot=$('s2slot').value;
-    if(act==='dsave'||($('dsave')&&$('dsave').checked)){S.snacks.push(Object.assign({id:Date.now(),slot:slot,cat:($('dcat')&&$('dcat').value)||(M&&M.from==='caf'?'drink':undefined)},it));save();renderMyMeals()}
+    if(act==='dsave'||($('dsave')&&$('dsave').checked)){S.snacks.push(Object.assign({id:nid(),slot:slot,cat:($('dcat')&&$('dcat').value)||(M&&M.from==='caf'?'drink':undefined)},it));save();renderMyMeals()}
     if(act==='dadd'){const msg=commit([it],slot);closeS2();qSay(msg,'ok')}
     else{renderCaf();closeS2();toast('تم حفظ «'+n+'» في سناكاتي',false)}
     return;
@@ -1939,7 +1968,7 @@ $('s2body').addEventListener('click',async e=>{
   if(act==='prsave'){
     const n=$('prN').value.trim(),k=Math.round(+$('prK').value);
     if(!n||$('prK').value===''||!(k>=0)){s2msg('اكتب الاسم والسعرات.');return}
-    const na={id:Date.now(),sg:M.sg||0,n:n,g:100,k:k,p:dec($('prP').value),c:dec($('prC').value),fi:dec($('prFi').value),f:dec($('prF').value),s:dec($('prS').value),cat:$('prCat').value,w:0,cf:0,pc:dec(($('prPc')||{}).value)};S.adds.push(na);
+    const na={id:nid(),sg:M.sg||0,n:n,g:100,k:k,p:dec($('prP').value),c:dec($('prC').value),fi:dec($('prFi').value),f:dec($('prF').value),s:dec($('prS').value),cat:$('prCat').value,w:0,cf:0,pc:dec(($('prPc')||{}).value)};S.adds.push(na);
     save();renderMyMeals();const dr=M.direct,sl=M.slot;if(dr){openAddG(na,sl||curMeal);toast('انحفظ «'+n+'» في إضافاتي. اكتب الجرامات وأضفه',false)}else{closeS2();toast('تم حفظ «'+n+'» في إضافاتي',false)}return;
   }
   if(act==='padd'){
@@ -1955,7 +1984,7 @@ $('s2body').addEventListener('click',async e=>{
   if(act==='save'){
     if(!M.rows.length||M.rows.some(r=>!(r.g>0))){s2msg('أضف مكوّن واحد على الأقل واكتب جراماته.');return}
     if(!(M.name||'').trim()){s2msg('اكتب اسم الوجبة.');return}
-    S.meals.push({id:Date.now(),n:M.name.trim(),slot:M.slot,parts:M.rows.map(r=>Object.assign({n:r.n,g:r.g},scaleRow(r)))});
+    S.meals.push({id:nid(),n:M.name.trim(),slot:M.slot,parts:M.rows.map(r=>Object.assign({n:r.n,g:r.g},scaleRow(r)))});
     save();renderMyMeals();toast('تم حفظ الوجبة «'+M.name.trim()+'»',false);closeS2();return;
   }
   if(act==='calc'){
@@ -2047,7 +2076,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 setInterval(dayRoll,30000);
 
 /* ---------- reports ---------- */
-function periodKeys(off){const a=[];for(let i=29;i>=0;i--)a.push(dk(addDays(new Date(),-(i+off))));return a}
+function periodKeys(off){const a=[];for(let i=29;i>=0;i--)a.push(dk(addDays(fromKey(TK()),-(i+off))));return a}
 /* ---- مسار الوزن المتوقع ---- */
 function tdeeOf(w){return (10*w+6.25*S.prof.h-5*S.prof.age+5)*S.prof.act}
 function anchor(){
@@ -2429,7 +2458,7 @@ function bkMark(){S.lastBk=Date.now();S.bkSnooze=0;save();bkBar()}
 function bkDays(o){return Object.keys(o.days||{}).filter(k=>o.days[k]&&((o.days[k].items||[]).length||o.days[k].wt)).length}
 function bkMsg(t,ok){$('bMsg').className='msg'+(ok?' ok':' err');$('bMsg').textContent=t}
 async function bkSaveFile(){
-  const js=JSON.stringify(bkData()),d=new Date(),nm='sa3rati-backup-'+dk(d)+'.json';
+  const js=JSON.stringify(bkData()),nm='sa3rati-backup-'+TK()+'.json';
   $('bk').value=js;
   try{
     const f=new File([js],nm,{type:'application/json'});
@@ -2452,15 +2481,17 @@ function applyData(o){
   const key=S.key,ork=S.orKey,lb=S.lastBk||0;
   S=Object.assign({},DEF,o);S.cupV=3;S.t=Object.assign({},DEF.t,o.t);S.meals=o.meals||[];S.adds=o.adds||[];S.snacks=o.snacks||[];S.cache=o.cache||{};S.pend=[];S.rcp=Array.isArray(o.rcp)?o.rcp:[];S.vits=o.vits||[];S.prof=Object.assign({},DEF.prof,o.prof||{});S.cats=Array.isArray(o.cats)?o.cats:undefined;syncCats();
   S.key=key||'';S.orKey=ork||'';S.lastBk=Math.max(lb,+o.lastBk||0);delete S.bkv;delete S.bkAt;
-  fixDays();save();renderSet();renderAll();
+  Object.keys(S.days).forEach(k=>{if(!/^\d{4}-\d\d-\d\d$/.test(k))delete S.days[k]});fixDays();save();renderSet();renderAll();stoInfo();
 }
+function stoInfo(){let kb=0;try{kb=Math.round(JSON.stringify(S).length/1024)}catch(e){}$('stoInfo').textContent='بياناتك محفوظة داخل متصفح الجوال فقط (حد التخزين نحو 5 ميغابايت، وحجمك الحين '+kb+' ك.ب). آيفون ممكن يمسح بيانات المواقع لو مسحت بيانات سفاري أو ما فتحت التطبيق شهور، فاحفظ نسخة كل شهر.'}
+stoInfo();
 let impT=null;
 $('bkIn').addEventListener('click',()=>{
   let o;
   try{o=JSON.parse($('bk').value);if(!o||typeof o.days!=='object'||!o.t)throw 0}catch(e){bkMsg('النسخة غير صالحة. ما تغيّر شي في بياناتك.');return}
   if(!impT){
     const n=bkDays(o),keys=Object.keys(o.days).sort(),cur=bkDays(S);
-    bkMsg('النسخة فيها '+n+' يوم مسجل (من '+(keys[0]||'-')+' إلى '+(keys[keys.length-1]||'-')+') وبياناتك الحالية '+cur+' يوم. اضغط «استيراد» مرة ثانية للاستبدال. تنحفظ نسخة من بياناتك الحالية قبل الاستبدال.',true);
+    const nm=(o.meals||[]).length,na=(o.adds||[]).length+(o.snacks||[]).length;bkMsg('النسخة فيها '+n+' يوم مسجل (من '+(keys[0]||'-')+' إلى '+(keys[keys.length-1]||'-')+')، '+nm+' وجبة محفوظة و'+na+' صنف، وبياناتك الحالية '+cur+' يوم، '+(S.meals||[]).length+' وجبة، '+((S.adds||[]).length+(S.snacks||[]).length)+' صنف. اضغط «استيراد» مرة ثانية للاستبدال. تنحفظ نسخة من بياناتك الحالية قبل الاستبدال.',true);
     $('bkIn').textContent='تأكيد الاستيراد';
     impT=setTimeout(()=>{impT=null;$('bkIn').textContent='استيراد'},10000);return;
   }
@@ -2495,7 +2526,7 @@ $('wipe').addEventListener('click',()=>{
   S.days={};S.cache={};save();renderAll();renderUndo();$('bMsg').className='msg ok';$('bMsg').textContent='تم المسح. تقدر ترجع بياناتك بزر الاسترجاع.';
 });
 
-{const h=new Date().getHours();curMeal=h<11?'b':h<16?(MEALS.some(m=>m[0]==='l')?'l':'s'):h<18?'s':'d'}
+{const h=ryNow().h;curMeal=h<11?'b':h<16?(MEALS.some(m=>m[0]==='l')?'l':'s'):h<18?'s':'d'}
 /* =====================================================
    طريقة الطبخ + اقتراحات + وصفات
    ===================================================== */
@@ -3069,7 +3100,7 @@ $('s2body').addEventListener('click',async e=>{
     toast('تمت إضافة «'+M.ai.n+'» ('+M.ai.t.k+' سعرة)',true);M.ai=null;M.aiq='';renderAddTo();return;
   }
   if(a==='save'){
-    const t=M.ai.t;S.snacks.push({id:Date.now(),n:M.ai.n,k:t.k,p:t.p,c:t.c,fi:t.fi,f:t.f,s:t.s,w:t.w,cf:t.cf,slot:M.slot,cat:atCat==='meal'?'extra':atCat});
+    const t=M.ai.t;S.snacks.push({id:nid(),n:M.ai.n,k:t.k,p:t.p,c:t.c,fi:t.fi,f:t.f,s:t.s,w:t.w,cf:t.cf,slot:M.slot,cat:atCat==='meal'?'extra':atCat});
     save();renderMyMeals();toast('حُفظ «'+M.ai.n+'» في قائمة الطعام',false);
   }
 });
@@ -3252,8 +3283,8 @@ function nwSave(add){
   const r=nwRead();
   if(!(r.k>0)&&!(r.p||r.c||r.f)){M.msg='اكتب الأرقام، أو استخدم الوصف أو صوّر الملصق.';M.ok=false;return false}
   let rec;
-  if(M.per==='100'){rec={id:Date.now(),sg:0,n:n.slice(0,80),g:100,k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,cat:M.cat,w:0,cf:0,pc:dec(M.pc),ao:aoOn()};S.adds.push(rec)}
-  else{rec={id:Date.now(),n:n.slice(0,80),k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,w:r.w,cf:r.cf,cat:M.cat,slot:M.slot||'s',ao:aoOn()};if(!add)S.snacks.push(rec)}
+  if(M.per==='100'){rec={id:nid(),sg:0,n:n.slice(0,80),g:100,k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,cat:M.cat,w:0,cf:0,pc:dec(M.pc),ao:aoOn()};S.adds.push(rec)}
+  else{rec={id:nid(),n:n.slice(0,80),k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,w:r.w,cf:r.cf,cat:M.cat,slot:M.slot||'s',ao:aoOn()};if(!add)S.snacks.push(rec)}
   if(add&&M.per==='item'){
     const msg=commit([Object.assign({n:rec.n,q:'',k:r.k,p:r.p,c:r.c,fi:r.fi,f:r.f,s:r.s,w:r.w,cf:r.cf},M.cat==='drink'?{dr:1}:{})],M.slot);closeS2();qSay(msg,'ok');return true;
   }
@@ -3398,7 +3429,7 @@ $('s2body').addEventListener('click',async e=>{
       const items=M.items.map(x=>Object.assign({},x,{n:String(x.n||'').trim(),s:Math.min(x.s||0,x.c||0)})).filter(x=>x.n);
       if(!items.length){s2msg('ما فيه أصناف للإضافة.');return}
       if(M.dest==='list'){
-        const base=Date.now();
+        const base=nid();
         items.forEach((x,i)=>S.snacks.push({id:base+i,n:x.n.slice(0,80),k:x.k||0,p:x.p||0,c:x.c||0,fi:x.fi||0,f:x.f||0,s:x.s||0,w:x.w||0,cf:x.cf||0,cat:M.lc,slot:M.slot||'s'}));
         if(M.from==='pend')S.pend=S.pend.filter(v=>v.id!==M.pid);
         else $('qText').value='';
@@ -3489,7 +3520,7 @@ function nwPlate(add){
   const r=nwRead();
   if(!(r.k>0)&&!(r.p||r.c||r.f)){M.msg='اكتب الأرقام، أو استخدم الوصف أو صوّر الملصق.';M.ok=false;return false}
   const pl=M.plate,per=M.per,cat=M.cat,pc=dec(M.pc);
-  const rec=Object.assign({id:Date.now(),n:n.slice(0,80),cat:cat,ao:aoOn()},r);
+  const rec=Object.assign({id:nid(),n:n.slice(0,80),cat:cat,ao:aoOn()},r);
   if(per==='100'){Object.assign(rec,{g:100,sg:0,pc:pc,w:0,cf:0})}
   if(add){
     const b=Object.assign({},rec,{g:per==='100'?100:1});
@@ -3514,7 +3545,7 @@ $('s2body').addEventListener('click',e=>{
     if(!M.rows.length||M.rows.some(r=>!(r.g>0))){s2msg('أضف صنف واحد على الأقل واكتب كمياتها.');return}
     if(a==='save'){
       if(!(M.name||'').trim()){s2msg('اكتب اسم الوجبة.');return}
-      S.meals.push({id:Date.now(),n:M.name.trim(),slot:M.slot,parts:M.rows.map(r=>Object.assign({n:r.n,g:r.g},r.u===1?{u:1}:{},scaleRow(r)))});
+      S.meals.push({id:nid(),n:M.name.trim(),slot:M.slot,parts:M.rows.map(r=>Object.assign({n:r.n,g:r.g},r.u===1?{u:1}:{},scaleRow(r)))});
       save();mmOpen=true;renderMyMeals();const nm=M.name.trim();closeS2();toast('تم حفظ الوجبة «'+nm+'»',false);return;
     }
     if(a==='add'){
@@ -3754,7 +3785,7 @@ function slpFor(k){
 }
 function cafFrame(){ // بعد 12 الليل وقبل 4 الفجر وأنت لسا في ليلة اليوم اللي قبل (نوم متأخر)
   if(sel!==TK()||nowMin()>=240)return null;
-  const prev=dk(addDays(new Date(),-1)),pp=slpFor(prev);if(pp.bed<=1440)return null;
+  const prev=dk(addDays(fromKey(TK()),-1)),pp=slpFor(prev);if(pp.bed<=1440)return null;
   return {pl:pp,now:nowMin()+1440,doses:cafDoses(peek(prev)).concat(cafDoses(peek(TK())).map(x=>[x[0]+1440,x[1]]))};
 }
 function cafDoses(d){
@@ -3818,14 +3849,14 @@ function renderSleepCaf(){
   }
   const strip='<div class="cardh">جسمك خلال اليوم</div><div class="cupstrip" role="img" aria-label="مستوى الكافيين في جسمك كل ساعتين">'+cups+'</div>'+
     '<div class="cleg"><span><i class="k1"></i>أكثر من '+CAF_OK+' ملغ</span><span><i class="k2"></i>أقل من '+CAF_OK+' ملغ</span></div>';
-  const kv='<div class="ckv"><div><small>اليوم</small><b class="num">'+cupsW(doses.length)+'</b><small class="num">'+tot+' ملغ</small></div>'+
+  const kv='<div class="ckv"><div><small>اليوم</small><b class="num">'+cupsW(doses.length)+'</b><small class="num">'+tot+' ملغ'+((!fr&&(d.cups-(d.cupT||[]).filter(x=>x!=null).length)>0)?' · '+(d.cups-(d.cupT||[]).filter(x=>x!=null).length)+' بلا وقت':'')+'</small></div>'+
     '<div><small>تنام عادي من</small><b class="num">'+(doses.length?f(ad.clr):'—')+'</b></div>'+
     '<div><small>عند نومك</small><b class="num">'+Math.round(ad.rb)+'</b><small>ملغ</small></div></div>';
   const nbox=(isT&&!stop)?('<div class="cnext'+(stop?' stop':'')+'"><small>الكوب الجاي</small><b class="num">'+(stop?'ما في كوب':(nx<=now?'الحين':f(nx)))+'</b>'+(stop?'':'<small>آخر موعد <span class="num">'+f(cut)+'</span></small>')+'</div>'):'';
   const zf='<button type="button" class="link zset" id="zSet">⏰ أوقات النوم</button><div id="zForm" hidden>'+
     [['wb','نومك (سبت–أربعاء)'],['wk','صحيانك (أحد–خميس)'],['lb','نومك (خميس وجمعة)'],['lk','صحيانك (جمعة وسبت)']].map(a=>'<label>'+a[1]+'<input type="time" data-sl="'+a[0]+'" value="'+slpPlan()[a[0]]+'"></label>').join('')+
     '<p class="cap">الحساب: نصف عمر الكافيين '+CAF_HL+' ساعات، وكوبك '+S.cupMg+' ملغ. «الكوب الجاي» حين يهبط مجموعك لنحو '+CAF_MID+' ملغ، و«حد التوقف» آخر موعد يبقى بعده أقل من '+CAF_MID+' ملغ عند نومك.</p></div>';
-  el.innerHTML=hero+strip+kv+nbox+zf;
+  setH(el,hero+strip+kv+nbox+zf);
   if(zOpen&&$('zForm'))$('zForm').hidden=false;
   cafLayout(el);
 }
@@ -3860,7 +3891,7 @@ $('s2body').addEventListener('click',e=>{
   if(a==='save'){
     const isT=sel===TK(),t=(M.when==='now'&&isT)?nowMin():M.t;
     if(isT&&t>nowMin()){M.err='الوقت لسا ما جا';renderCupSheet();return}
-    snap();const d=day(sel);for(let i=0;i<M.n;i++){d.cups++;d.cupT.push(t)}
+    snap('c');const d=day(sel);for(let i=0;i<M.n;i++){d.cups++;d.cupT.push(t)}
     const n=M.n;closeS2();save();renderAll();toast('+ '+n+' كوب قهوة ('+tStr(t)+')',true)
   }
 });
@@ -3978,7 +4009,7 @@ $('s2body').addEventListener('click',e=>{
     if(!r.n){M.v=r;M.msg='اكتب الاسم.';M.ok=false;renderDrk();return}
     if(!(r.cf>0)&&!(r.k>0)){M.v=r;M.msg='اكتب الأرقام، أو صوّر الملصق.';M.ok=false;renderDrk();return}
     const sv=$('drkSv')&&$('drkSv').checked;
-    if(n==='save'||sv){S.snacks.push({id:Date.now(),n:r.n,k:r.k,p:r.p,c:r.c,fi:0,f:0,s:Math.min(r.s,r.c||r.s),w:r.ml,cf:r.cf,cat:'drink',slot:'s'});save();renderMyMeals();renderCaf()}
+    if(n==='save'||sv){S.snacks.push({id:nid(),n:r.n,k:r.k,p:r.p,c:r.c,fi:0,f:0,s:Math.min(r.s,r.c||r.s),w:r.ml,cf:r.cf,cat:'drink',slot:'s'});save();renderMyMeals();renderCaf()}
     if(n==='add'){closeS2();qSay(commit([{n:r.n,q:r.ml?r.ml+' مل':'',k:r.k,p:r.p,c:r.c,fi:0,f:0,s:Math.min(r.s,r.c||r.s),w:r.ml,cf:r.cf,dr:1}],'s'),'ok')}
     else{closeS2();toast('انحفظ «'+r.n+'» في قائمة المشروبات',false)}
   }
@@ -4000,6 +4031,168 @@ $('s2body').addEventListener('change',async e=>{
   try{const r=await askDrink(await readImage(f));if(M!==keep)return;M.v=r;M.msg='انقرأ الملصق ✓ راجع الأرقام.';M.ok=true}
   catch(err){if(M!==keep)return;M.msg=errText(err)+' تقدر تكتب الأرقام بيدك.';M.ok=false}
   renderDrk();
+});
+/* ===== v52: شاشة الوجبة الكاملة (مكونات بالجرام، نيء/مطبوخ، حصة، مسودة) ===== */
+// [الاسم, {raw:[k,p,c,f,fi,s], cooked:[...]}, الافتراضي] لكل 100 جم. القيم مرجع عام تقديري
+const RFX={
+ veal:['لحم عجل مفروم 10% دهون',{raw:[176,20,0,10,0,0],cooked:[217,26,0,12,0,0]},'raw'],
+ btr:['زبدة',{raw:[717,.9,.1,81,0,.1]},'raw'],
+ cst:['نشا ذرة',{raw:[381,.3,91.3,.1,.9,0]},'raw'],
+ ric:['رز أبيض',{raw:[360,7,79,.6,1.3,0],cooked:[130,2.7,28,.3,.4,0]},'cooked'],
+ yog:['زبادي عادي (كامل الدسم)',{raw:[61,3.5,4.7,3.3,0,4.7]},'raw'],
+ cuc:['خيار',{raw:[15,.7,3.6,.1,.5,1.7]},'raw'],
+ chk:['صدر دجاج',{raw:[120,22.5,0,2.6,0,0],cooked:[165,31,0,3.6,0,0]},'raw'],
+ bef:['لحم بقر مفروم 15% دهون',{raw:[215,18.6,0,15,0,0],cooked:[250,26,0,15,0,0]},'raw'],
+ pot:['بطاطس',{raw:[77,2,17.5,.1,2.2,.8],cooked:[87,1.9,20,.1,1.8,.9]},'raw'],
+ egg:['بيض',{raw:[143,12.6,.7,9.5,0,.4],cooked:[155,13,1.1,11,0,1.1]},'raw'],
+ oil:['زيت زيتون',{raw:[884,0,0,100,0,0]},'raw'],
+ brd:['خبز بر',{raw:[250,10,45,3,6,3]},'raw'],
+ tom:['طماطم',{raw:[18,.9,3.9,.2,1.2,2.6]},'raw'],
+ onn:['بصل',{raw:[40,1.1,9.3,.1,1.7,4.2]},'raw'],
+ tun:['تونة بالماء',{raw:[116,26,0,1,0,0]},'raw'],
+ oat:['شوفان',{raw:[389,17,66,7,10.6,1]},'raw'],
+ ban:['موز',{raw:[89,1.1,23,.3,2.6,12]},'raw'],
+ che:['جبن موزاريلا',{raw:[280,22,2.2,22,0,1]},'raw'],
+ cot:['جبن قريش',{raw:[98,11,3.4,4.3,0,2.7]},'raw'],
+ hum:['حمص مطبوخ',{raw:[164,8.9,27,2.6,7.6,4.8]},'raw'],
+ brc:['بروكلي',{raw:[34,2.8,7,.4,2.6,1.7]},'raw'],
+ flr:['طحين أبيض',{raw:[364,10,76,1,2.7,.3]},'raw'],
+ mlk:['حليب كامل',{raw:[61,3.2,4.8,3.3,0,5]},'raw'],
+ sug:['سكر',{raw:[387,0,100,0,0,100]},'raw']
+};
+const MB_HOW=[['','بدون'],['sear','تحمير'],['boil','سلق/طبخ بالماء'],['grill','شوي'],['oven','فرن'],['fry','قلي']];
+const mbBase=(id,st)=>{const r=RFX[id],v=r[1][st]||r[1].raw;return {g:100,k:v[0],p:v[1],c:v[2],f:v[3],fi:v[4],s:v[5],w:0,cf:0}};
+function mbRowFromRef(id){const r=RFX[id],st=r[2]&&r[1][r[2]]?r[2]:'raw';return {key:'rf:'+id,rf:id,st:st,n:r[0],b:mbBase(id,st),g:0,free:false,u:0,est:true}}
+function mbFactor(){
+  const fw=parseFloat(toLatin(M.fw||''))||0,ew=parseFloat(toLatin(M.ew||''))||0;
+  if(fw>0&&ew>0)return ew/fw;return M.pf>0?M.pf:1;
+}
+function mbScaled(){const f=mbFactor();return M.rows.filter(r=>r.g>0).map(r=>{const o=scaleRow(r),x={};Object.keys(o).forEach(k=>{const v=o[k]*f;x[k]=(k==='k'||k==='w'||k==='cf')?Math.round(v):Math.round(v*10)/10});return x})}
+function mbTot(){
+  const el=$('s2tot');if(!el)return;const t=sum(mbScaled()),f=mbFactor(),est=M.rows.some(r=>r.est&&r.g>0);
+  el.innerHTML='المجموع'+(f!==1?' (حصتك '+Math.round(f*100)+'%)':'')+': <b>'+fmt(t.k)+'</b> سعرة · '+t.p+' بروتين · '+t.c+' كارب'+(t.s?' (منها '+t.s+' سكر)':'')+' · '+t.fi+' ألياف · '+t.f+' دهون'+(est?'<br><small>⚠️ فيه قيم تقديرية من مرجع عام. عدّلها لو عندك رقم أدق.</small>':'');
+  mbDraft();
+}
+let mbDt=null;
+function mbDraft(){
+  if(!M||M.mode!=='plate'||M.item)return;clearTimeout(mbDt);
+  mbDt=setTimeout(()=>{if(!M||M.mode!=='plate'||M.item||M.done)return;
+    if(!(M.rows.length||(M.name||'').trim())){if(S.draft){delete S.draft;save()}return}
+    S.draft={name:M.name||'',slot:M.slot,rows:M.rows,how:M.how||'',notes:M.notes||[],pf:M.pf||1,fw:M.fw||'',ew:M.ew||''};save()},500);
+}
+function mbClearDraft(){clearTimeout(mbDt);if(S.draft){delete S.draft;save()}}
+{const _o=openS2;openS2=function(s){
+  if(s&&s.mode==='plate'&&!s.item&&!s.mealId&&!s.fromDraft&&Array.isArray(s.rows)&&!s.rows.length&&S.draft&&S.draft.rows&&(S.draft.rows.length||S.draft.name)){
+    const d=JSON.parse(JSON.stringify(S.draft));s=Object.assign({},s,d,{name:s.name||d.name,fromDraft:1,mode:'plate'})}
+  const r=_o(s);return r}}
+function mbRowsH(){
+  return M.rows.map((r,i)=>{
+    const tg=r.rf&&RFX[r.rf]&&RFX[r.rf][1].cooked?'<button type="button" class="mbst" data-mb="st:'+i+'">'+(r.st==='cooked'?'مطبوخ':'نيء')+' ⇄</button>':'';
+    const body=r.u?plStep(r,i):'<label class="pg"><input type="number" inputmode="decimal" step="any" min="0" max="5000" value="'+(r.g||'')+'" data-g="'+i+'" placeholder="جم" aria-label="الكمية بالجرام"><span>جم</span></label>';
+    return '<div class="prow mbr"><div class="pn">'+esc(r.n)+(r.est?' <span class="est">تقديري</span>':'')+(r.u===2?'<small> · '+r.g+' جم</small>':'')+'</div>'+body+tg+'<button type="button" class="vx" data-mb="rm:'+i+'" aria-label="حذف">×</button><div class="pm num" id="pm'+i+'">'+macroLine(scaleRow(r))+'</div></div>'}).join('');
+}
+function renderMB(){
+  M.how=M.how||'';M.notes=M.notes||[];M.pf=M.pf||1;
+  const chip=(a,t,on)=>'<button type="button" class="mbc'+(on?' on':'')+'" data-mb="'+a+'" aria-pressed="'+(!!on)+'">'+t+'</button>';
+  $('s2body').innerHTML='<h2>🍽️ وجبة كاملة</h2>'+(M.fromDraft?'<p class="note">رجعت لك مسودتك. <button type="button" class="link" data-mb="nodraft">ابدأ من جديد</button></p>':'')+
+   '<input id="s2name" type="text" placeholder="اسم الوجبة (اختياري)، مثال: غداء لحم بالصوص" autocomplete="off" value="'+esc(M.name||'')+'">'+
+   '<label>الوجبة'+slotSel()+'</label>'+
+   '<div id="s2rows">'+(M.rows.length?mbRowsH():'<p class="note">أضف مكوناتك واحد واحد، وكل واحد بالجرام.</p>')+'</div>'+
+   '<div class="btns2"><button type="button" class="btn sm soft" data-mb="ref">＋ ابحث عن مكوّن</button><button type="button" class="btn sm soft" data-mb="pick">＋ من قائمتي</button><button type="button" class="btn sm soft" data-mb="new">＋ صنف جديد</button></div>'+
+   '<p class="note" style="margin:6px 0 2px">طريقة الطبخ (للتذكير فقط)</p><div class="chiprow">'+MB_HOW.map(h=>chip('how:'+h[0],h[1],M.how===h[0])).join('')+'</div>'+
+   '<p class="note" style="margin:2px 0 0">الزبدة أو الزيت اللي استخدمتها ضيفها كمكوّن بالجرام، ما تنحسب لحالها. الماء والتبخر ما يضيفون سعرات.</p>'+
+   '<p class="note" style="margin:8px 0 2px">بهارات وماء (بدون سعرات)</p><div class="chiprow">'+['بهارات','ماء','ملح'].map(n=>chip('note:'+n,n,M.notes.includes(n))).join('')+'</div>'+
+   '<p class="note" style="margin:8px 0 2px">كم أكلت من الوجبة؟</p><div class="chiprow">'+[[1,'كلها'],[.5,'النصف'],[.333,'الثلث'],[.25,'الربع']].map(a=>chip('pf:'+a[0],a[1],!(M.fw||M.ew)&&Math.abs(M.pf-a[0])<.01)).join('')+'</div>'+
+   '<div class="f2"><label>وزن الوجبة النهائي بعد الطبخ (جم)<input id="mbFw" type="number" inputmode="decimal" min="0" max="20000" value="'+esc(M.fw||'')+'"></label><label>اللي أكلته (جم)<input id="mbEw" type="number" inputmode="decimal" min="0" max="20000" value="'+esc(M.ew||'')+'"></label></div>'+
+   '<div class="tot num" id="s2tot"></div><p class="msg err" id="s2msg" aria-live="polite"></p>'+
+   '<button type="button" class="btn big" data-mb="addsave">حفظ وإضافة لليوم</button>'+
+   '<div class="btns2"><button type="button" class="btn sm soft" data-mb="addonly">إضافة لليوم فقط</button><button type="button" class="btn sm soft" data-mb="tpl">حفظ كقالب فقط</button></div>'+
+   '<button type="button" class="btn ghost" data-act="close">إغلاق (المسودة محفوظة)</button>';
+  mbTot();
+}
+{const _rp=renderPlate;renderPlate=function(){if(M&&M.item)return _rp();return renderMB()}}
+{const _ut=updateTot;updateTot=function(){if(M&&M.mode==='plate'&&!M.item)return mbTot();return _ut()}}
+/* بحث المرجع */
+function mbRefRows(){
+  const q=(M.q||'').trim().toLowerCase();
+  const l=Object.keys(RFX).filter(id=>!q||RFX[id][0].toLowerCase().includes(q));
+  if(!l.length)return '<p class="note">ما لقيت. اضغط «صنف جديد» وأدخل أرقامه.</p>';
+  return l.map(id=>{const on=M.plate.rows.some(r=>r.rf===id);return '<div class="mk-row"><span class="em">🥣</span><div class="nm">'+esc(RFX[id][0])+'<small>'+(RFX[id][1].cooked?'نيء أو مطبوخ · ':'')+'قيم تقديرية</small></div><button type="button" class="'+(on?'done':'')+'" data-mbr="'+id+'">'+(on?'✓':'＋')+'</button></div>'}).join('');
+}
+function renderMBRef(){
+  $('s2body').innerHTML='<h2>ابحث عن مكوّن</h2><input id="mbq" type="search" placeholder="🔍 مثال: رز، لحم، زبدة" autocomplete="off" value="'+esc(M.q||'')+'"><div id="mbrl" style="margin-top:8px">'+mbRefRows()+'</div><button type="button" class="btn big" data-mb="refdone" style="margin-top:10px">تم</button>';
+}
+{const _rs=renderS2;renderS2=function(){if(M&&M.mode==='mbref')return renderMBRef();return _rs()}}
+$('s2body').addEventListener('input',e=>{
+  if(!M)return;
+  if(M.mode==='mbref'&&e.target.id==='mbq'){M.q=e.target.value;$('mbrl').innerHTML=mbRefRows();return}
+  if(M.mode==='plate'&&!M.item){
+    if(e.target.id==='mbFw'){M.fw=e.target.value;mbTot()}
+    if(e.target.id==='mbEw'){M.ew=e.target.value;mbTot()}
+    if(e.target.id==='s2name')mbDraft();
+    if(e.target.dataset&&e.target.dataset.g!==undefined){const r=M.rows[+e.target.dataset.g];if(r&&r.g>5000){r.g=5000}}
+  }
+});
+function mbCheck(){
+  if(!M.rows.length||M.rows.some(r=>!(r.g>0))){s2msg('أضف مكوّن واحد على الأقل واكتب كمياته بالجرام.');return false}
+  if(M.rows.some(r=>r.g>5000)){s2msg('كمية أكبر من 5000 جم؟ راجعها.');return false}
+  if(!(mbFactor()>0)||mbFactor()>1){s2msg('اللي أكلته أكبر من الوجبة كلها. راجع الأوزان.');return false}
+  return true;
+}
+function mbPartsH(){return M.rows.map(r=>Object.assign({n:r.n,g:r.g},r.u===1?{u:1}:{},r.est?{est:1}:{},scaleRow(r)))}
+function mbSaveTpl(){
+  const nm=(M.name||'').trim();if(!nm)return null;
+  const rec={id:nid(),n:nm,slot:M.slot,parts:mbPartsH(),how:M.how||'',notes:M.notes||[]};
+  const ex=S.meals.findIndex(v=>v.n===nm);
+  if(ex>=0){rec.id=S.meals[ex].id;S.meals[ex]=rec;return 'upd'}S.meals.push(rec);return 'new';
+}
+function mbAdd(save){
+  if(M.done)return;if(!mbCheck())return;
+  M.done=true;const f=mbFactor(),gid=nid(),nm=(M.name||'').trim()||'وجبة';
+  const items=M.rows.map(r=>{const o=scaleRow(r),x={};Object.keys(o).forEach(k=>{const v=o[k]*f;x[k]=(k==='k'||k==='w'||k==='cf')?Math.round(v):Math.round(v*10)/10});
+    return Object.assign({n:r.n,q:(r.u===1?r.g+' حصة':Math.round(r.g*f*10)/10+' جم'),g:Math.round(r.g*f*10)/10,grp:gid,gn:nm},r.est?{est:1}:{},x)});
+  let st=null;if(save)st=mbSaveTpl();
+  if(M.replaceGrp){snap('i');const d=day(sel);d.items=d.items.filter(x=>x.grp!==M.replaceGrp);commitTo(sel,items,M.slot,M.rt,false);const tt=sum(items);toast('تحدّثت الوجبة ('+tt.k+' سعرة)',true);mbClearDraft();closeS2();return}
+  const msg=commit(items,M.slot);mbClearDraft();closeS2();qSay(msg+(st==='upd'?' (تحدّث القالب)':st==='new'?' (انحفظ قالب)':''),'ok');
+}
+$('s2body').addEventListener('click',e=>{
+  if(!M)return;
+  if(M.mode==='mbref'){
+    const b=e.target.closest('[data-mbr],[data-mb]');if(!b)return;
+    if(b.dataset.mbr){const id=b.dataset.mbr,ix=M.plate.rows.findIndex(r=>r.rf===id);if(ix>=0)M.plate.rows.splice(ix,1);else M.plate.rows.push(mbRowFromRef(id));$('mbrl').innerHTML=mbRefRows();return}
+    if(b.dataset.mb==='refdone'){M=M.plate;renderS2()}
+    return;
+  }
+  if(M.mode!=='plate'||M.item)return;
+  const b=e.target.closest('[data-mb]');if(!b)return;
+  const [a,v]=b.dataset.mb.split(':');
+  if(a==='ref'){openS2({mode:'mbref',plate:M,q:''});return}
+  if(a==='pick'){openS2({mode:'pick',plate:M,pc:'all',q:'',fl:{}});return}
+  if(a==='new'){openS2({mode:'new',plate:M});return}
+  if(a==='nodraft'){mbClearDraft();M.rows=[];M.name='';M.fromDraft=0;M.fw=M.ew='';M.pf=1;M.how='';M.notes=[];renderMB();return}
+  if(a==='rm'){M.rows.splice(+v,1);renderMB();return}
+  if(a==='st'){const r=M.rows[+v];if(r&&r.rf){r.st=r.st==='cooked'?'raw':'cooked';const g0=r.b.g;r.b=mbBase(r.rf,r.st);r.b.g=g0||100;renderMB()}return}
+  if(a==='how'){M.how=v||'';renderMB();return}
+  if(a==='note'){const i=M.notes.indexOf(v);if(i>=0)M.notes.splice(i,1);else M.notes.push(v);renderMB();return}
+  if(a==='pf'){M.pf=+v;M.fw=M.ew='';renderMB();return}
+  if(a==='addsave'){mbAdd(true);return}
+  if(a==='addonly'){mbAdd(false);return}
+  if(a==='tpl'){
+    if(!(M.name||'').trim()){s2msg('اكتب اسم الوجبة عشان تنحفظ كقالب.');return}
+    if(!mbCheck())return;const st=mbSaveTpl();save();mbClearDraft();mmOpen=true;renderMyMeals();const nm=M.name.trim();M.done=true;closeS2();toast((st==='upd'?'تحدّث القالب «':'انحفظ القالب «')+nm+'»',false);return}
+});
+
+/* وجبة كاملة في السجل: تعديل/حذف كوحدة */
+{const _os=openSheet;openSheet=function(id){_os(id);const x=id?peek(sel).items.find(v=>v.id===id):null,g=!!(x&&x.grp);$('fGrpEdit').hidden=!g;$('fGrpDel').hidden=!g;if(g)$('shTitle').textContent='تعديل · جزء من «'+(x.gn||'وجبة')+'»'}}
+$('fGrpDel').addEventListener('click',()=>{
+  const x=peek(sel).items.find(v=>v.id===editId);if(!x||!x.grp)return;
+  const n=peek(sel).items.filter(v=>v.grp===x.grp).length;if(!confirm('تحذف الوجبة كاملة ('+n+' مكونات)؟'))return;
+  snap('i');const d=day(sel);d.items=d.items.filter(v=>v.grp!==x.grp);save();closeSheet();renderAll();toast('انحذفت الوجبة كاملة',true)});
+$('fGrpEdit').addEventListener('click',()=>{
+  const x=peek(sel).items.find(v=>v.id===editId);if(!x||!x.grp)return;
+  const xs=peek(sel).items.filter(v=>v.grp===x.grp);closeSheet();
+  const rows=xs.map(v=>{const b={g:v.g>0?v.g:1};KEYS.forEach(k=>b[k]=v[k]||0);return {n:v.n,b:b,g:v.g>0?v.g:1,free:false,u:0,est:!!v.est}});
+  openS2({mode:'plate',rows:rows,name:x.gn||'',slot:x.m,fromDraft:1,replaceGrp:x.grp,rt:x.t,pf:1,how:'',notes:[]});
 });
 show('Home');
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
